@@ -4,7 +4,7 @@ import { IModel } from "../db/model";
 import { HandledError, RouteHandler } from "./utils";
 import Router = require("koa-router");
 
-export class LoginRoute implements RouteHandler {
+export class CreateSessionRoute implements RouteHandler {
   public schema = Joi.object({
     email: Joi.string()
       .email()
@@ -23,6 +23,7 @@ export class LoginRoute implements RouteHandler {
       const user = await m.getUser(vr.email);
       userID = user.userID;
 
+      // Validate password matches
       const match = await bcrypt.compare(vr.password, user.hashedPassword);
       if (!match) throw new Error();
     } catch (e) {
@@ -30,7 +31,17 @@ export class LoginRoute implements RouteHandler {
     }
 
     // Create session and return session ID
-    const sessionID = await m.createSession(userID, vr.deviceName);
-    c.body = { sessionID };
+    const sessionKey = await m.createSession(userID, vr.deviceName);
+    c.body = { sessionKey };
+  }
+}
+
+export class GetSessionsRoute implements RouteHandler {
+  public requireAuth = true;
+
+  public async handle(r: Router, m: IModel, c: any, vr: any) {
+    // Get and return all user sessions
+    const sessions = m.getSessions(c.userID);
+    c.body = { sessions };
   }
 }

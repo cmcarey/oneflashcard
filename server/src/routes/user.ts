@@ -15,9 +15,11 @@ export class CreateUserRoute implements RouteHandler {
   });
 
   public async handle(r: Router, m: IModel, c: any, vr: any) {
+    // Hash password
     const hashedPassword = await bcrypt.hash(vr.password, 10);
 
     try {
+      // Create user
       await m.createUser(vr.email, hashedPassword);
     } catch (e) {
       throw new HandledError("Email address is in use");

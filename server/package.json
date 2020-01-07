@@ -13,6 +13,7 @@
   },
   "scripts": {
     "start": "ts-node-dev --clear src/entry.ts",
+    "coverage": "jest --coverage",
     "test": "jest",
     "test:watch": "jest --watchAll"
   },

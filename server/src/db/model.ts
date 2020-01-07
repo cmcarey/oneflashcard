@@ -7,10 +7,8 @@ export interface IModel {
   createSession(
     userID: string,
     deviceName: string
-  ): Promise<{ sessionID: string }>;
-  getSession(
-    sessionID: string
-  ): Promise<{ userID: string; deviceName: string }>;
+  ): Promise<{ sessionKey: string }>;
+  getSession(sessionKey: string): Promise<{ userID: string }>;
   getSessions(
     userID: string
   ): Promise<{ sessionID: string; deviceName: string }[]>;
@@ -30,12 +28,10 @@ export class PGModel implements IModel {
   createSession(
     userID: string,
     deviceName: string
-  ): Promise<{ sessionID: string }> {
+  ): Promise<{ sessionKey: string }> {
     throw new Error("Method not implemented.");
   }
-  getSession(
-    sessionID: string
-  ): Promise<{ userID: string; deviceName: string }> {
+  getSession(sessionKey: string): Promise<{ userID: string }> {
     throw new Error("Method not implemented.");
   }
   getSessions(

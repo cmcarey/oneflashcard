@@ -20,15 +20,6 @@ describe("POST /user/create", () => {
     expect(model.createUser.mock.calls.length).toBe(1);
     expect(model.createUser.mock.calls[0][0]).toBe("chance@carey.sh");
   });
-  test("Good register", async () => {
-    let res = await request(server)
-      .post(url)
-      .send(goodReqBody);
-    expect(res.status).toBe(200);
-
-    expect(model.createUser.mock.calls.length).toBe(1);
-    expect(model.createUser.mock.calls[0][0]).toBe("chance@carey.sh");
-  });
 
   test("Bad input", async () => {
     // Missing email field
