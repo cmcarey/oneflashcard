@@ -5,6 +5,10 @@ export interface IModel {
   getUser(email: string): { password: string };
 }
 
+export class EmailInUseError extends Error {
+  public readonly message = "EMAIL_IN_USE";
+}
+
 export class PGModel implements IModel {
   constructor(private pgConnection: knex) {}
 

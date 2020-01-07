@@ -1,6 +1,8 @@
+import Joi from "@hapi/joi";
 import Koa from "koa";
+import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
-import { IModel } from "./db/model";
+import { EmailInUseError, IModel } from "./db/model";
 
 export class App {
   private app: Koa;
@@ -10,6 +12,9 @@ export class App {
     // Build HTTP server
     this.app = new Koa();
     this.router = new Router();
+
+    // Setup body parsing
+    this.app.use(bodyParser());
 
     // Register routes
     this.registerRoutes();
@@ -24,9 +29,34 @@ export class App {
   }
 
   private registerRoutes() {
-    this.router.get("/", ctx => {
-      ctx.body = "hey";
-      this.model.createUser("chance@carey.sh", "somepass");
+    this.router.post("/user/create", async ctx => {
+      const schema = Joi.object({
+        email: Joi.string()
+          .email()
+          .required(),
+        password: Joi.string()
+          .min(8)
+          .required()
+      });
+
+      const vd = schema.validate(ctx.request.body);
+      if (vd.error) {
+        ctx.status = 400;
+        ctx.body = { error: vd.error.message };
+        return;
+      }
+
+      try {
+        this.model.createUser(vd.value.email, vd.value.password);
+        ctx.status = 200;
+      } catch (e) {
+        if (e instanceof EmailInUseError) {
+          ctx.status = 400;
+          ctx.body = { error: e.message };
+        } else {
+          ctx.status = 500;
+        }
+      }
     });
   }
 }
