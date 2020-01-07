@@ -8,11 +8,11 @@ const createModelMock = () => ({ createUser: jest.fn(), getUser: jest.fn() });
 describe("POST /user/create", () => {
   let model: ReturnType<typeof createModelMock>;
   let server: Server;
-  afterEach(() => server.close());
   beforeEach(() => {
     model = createModelMock();
     server = new App(model).start(3840);
   });
+  afterEach(() => server.close());
 
   const url = "/user/create";
   const goodReqBody = { email: "chance@carey.sh", password: "somepass" };
