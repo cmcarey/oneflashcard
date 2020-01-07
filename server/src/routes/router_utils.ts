@@ -27,8 +27,8 @@ export const handleRoute = (
   }
 
   try {
-    const res = await handler.handle(r, m, ctx, validated);
     ctx.status = 200;
+    const res = await handler.handle(r, m, ctx, validated.value);
     return res;
   } catch (e) {
     if (e instanceof HandledError) {

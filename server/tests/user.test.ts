@@ -3,6 +3,8 @@ import request from "supertest";
 import { App } from "../src/app";
 import { createModelMock } from "./model";
 
+const encPass = "$2b$10$592SSmQmvZR/xsM6o9xTRuUJX0lH0ODbQHO.IaV.7TaJ7bcrnJmfe";
+
 describe("POST /user/create", () => {
   let model: ReturnType<typeof createModelMock>;
   let server: Server;
@@ -14,10 +16,9 @@ describe("POST /user/create", () => {
 
   const url = "/user/create";
   const goodReqBody = { email: "chance@carey.sh", password: "somepass" };
-  // hashed pass - $2b$10$592SSmQmvZR/xsM6o9xTRuUJX0lH0ODbQHO.IaV.7TaJ7bcrnJmfe
 
   test("Good register", async () => {
-    const res = await request(server)
+    let res = await request(server)
       .post(url)
       .send(goodReqBody);
     expect(res.status).toBe(200);
@@ -85,14 +86,42 @@ describe("POST /user/login", () => {
   afterEach(() => server.close());
 
   const url = "/user/login";
-  const goodReqBody = { email: "chance@carey.sh", password: "somepass" };
+  const goodReqBody = {
+    email: "chance@carey.sh",
+    password: "somepass",
+    deviceName: "tester"
+  };
 
-  test("Good register", async () => {
-    // const res = await request(server)
-    //   .post(url)
-    //   .send(goodReqBody);
-    // expect(res.status).toBe(200);
-    // expect(model.createUser.mock.calls.length).toBe(1);
-    // expect(model.createUser.mock.calls[0][0]).toBe("chance@carey.sh");
+  test("Good login", async () => {
+    model.getUser.mockReturnValue({ userID: 1, hashedPassword: encPass });
+    model.createSession.mockReturnValue(7);
+
+    let res = await request(server)
+      .post(url)
+      .send(goodReqBody);
+    expect(res.status).toBe(200);
+    expect(res.body.sessionID).toBe(7);
+
+    expect(model.createSession.mock.calls.length).toBe(1);
+    expect(model.createSession.mock.calls[0][0]).toBe(1);
+    expect(model.createSession.mock.calls[0][1]).toBe("tester");
+  });
+
+  test("Bad login email", async () => {
+    model.getUser.mockReturnValue({ userID: 1, hashedPassword: "~" });
+
+    let res = await request(server)
+      .post(url)
+      .send({ email: "chance@carey.s", password: "somepass" });
+    expect(res.status).toBe(400);
+  });
+
+  test("Bad login pass", async () => {
+    model.getUser.mockReturnValue({ userID: 1, hashedPassword: "~" });
+
+    let res = await request(server)
+      .post(url)
+      .send(goodReqBody);
+    expect(res.status).toBe(400);
   });
 });

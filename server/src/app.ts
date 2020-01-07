@@ -3,7 +3,7 @@ import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { IModel } from "./db/model";
 import { handleRoute } from "./routes/router_utils";
-import { CreateUserRoute } from "./routes/user";
+import { CreateUserRoute, LoginRoute } from "./routes/user";
 
 export class App {
   private app: Koa;
@@ -34,6 +34,10 @@ export class App {
     const m = this.model;
     const h = handleRoute;
 
+    // {email, password} throws [EMAIL_IN_USE]
     r.post("/user/create", h(r, m, new CreateUserRoute()));
+
+    // {email, password} throws [BAD_DETAILS]
+    r.post("/user/login", h(r, m, new LoginRoute()));
   }
 }
