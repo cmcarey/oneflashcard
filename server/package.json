@@ -4,6 +4,7 @@
   "license": "MIT",
   "dependencies": {
     "@hapi/joi": "^17.0.0",
+    "bcrypt": "^3.0.7",
     "knex": "^0.20.7",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
@@ -16,6 +17,7 @@
     "test:watch": "jest --watchAll"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/hapi__joi": "^16.0.6",
     "@types/jest": "^24.0.25",
     "@types/joi": "^14.3.4",

@@ -1,12 +1,13 @@
 import knex from "knex";
 
 export interface IModel {
-  createUser(email: string, password: string): void;
-  getUser(email: string): { password: string };
-}
+  createUser(email: string, hashedPassword: string): void;
+  getUser(email: string): { userID: string; hashedPassword: string };
 
-export class EmailInUseError extends Error {
-  public readonly message = "EMAIL_IN_USE";
+  createSession(userID: string, deviceName: string): { sessionID: string };
+  getSession(sessionID: string): { userID: string; deviceName: string };
+  getSessions(userID: string): { sessionID: string; deviceName: string }[];
+  deleteSession(sessionID: string): void;
 }
 
 export class PGModel implements IModel {
@@ -15,8 +16,19 @@ export class PGModel implements IModel {
   createUser(email: string, password: string): void {
     throw new Error("Method not implemented.");
   }
-
-  getUser(email: string): { password: string } {
+  getUser(email: string): { userID: string; hashedPassword: string } {
+    throw new Error("Method not implemented.");
+  }
+  createSession(userID: string, deviceName: string): { sessionID: string } {
+    throw new Error("Method not implemented.");
+  }
+  getSession(sessionID: string): { userID: string; deviceName: string } {
+    throw new Error("Method not implemented.");
+  }
+  getSessions(userID: string): { sessionID: string; deviceName: string }[] {
+    throw new Error("Method not implemented.");
+  }
+  deleteSession(sessionID: string): void {
     throw new Error("Method not implemented.");
   }
 }

@@ -1,8 +1,9 @@
-import Joi from "@hapi/joi";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
-import { EmailInUseError, IModel } from "./db/model";
+import { IModel } from "./db/model";
+import { handleRoute } from "./routes/router_utils";
+import { CreateUserRoute } from "./routes/user";
 
 export class App {
   private app: Koa;
@@ -29,34 +30,10 @@ export class App {
   }
 
   private registerRoutes() {
-    this.router.post("/user/create", async ctx => {
-      const schema = Joi.object({
-        email: Joi.string()
-          .email()
-          .required(),
-        password: Joi.string()
-          .min(8)
-          .required()
-      });
+    const r = this.router;
+    const m = this.model;
+    const h = handleRoute;
 
-      const vd = schema.validate(ctx.request.body);
-      if (vd.error) {
-        ctx.status = 400;
-        ctx.body = { error: vd.error.message };
-        return;
-      }
-
-      try {
-        this.model.createUser(vd.value.email, vd.value.password);
-        ctx.status = 200;
-      } catch (e) {
-        if (e instanceof EmailInUseError) {
-          ctx.status = 400;
-          ctx.body = { error: e.message };
-        } else {
-          ctx.status = 500;
-        }
-      }
-    });
+    r.post("/user/create", h(r, m, new CreateUserRoute()));
   }
 }
