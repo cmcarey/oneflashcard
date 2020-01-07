@@ -8,96 +8,99 @@ body {
 }
 `;
 
+export const Page = styled.div`
+  display: grid;
+  height: 100vh;
+  grid-template-rows: [topbar] 50px [main] 1fr;
+`;
+
+export const Topbar = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  align-self: center;
+  padding-left: 1rem;
+`;
+
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: 200px auto;
-  height: 100vh;
+  grid-template-columns: [sidebar] 200px [content] 3fr [details] 1fr;
+  min-height: 0;
 `;
 
-export const Sidebar = styled.div`
-  background: #f4f5f7;
-  padding: 1rem;
-  display: grid;
-  align-content: start;
-  grid-row-gap: 5px;
+export const Bar = styled.div`
+  background: #f2f2f2;
+  padding-top: 1rem;
 `;
 
-export const SidebarButton = styled.button<{ selected?: boolean }>`
-  padding: 0.7rem 1rem;
-  text-align: left;
-  background: ${p => (p.selected ? "#e3e0fd" : "none")};
-  border: none;
-  border-radius: 0.3rem;
-  transition: 0.2s background;
-  cursor: pointer;
-
-  &,
-  &:active,
-  &:focus {
-    outline: none;
-  }
-
-  ${p =>
-    !p.selected &&
-    `
-    &:hover {
-      background: #ececec;
-    }
-
-    &:active {
-      background: #d7d7d7;
-    }
-  `}
-`;
-
-export const SidebarLabel = styled.div<{ big?: boolean }>`
+export const BarLabel = styled.div`
   padding: 0.5rem 1rem;
+  color: black;
   font-weight: bold;
-  ${p => (p.big ? "font-size: 20px;" : "border-bottom: 1px solid #e6e6e6;")}
 
-  &:not(:first-of-type) {
+  &:not(:first-child) {
     margin-top: 1rem;
   }
 `;
 
-export const CardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 300px);
-  // grid-template: repeat(auto-fit, 200px) / repeat(auto-fit, 400px);
-  justify-content: left;
-  grid-gap: 1rem;
-  padding: 2rem;
-  align-content: start;
+export const BarLink = styled.a<{ selected?: boolean }>`
+  display: block;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: 0.1s background;
+
+  ${p =>
+    p.selected
+      ? `
+    background: #ffb3b3;
+    color: black;
+  `
+      : `
+    &:hover {
+      background: #dfdfdf;
+    }
+
+    &:active {
+      background: white;
+    }
+  `}
 `;
 
-export const Card = styled.div`
+export const Content = styled.div`
+  overflow: scroll;
+`;
+
+export const Card = styled.div<{ selected?: boolean }>`
   padding: 1rem;
+  display: grid;
+  grid-gap: 0.5rem;
+
+  ${p =>
+    p.selected &&
+    `
+    background: #f2f2f2;
+  `}
+`;
+
+export const CardTags = styled.div``;
+
+export const CardTag = styled.div`
+  display: inline-block;
+  background: #ffb3b3;
+  color: black;
+  padding: 0.3rem;
   border-radius: 0.3rem;
-  box-shadow: 0px 2px 5px #f0f0f0;
-  border: 1px solid #e3e3e3;
+
+  :not(:first-child) {
+    margin-left: 1rem;
+  }
 `;
 
 export const CardTitle = styled.div`
   font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 0.5rem;
 `;
 
-export const CardBody = styled.div`
-  line-height: 1.5;
-`;
+export const CardBody = styled.div``;
 
-export const CardTags = styled.div`
-  margin-top: 0.5rem;
-`;
-
-export const CardTag = styled.span`
-  background: #ff6e6e;
-  padding: 0.1rem 0.3rem;
-  color: white;
-  border-radius: 0.3rem;
-
-  &:not(:first-of-type) {
-    margin-left: 0.5rem;
-  }
+export const DetailBar = styled.div`
+  background: #7e7e7e;
 `;

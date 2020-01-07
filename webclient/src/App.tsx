@@ -1,55 +1,51 @@
 import React from "react";
+import { cards } from "./cards";
 import {
+  Bar,
+  BarLabel,
+  BarLink,
   Card,
   CardBody,
-  CardGrid,
   CardTag,
   CardTags,
   CardTitle,
   Container,
-  Sidebar,
-  SidebarButton,
-  SidebarLabel
+  Content,
+  DetailBar,
+  Page,
+  Topbar
 } from "./ui";
 
-const cards: [string, string, string[]][] = [
-  [
-    "Compiler blocking",
-    "Subdivide matrices into blocks, more memory access but improves spatial locality",
-    ["CS4202", "Compiler"]
-  ],
-  ["Compiler prefetch", "Compiler inserts prefetch instructions", []],
-  ["Cycle time", "Time between starting memory accesses", []],
-  ["Compulsory misses", "First time a block is used (first reference)", []]
-];
-
 export default () => (
-  <Container>
-    <Sidebar>
-      <SidebarLabel big>oneflashcard</SidebarLabel>
-      <SidebarButton selected>Home</SidebarButton>
-      <SidebarButton>About</SidebarButton>
+  <Page>
+    <Topbar>oneflashcard</Topbar>
 
-      <SidebarLabel>Flashcards</SidebarLabel>
-      <SidebarButton>New</SidebarButton>
-      <SidebarButton>Manage</SidebarButton>
-      <SidebarButton>Learn</SidebarButton>
-      <SidebarButton>Review</SidebarButton>
-    </Sidebar>
-    <CardGrid>
-      {cards.map((c, i) => (
-        <Card key={i}>
-          <CardTitle>{c[0]}</CardTitle>
-          <CardBody>{c[1]}</CardBody>
-          {c[2].length > 0 && (
-            <CardTags>
-              {c[2].map((t, i) => (
-                <CardTag key={i}>{t}</CardTag>
-              ))}
-            </CardTags>
-          )}
-        </Card>
-      ))}
-    </CardGrid>
-  </Container>
+    <Container>
+      <Bar>
+        <BarLabel>Flashcards</BarLabel>
+        <BarLink selected>View all</BarLink>
+        <BarLink>Learn</BarLink>
+
+        <BarLabel>Account</BarLabel>
+        <BarLink>Manage</BarLink>
+        <BarLink>Logout</BarLink>
+      </Bar>
+
+      <Content>
+        {true &&
+          cards.map(c => (
+            <Card>
+              <CardTags>
+                <CardTag>CS4202</CardTag>
+                <CardTag>Compiler</CardTag>
+              </CardTags>
+              <CardTitle>{c[0]}</CardTitle>
+              <CardBody>{c[1]}</CardBody>
+            </Card>
+          ))}
+      </Content>
+
+      <DetailBar>detail</DetailBar>
+    </Container>
+  </Page>
 );
