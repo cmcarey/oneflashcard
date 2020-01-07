@@ -1,14 +1,15 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "knex": "^0.20.7",
     "koa": "^2.11.0",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "pg": "^7.17.0"
   },
   "scripts": {
-    "start": "ts-node-dev --clear src/index.ts",
+    "start": "ts-node-dev --clear src/entry.ts",
     "test": "jest",
     "test:watch": "jest --watchAll"
   },
@@ -17,6 +18,7 @@
     "@types/koa": "^2.11.0",
     "@types/koa-router": "^7.0.42",
     "@types/node": "^13.1.4",
+    "@types/supertest": "^2.0.8",
     "jest": "^24.9.0",
     "supertest": "^4.0.2",
     "ts-jest": "^24.3.0",
