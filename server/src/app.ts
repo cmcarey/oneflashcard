@@ -2,11 +2,12 @@ import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import { IModel } from "./db/model";
-import { handleRoute } from "./routes/router_utils";
-import { CreateUserRoute, LoginRoute } from "./routes/user";
+import { LoginRoute } from "./routes/session";
+import { CreateUserRoute } from "./routes/user";
+import { handleRoute } from "./routes/utils";
 
 export class App {
-  private app: Koa;
+  public app: Koa;
   private router: Router;
 
   constructor(private model: IModel) {
