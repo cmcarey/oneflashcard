@@ -2,16 +2,15 @@
 
 set -e
 
-function dbt {
-  docker-compose up --build -V db
-}
+PREARGS="-f integration_tests.docker-compose.yml"
+POSTARGS="--build -V --abort-on-container-exit"
 
-function core {
-  docker-compose up --build -V core
+function db_build {
+  docker-compose $PREARGS up $POSTARGS db
 }
 
 function test {
-  docker-compose up --build -V --abort-on-container-exit
+  docker-compose $PREARGS up $POSTARGS
 }
 
 $@
