@@ -2,7 +2,7 @@
 
 ![](images/logo.png)
 
-[Documentation](#documentation) | [Technical details](#server) | [Contributing](#contributing) | A project by [cmcarey](https://github.com/cmcarey) 🎉
+[Status](#status) | [Documentation](#documentation) | [Technical details](#server) | [Contributing](#contributing) | A project by [cmcarey](https://github.com/cmcarey) 🎉
 
 ![](https://img.shields.io/github/workflow/status/cmcarey/oneflashcard/CI?style=flat-square) ![](https://img.shields.io/github/languages/code-size/cmcarey/oneflashcard?style=flat-square) ![](https://img.shields.io/github/last-commit/cmcarey/oneflashcard?style=flat-square)
 
@@ -17,6 +17,16 @@
 Oneflashcard eschews this concept of a set in favor of a system of tags; apply as many tags as you like to a card, and then later filter, review, and learn all of the cards that have a specific tag.
 
 The application is currently in **pre-alpha** and is being developed as a personal project. I was irritated that no flashcard application had this feature, and so I am building one 🕺.
+
+# Status
+
+This project is still in early stage development. Some (quite important) missing features are:
+
+🔑 SAML / OAuth authentication support  
+🔥 Web client unit testing  
+🗺 API annotation using OpenAPI  
+💡 Basically the entire client  
+📝 Documentation
 
 # Server
 
@@ -52,7 +62,7 @@ This will build each element and run the integration tests.
 
 # Documentation
 
-WIP.
+In progress 👯.
 
 # Contributing
 
