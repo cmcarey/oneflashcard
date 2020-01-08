@@ -7,7 +7,7 @@ describe("User registration", () => {
   afterAll(async () => await client.end());
   afterEach(async () => await reset(client));
 
-  const url = "http://core:3000/user/creates";
+  const url = "http://core:3000/user/create";
 
   it("Good registration", async () => {
     const res = await jsonPost(url, {
