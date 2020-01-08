@@ -16,19 +16,14 @@ export class CreateSessionRoute implements RouteHandler {
   });
 
   public async handle(r: Router, m: IModel, c: any, vr: any) {
-    let userID: string;
-
     // Attempt login
-    try {
-      const user = await m.getUser(vr.email);
-      userID = user.userID;
+    const user = await m.getUser(vr.email);
+    if (!user) throw new HandledError("Bad login details");
+    const userID = user.userID;
 
-      // Validate password matches
-      const match = await bcrypt.compare(vr.password, user.hashedPassword);
-      if (!match) throw new Error();
-    } catch (e) {
-      throw new HandledError("Bad login details");
-    }
+    // Validate password matches
+    const match = await bcrypt.compare(vr.password, user.hashedPassword);
+    if (!match) throw new HandledError("Bad login details");
 
     // Create session and return session ID
     const sessionKey = await m.createSession(userID, vr.deviceName);

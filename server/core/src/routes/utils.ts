@@ -41,7 +41,9 @@ export const handleRoute = (
     // Get session
     try {
       // Store
-      ctx.userID = (await m.getSession(key)).userID;
+      const session = await m.getSession(key);
+      if (!session) throw new Error();
+      ctx.userID = session.userID;
     } catch (e) {
       // Indicate forced logout
       ctx.status = 400;
@@ -64,6 +66,7 @@ export const handleRoute = (
       ctx.status = 400;
       ctx.body = { error: e.message };
     } else {
+      console.error(e);
       // Else indicate internal error
       ctx.status = 500;
     }

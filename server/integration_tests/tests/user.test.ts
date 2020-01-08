@@ -1,13 +1,12 @@
-import fetch from "node-fetch";
-
-const jsonPost = (url: string, body: any) =>
-  fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  });
+import { Client } from "pg";
+import { connect, jsonPost, reset } from "./utils";
 
 describe("User registration", () => {
+  let client: Client;
+  beforeAll(async () => (client = await connect()));
+  afterAll(async () => await client.end());
+  afterEach(async () => await reset(client));
+
   const url = "http://core:3000/user/create";
 
   it("Good registration", async () => {

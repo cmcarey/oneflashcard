@@ -18,28 +18,36 @@ export class PGModel implements IModel {
     });
   }
 
-  getUser(email: string): Promise<{ userID: string; hashedPassword: string }> {
-    throw new Error("Method not implemented.");
+  async getUser(
+    email: string
+  ): Promise<void | { userID: string; hashedPassword: string }> {
+    const u = await this.pgConn("users")
+      // .where({ email })
+      .whereRaw(`LOWER(email) = ?`, [email.toLowerCase()])
+      .first();
+
+    if (!u) return;
+    return { userID: u.user_id, hashedPassword: u.hashed_password };
   }
 
-  createSession(
+  async createSession(
     userID: string,
     deviceName: string
   ): Promise<{ sessionKey: string }> {
     throw new Error("Method not implemented.");
   }
 
-  getSession(sessionKey: string): Promise<{ userID: string }> {
+  async getSession(sessionKey: string): Promise<void | { userID: string }> {
     throw new Error("Method not implemented.");
   }
 
-  getSessions(
+  async getSessions(
     userID: string
   ): Promise<{ sessionID: string; deviceName: string }[]> {
     throw new Error("Method not implemented.");
   }
 
-  deleteSession(sessionID: string): Promise<void> {
+  async deleteSession(sessionID: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
 }
