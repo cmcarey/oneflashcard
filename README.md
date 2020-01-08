@@ -1,8 +1,11 @@
-<h1 align="center">oneflashcard</h1>
+<div align="center">
+<img src="images/logo.png" align="center" />
 
-Repository hosting the **oneflashcard** sources.
+[Documentation](#documentation) | [details](#server) | [Contributing](#contributing)
 
-![](./images/demo.png)
+</div>
+
+![](images/demo.png)
 
 # Server
 
@@ -15,6 +18,8 @@ The server is packaged for deployment using **Docker**. The build process is mul
 The Postgres database similarly has a Dockerfile for initial deployment - all migrations are packaged as part of the image.
 
 ## Testing
+
+![](images/testing.png)
 
 Full **integration testing** is used for the server. The [server/integration_tests.docker-compose.yml](server/integration_tests.docker-compose.yml) file starts and prepares the postgres database, builds and starts the server, and then builds and starts integration tests program.
 
@@ -33,3 +38,11 @@ This will build each element and run the integration tests.
 ![](images/ci.png)
 
 **Github Actions** are used to run the CICD workflow. Currently, each change / PR triggers a full run of the integration tests. The integration tests are run in an identical manner to how they would be run locally.
+
+# Documentation
+
+WIP.
+
+# Contributing
+
+This is a personal project, made public for demonstrative reasons.
