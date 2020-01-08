@@ -12,24 +12,19 @@
     "pg": "^7.17.0"
   },
   "scripts": {
-    "start": "ts-node-dev --clear src/entry.ts",
-    "coverage": "jest --coverage",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "start:dev": "ts-node-dev --clear src/entry.ts",
+    "start": "node build/entry.js",
+    "build": "tsc --outDir build",
+    "clean": "rm -rf build"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
     "@types/hapi__joi": "^16.0.6",
-    "@types/jest": "^24.0.25",
     "@types/joi": "^14.3.4",
     "@types/koa": "^2.11.0",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-router": "^7.0.42",
     "@types/node": "^13.1.4",
-    "@types/supertest": "^2.0.8",
-    "jest": "^24.9.0",
-    "supertest": "^4.0.2",
-    "ts-jest": "^24.3.0",
     "ts-node": "^8.5.4",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.7.4"
