@@ -2,6 +2,8 @@
 
 set -e
 
+cd $(dirname $0)
+
 PREARGS="-f integration_tests.docker-compose.yml"
 POSTARGS="--build -V --abort-on-container-exit"
 
