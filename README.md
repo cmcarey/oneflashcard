@@ -2,7 +2,9 @@
 
 ![](images/logo.png)
 
-[Documentation](#documentation) | [Technical details](#server) | [Contributing](#contributing)
+[Documentation](#documentation) | [Technical details](#server) | [Contributing](#contributing) | A project by [cmcarey](https://github.com/cmcarey) 🎉
+
+![](https://img.shields.io/github/workflow/status/cmcarey/oneflashcard/CI?style=flat-square) ![](https://img.shields.io/github/languages/code-size/cmcarey/oneflashcard?style=flat-square) ![](https://img.shields.io/github/last-commit/cmcarey/oneflashcard?style=flat-square)
 
 </div>
 
@@ -14,7 +16,7 @@
 
 Oneflashcard eschews this concept of a set in favor of a system of tags; apply as many tags as you like to a card, and then later filter, review, and learn all of the cards that have a specific tag.
 
-The application is currently in **pre-alpha** and is being developed as a personal project. I was irritated that no flashcard application had this feature, and so I am building my own 🎉.
+The application is currently in **pre-alpha** and is being developed as a personal project. I was irritated that no flashcard application had this feature, and so I am building one 🕺.
 
 # Server
 
@@ -30,9 +32,9 @@ The Postgres database similarly has a Dockerfile for initial deployment - all mi
 
 ![](images/testing.png)
 
-Full **integration testing** is used for the server. The [server/integration_tests.docker-compose.yml](server/integration_tests.docker-compose.yml) file starts and prepares the postgres database, builds and starts the server, and then builds and starts integration tests program.
+Full **integration testing** is used for the server. The [server/integration_tests.docker-compose.yml](server/integration_tests.docker-compose.yml) file starts and prepares the postgres database, builds and starts the server, and then builds and starts the integration tests program.
 
-The tests are run using **Jest**. Each test truncates every table in the database to ensure no contamination.
+The tests are run using **Jest**. Each test truncates every table in the database to ensure no cross-test contamination.
 
 The tests can be run locally on a system that has `docker` and `docker-compose` installed via running:
 
@@ -46,7 +48,7 @@ This will build each element and run the integration tests.
 
 ![](images/ci.png)
 
-**Github Actions** are used to run the CICD workflow. Currently, each change / PR triggers a full run of the integration tests. The integration tests are run in an identical manner to how they would be run locally.
+**Github Actions** are used to run the CICD workflow. Currently, each change / PR triggers a full run of the integration tests. The integration tests are run in the same manner as they would be run locally
 
 # Documentation
 
