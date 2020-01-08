@@ -5,8 +5,8 @@ CREATE TABLE migrations (
 );
 
 INSERT INTO migrations
-  (migration_message)
-  VALUES ('initial setup');
+  (migration_id, migration_message)
+  VALUES (1, 'initial setup');
 
 
 CREATE TABLE users (

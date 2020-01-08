@@ -1,5 +1,6 @@
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
+import KoaLogger from "koa-logger";
 import Router from "koa-router";
 import { IModel } from "./db/model";
 import { CreateSessionRoute, GetSessionsRoute } from "./routes/session";
@@ -16,6 +17,8 @@ export class App {
     this.router = new Router();
     // Setup body parsing
     this.app.use(bodyParser());
+    // Add logger
+    this.app.use(KoaLogger());
     // Register routes
     this.registerRoutes();
     // Register router with koa

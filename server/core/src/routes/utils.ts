@@ -53,6 +53,7 @@ export const handleRoute = (
   try {
     // Default status 200
     ctx.status = 200;
+    ctx.body = "";
     // Perform request
     const res = await handler.handle(r, m, ctx, validatedValue);
     // Return result if any

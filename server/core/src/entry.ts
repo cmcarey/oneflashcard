@@ -1,6 +1,5 @@
 import { App } from "./app";
-import { PGModel } from "./db/model";
-import { createPGConnection } from "./db/pg";
+import { createPGConnection, PGModel } from "./db/pg";
 
 // Build model
 const model = new PGModel(createPGConnection());
