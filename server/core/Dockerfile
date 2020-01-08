@@ -16,4 +16,4 @@ COPY package.json yarn.lock ./
 RUN yarn install --production
 COPY --from=builder /app/build/ ./build/
 # Prepare to run
-CMD yarn start
+CMD ["yarn", "start"]
