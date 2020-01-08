@@ -13,7 +13,7 @@ FROM node:13
 WORKDIR /app/
 # Copy built source
 COPY package.json yarn.lock ./
-COPY --from=builder /app/build/ ./build/
 RUN yarn install --production
+COPY --from=builder /app/build/ ./build/
 # Prepare to run
 CMD yarn start
