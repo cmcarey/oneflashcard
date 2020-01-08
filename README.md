@@ -1,7 +1,7 @@
 <div align="center">
 <img src="images/logo.png" align="center" />
 
-[Documentation](#documentation) | [details](#server) | [Contributing](#contributing)
+[Documentation](#documentation) | [Technical details](#server) | [Contributing](#contributing)
 
 </div>
 
