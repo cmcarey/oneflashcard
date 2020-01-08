@@ -12,9 +12,8 @@ RUN yarn build
 FROM node:13
 WORKDIR /app/
 # Copy built source
+COPY package.json yarn.lock ./
 COPY --from=builder /app/build/ ./build/
-COPY --from=builder /app/package.json /app/yarn.lock ./
 RUN yarn install --production
-RUN node --version
 # Prepare to run
 CMD yarn start
