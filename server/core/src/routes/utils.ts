@@ -5,18 +5,23 @@ import { IModel } from "../db/model";
 export interface RouteHandler {
   schema?: Joi.ObjectSchema;
   requireAuth?: boolean;
-  handle(r: Router, m: IModel, c: any, vr: Joi.ValidationResult): Promise<void>;
+  handle(
+    router: Router,
+    model: IModel,
+    ctx: any,
+    validated: Joi.ValidationResult
+  ): Promise<void>;
 }
 
 export class HandledError extends Error {
-  constructor(s: string) {
-    super(s);
+  constructor(errString: string) {
+    super(errString);
   }
 }
 
 export const handleRoute = (
-  r: Router,
-  m: IModel,
+  router: Router,
+  model: IModel,
   handler: RouteHandler
 ) => async (ctx: any) => {
   // Validate request body
@@ -41,7 +46,7 @@ export const handleRoute = (
     // Get session
     try {
       // Store
-      const session = await m.getSession(key);
+      const session = await model.getSession(key);
       if (!session) throw new Error();
       ctx.userID = session.userID;
     } catch (e) {
@@ -57,7 +62,7 @@ export const handleRoute = (
     ctx.status = 200;
     ctx.body = "";
     // Perform request
-    const res = await handler.handle(r, m, ctx, validatedValue);
+    const res = await handler.handle(router, model, ctx, validatedValue);
     // Return result if any
     return res;
   } catch (e) {

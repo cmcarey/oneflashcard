@@ -11,7 +11,6 @@ export class PGModel implements IModel {
   constructor(private pgConn: knex) {}
 
   async createUser(email: string, hashedPassword: string): Promise<void> {
-    // Lowercase email key
     await this.pgConn("users").insert({
       email,
       hashed_password: hashedPassword
@@ -21,13 +20,12 @@ export class PGModel implements IModel {
   async getUser(
     email: string
   ): Promise<void | { userID: string; hashedPassword: string }> {
-    const u = await this.pgConn("users")
-      // .where({ email })
+    const user = await this.pgConn("users")
       .whereRaw(`LOWER(email) = ?`, [email.toLowerCase()])
       .first();
 
-    if (!u) return;
-    return { userID: u.user_id, hashedPassword: u.hashed_password };
+    if (!user) return;
+    return { userID: user.user_id, hashedPassword: user.hashed_password };
   }
 
   async createSession(
@@ -43,22 +41,22 @@ export class PGModel implements IModel {
   }
 
   async getSession(sessionKey: string): Promise<void | { userID: string }> {
-    const s = await this.pgConn("sessions")
+    const session = await this.pgConn("sessions")
       .where({ session_key: sessionKey })
       .first();
 
-    if (!s) return;
-    return { userID: s.user_id };
+    if (!session) return;
+    return { userID: session.user_id };
   }
 
   async getSessions(
     userID: string
   ): Promise<{ sessionID: string; deviceName: string }[]> {
-    const ss = await this.pgConn("sessions")
+    const sessions = await this.pgConn("sessions")
       .where({ user_id: userID })
       .select();
 
-    return ss.map(s => ({
+    return sessions.map(s => ({
       sessionID: s.session_id,
       deviceName: s.device_name
     }));

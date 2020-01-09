@@ -14,13 +14,13 @@ export class CreateUserRoute implements RouteHandler {
       .required()
   });
 
-  public async handle(r: Router, m: IModel, c: any, vr: any) {
+  public async handle(router: Router, model: IModel, ctx: any, validated: any) {
     // Check if user already registered
-    const user = await m.getUser(vr.email);
+    const user = await model.getUser(validated.email);
     if (user) throw new HandledError("Email address is in use");
     // Hash password
-    const hashedPassword = await bcrypt.hash(vr.password, 10);
+    const hashedPassword = await bcrypt.hash(validated.password, 10);
     // Create user
-    await m.createUser(vr.email, hashedPassword);
+    await model.createUser(validated.email, hashedPassword);
   }
 }

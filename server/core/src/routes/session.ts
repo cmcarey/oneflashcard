@@ -16,30 +16,30 @@ export class CreateSessionRoute implements RouteHandler {
     deviceName: Joi.string().required()
   });
 
-  public async handle(r: Router, m: IModel, c: any, vr: any) {
+  public async handle(router: Router, model: IModel, ctx: any, validated: any) {
     // Attempt login
-    const user = await m.getUser(vr.email);
+    const user = await model.getUser(validated.email);
     if (!user) throw new HandledError("Bad login details");
     const userID = user.userID;
 
     // Validate password matches
-    const match = await bcrypt.compare(vr.password, user.hashedPassword);
+    const match = await bcrypt.compare(validated.password, user.hashedPassword);
     if (!match) throw new HandledError("Bad login details");
 
     // Create session and return session key
     const sessionKey = crypto.randomBytes(40).toString("hex");
-    await m.createSession(userID, sessionKey, vr.deviceName);
-    c.body = { sessionKey };
+    await model.createSession(userID, sessionKey, validated.deviceName);
+    ctx.body = { sessionKey };
   }
 }
 
 export class GetSessionsRoute implements RouteHandler {
   public requireAuth = true;
 
-  public async handle(r: Router, m: IModel, c: any, vr: any) {
+  public async handle(router: Router, model: IModel, ctx: any, validated: any) {
     // Get and return all user sessions
-    const sessions = await m.getSessions(c.userID);
-    c.body = { sessions };
+    const sessions = await model.getSessions(ctx.userID);
+    ctx.body = { sessions };
   }
 }
 
@@ -50,14 +50,14 @@ export class DeleteSessionsRoute implements RouteHandler {
     sessionID: Joi.number().required()
   });
 
-  public async handle(r: Router, m: IModel, c: any, vr: any) {
+  public async handle(router: Router, model: IModel, ctx: any, validated: any) {
     // Get user sessions
-    const sessions = await m.getSessions(c.userID);
+    const sessions = await model.getSessions(ctx.userID);
     // Check session ID belongs to this user
     let belongs = false;
 
-    for (const s of sessions) {
-      if (s.sessionID === vr.sessionID) {
+    for (const session of sessions) {
+      if (session.sessionID === validated.sessionID) {
         belongs = true;
         break;
       }
@@ -65,6 +65,6 @@ export class DeleteSessionsRoute implements RouteHandler {
 
     if (!belongs) throw new HandledError("Unable to delete session");
     // Delete session
-    await m.deleteSession(vr.sessionID);
+    await model.deleteSession(validated.sessionID);
   }
 }
