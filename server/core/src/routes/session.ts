@@ -40,7 +40,12 @@ export class GetSessionsRoute extends RouteHandler {
     await this.requireAuth();
 
     // Get and return all user sessions
-    const sessions = await this.model.getSessions(this.ctx.userID);
+    const sessions = (
+      await this.model.getSessionsByUserID(this.ctx.userID)
+    ).map(session => ({
+      deviceName: session.deviceName,
+      sessionID: session.sessionID
+    }));
     this.ctx.body = { sessions };
   }
 }
@@ -57,7 +62,7 @@ export class DeleteSessionsRoute extends RouteHandler {
     await this.requireAuth();
 
     // Get user sessions
-    const sessions = await this.model.getSessions(this.ctx.userID);
+    const sessions = await this.model.getSessionsByUserID(this.ctx.userID);
     // Check session ID belongs to this user
     let belongs = false;
 

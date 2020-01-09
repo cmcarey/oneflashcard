@@ -19,8 +19,7 @@ describe("Get sessions", () => {
 
     const sessions = (await res.json()).sessions;
     expect(sessions.length).toBe(1);
-    expect(sessions[0].sessionID).toBe(1);
-    expect(sessions[0].deviceName).toBe("some device");
+    expect(sessions[0]).toEqual({ sessionID: 1, deviceName: "some device" });
   });
 
   it("Bad auth token", async () => {

@@ -23,7 +23,7 @@ export const connect = async () => {
   return client;
 };
 
-const tables = ["users", "sessions"];
+const tables = ["users", "user_sessions", "cards", "card_tags"];
 export const reset = async (c: Client) =>
   await c.query(`TRUNCATE TABLE ${tables.join(", ")} RESTART IDENTITY CASCADE`);
 

@@ -16,7 +16,7 @@ export abstract class RouteHandler {
     // Get session key from header
     const key = this.ctx.request.get("Authorization");
     // Get session
-    const session = await this.model.getSession(key);
+    const session = await this.model.getSessionByKey(key);
     if (!session) throw new HandledError("Invalid session key");
     // Set userID in context
     this.ctx.userID = session.userID;
