@@ -1,63 +1,68 @@
 import Joi from "@hapi/joi";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import Router from "koa-router";
-import { IModel } from "../db/model";
 import { HandledError, RouteHandler } from "./utils";
 
-export class CreateSessionRoute implements RouteHandler {
-  public schema = Joi.object({
-    email: Joi.string()
-      .email()
-      .required(),
-    password: Joi.string()
-      .min(8)
-      .required(),
-    deviceName: Joi.string().required()
-  });
+export class CreateSessionRoute extends RouteHandler {
+  protected async handle() {
+    // Schema validation
+    this.validate(
+      Joi.object({
+        email: Joi.string()
+          .email()
+          .required(),
+        password: Joi.string()
+          .min(8)
+          .required(),
+        deviceName: Joi.string().required()
+      })
+    );
 
-  public async handle(router: Router, model: IModel, ctx: any, validated: any) {
     // Attempt login
-    const user = await model.getUser(validated.email);
+    const user = await this.model.getUser(this.body.email);
     if (!user) throw new HandledError("Bad login details");
     const userID = user.userID;
 
     // Validate password matches
-    const match = await bcrypt.compare(validated.password, user.hashedPassword);
+    const match = await bcrypt.compare(this.body.password, user.hashedPassword);
     if (!match) throw new HandledError("Bad login details");
 
     // Create session and return session key
     const sessionKey = crypto.randomBytes(40).toString("hex");
-    await model.createSession(userID, sessionKey, validated.deviceName);
-    ctx.body = { sessionKey };
+    await this.model.createSession(userID, sessionKey, this.body.deviceName);
+    this.ctx.body = { sessionKey };
   }
 }
 
-export class GetSessionsRoute implements RouteHandler {
-  public requireAuth = true;
+export class GetSessionsRoute extends RouteHandler {
+  protected async handle() {
+    // Require authentication
+    await this.requireAuth();
 
-  public async handle(router: Router, model: IModel, ctx: any, validated: any) {
     // Get and return all user sessions
-    const sessions = await model.getSessions(ctx.userID);
-    ctx.body = { sessions };
+    const sessions = await this.model.getSessions(this.ctx.userID);
+    this.ctx.body = { sessions };
   }
 }
 
-export class DeleteSessionsRoute implements RouteHandler {
-  public requireAuth = true;
+export class DeleteSessionsRoute extends RouteHandler {
+  protected async handle() {
+    // Schema validation
+    this.validate(
+      Joi.object({
+        sessionID: Joi.number().required()
+      })
+    );
+    // Require authentication
+    await this.requireAuth();
 
-  public schema = Joi.object({
-    sessionID: Joi.number().required()
-  });
-
-  public async handle(router: Router, model: IModel, ctx: any, validated: any) {
     // Get user sessions
-    const sessions = await model.getSessions(ctx.userID);
+    const sessions = await this.model.getSessions(this.ctx.userID);
     // Check session ID belongs to this user
     let belongs = false;
 
     for (const session of sessions) {
-      if (session.sessionID === validated.sessionID) {
+      if (session.sessionID === this.body.sessionID) {
         belongs = true;
         break;
       }
@@ -65,6 +70,6 @@ export class DeleteSessionsRoute implements RouteHandler {
 
     if (!belongs) throw new HandledError("Unable to delete session");
     // Delete session
-    await model.deleteSession(validated.sessionID);
+    await this.model.deleteSession(this.body.sessionID);
   }
 }

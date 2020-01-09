@@ -9,7 +9,6 @@ import {
   GetSessionsRoute
 } from "./routes/session";
 import { CreateUserRoute } from "./routes/user";
-import { handleRoute, RouteHandler } from "./routes/utils";
 
 export class App {
   public app: Koa;
@@ -35,16 +34,26 @@ export class App {
   }
 
   private registerRoutes() {
-    const build = (
-      routeHandler: RouteHandler
-    ): ((ctx: any) => Promise<void>) => {
-      return handleRoute(this.router, this.model, routeHandler);
-    };
+    this.router.post(
+      "/user/create",
+      async (ctx: any) =>
+        await new CreateUserRoute(this.router, this.model).run(ctx)
+    );
+    this.router.post(
+      "/user/login",
+      async (ctx: any) =>
+        await new CreateSessionRoute(this.router, this.model).run(ctx)
+    );
 
-    this.router.post("/user/create", build(new CreateUserRoute()));
-    this.router.post("/user/login", build(new CreateSessionRoute()));
-
-    this.router.get("/sessions", build(new GetSessionsRoute()));
-    this.router.post("/sessions/delete", build(new DeleteSessionsRoute()));
+    this.router.get(
+      "/sessions",
+      async (ctx: any) =>
+        await new GetSessionsRoute(this.router, this.model).run(ctx)
+    );
+    this.router.post(
+      "/sessions/delete",
+      async (ctx: any) =>
+        await new DeleteSessionsRoute(this.router, this.model).run(ctx)
+    );
   }
 }
