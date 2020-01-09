@@ -42,7 +42,7 @@ GET /session
 +AUTH
 REQ {email, password, deviceName}
 RES
-- 200 {sessionID, deviceName}[]
+- 200 {sessions: [{sessionID, deviceName}]}
 ```
 
 ```
@@ -68,5 +68,23 @@ RES
 GET /card
 +AUTH
 RES
-- 200 {cardID, cardTitle, cardBody}[]
+- 200 {cards: [{cardID, cardTitle, cardBody}]}
+```
+
+# Card tag routes
+
+```
+POST /cardtag
++ AUTH
+REQ {cardID, tagName}
+RES
+- 200 {cardTagID, cardID, tagName}
+- 400 {error: "No such card"}
+```
+
+```
+/GET /cardtag
++ AUTH
+RES
+- 200 {cardTags: [{cardTagID, cardID, tagName}]}
 ```

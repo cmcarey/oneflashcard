@@ -31,17 +31,19 @@ export class CreateCardRoute extends RouteHandler {
 
 export class GetCardsRoute extends RouteHandler {
   public async handle() {
-    // Require authentication
+    // Require auth
     await this.requireAuth();
 
     // Get cards
     const cards = await this.model.getCardsByUserID(this.ctx.userID);
 
-    // Return cards
-    this.ctx.body = cards.map(card => ({
+    const sanitizedCards = cards.map(card => ({
       cardID: card.cardID,
       cardTitle: card.cardTitle,
       cardBody: card.cardBody
     }));
+
+    // Return cards
+    this.ctx.body = { cards: sanitizedCards };
   }
 }

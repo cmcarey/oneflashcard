@@ -28,18 +28,25 @@ export const reset = async (c: Client) =>
   await c.query(`TRUNCATE TABLE ${tables.join(", ")} RESTART IDENTITY CASCADE`);
 
 // Registers account
-export const register = async () =>
+export const register = async (
+  email = "chance@carey.sh",
+  password = "somegoodpass"
+) =>
   await jsonPost("http://core:3000/user/create", {
-    email: "chance@carey.sh",
-    password: "somegoodpass"
+    email,
+    password
   });
 
 // Login, return session key
-export const login = async () => {
+export const login = async (
+  email = "chance@carey.sh",
+  password = "somegoodpass",
+  deviceName = "some device"
+) => {
   const r = await jsonPost("http://core:3000/session/login", {
-    email: "chance@carey.sh",
-    password: "somegoodpass",
-    deviceName: "some device"
+    email,
+    password,
+    deviceName
   });
   return (await r.json()).sessionKey;
 };
@@ -55,6 +62,21 @@ export const insertCard = async (
     {
       cardTitle,
       cardBody
+    },
+    key
+  );
+
+// Insert card tag
+export const insertCardTag = async (
+  key: string,
+  cardID: string,
+  tagName: string
+) =>
+  await jsonPost(
+    "http://core:3000/cardtag",
+    {
+      cardID,
+      tagName
     },
     key
   );

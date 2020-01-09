@@ -105,11 +105,31 @@ export class PGModel implements IModel {
     }));
   }
 
-  async createCardTag(cardID: string, name: string): Promise<CardTag> {
-    throw new Error("Method not implemented.");
+  async createCardTag(cardID: string, tagName: string): Promise<CardTag> {
+    const cardTag = await this.pgConn("card_tags")
+      .insert({
+        card_id: cardID,
+        tag_name: tagName
+      })
+      .returning(["card_tag_id", "card_id", "tag_name"]);
+
+    return {
+      cardTagID: cardTag[0].card_tag_id,
+      cardID: cardTag[0].card_id,
+      tagName: cardTag[0].tag_name
+    };
   }
 
-  async getCardTagsByUserID(cardID: string): Promise<CardTag> {
-    throw new Error("Method not implemented.");
+  async getCardTagsByUserID(userID: string): Promise<CardTag[]> {
+    const cardTags = await this.pgConn("card_tags")
+      .join("cards", "cards.card_id", "=", "card_tags.card_id")
+      .where({ "cards.user_id": userID })
+      .select();
+
+    return cardTags.map(cardTag => ({
+      cardTagID: cardTag.card_tag_id,
+      cardID: cardTag.card_id,
+      tagName: cardTag.tag_name
+    }));
   }
 }

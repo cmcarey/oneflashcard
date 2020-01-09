@@ -36,7 +36,7 @@ export class CreateSessionRoute extends RouteHandler {
 
 export class GetSessionsRoute extends RouteHandler {
   protected async handle() {
-    // Require authentication
+    // Require auth
     await this.requireAuth();
 
     // Get and return all user sessions
@@ -58,7 +58,7 @@ export class DeleteSessionsRoute extends RouteHandler {
         sessionID: Joi.number().required()
       })
     );
-    // Require authentication
+    // Require auth
     await this.requireAuth();
 
     // Get user sessions

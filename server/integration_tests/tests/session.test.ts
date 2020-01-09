@@ -9,7 +9,7 @@ describe("Session login", () => {
 
   const url = "http://core:3000/session/login";
 
-  it("Good login", async () => {
+  test("Good login", async () => {
     await register();
 
     const res = await jsonPost(url, {
@@ -22,7 +22,7 @@ describe("Session login", () => {
     expect(Object.keys(await res.json())).toEqual(["sessionKey"]);
   });
 
-  it("Bad email", async () => {
+  test("Bad email", async () => {
     const res = await jsonPost(url, {
       email: "chance@carey.sh",
       password: "somegoodpass",
@@ -30,10 +30,10 @@ describe("Session login", () => {
     });
 
     expect(res.status).toBe(400);
-    expect((await res.json()).error).toBe("Bad login details");
+    expect(await res.json()).toEqual({ error: "Bad login details" });
   });
 
-  it("Bad password", async () => {
+  test("Bad password", async () => {
     await register();
 
     const res = await jsonPost(url, {
@@ -43,7 +43,7 @@ describe("Session login", () => {
     });
 
     expect(res.status).toBe(400);
-    expect((await res.json()).error).toBe("Bad login details");
+    expect(await res.json()).toEqual({ error: "Bad login details" });
   });
 });
 
@@ -55,27 +55,42 @@ describe("Get sessions", () => {
 
   const url = "http://core:3000/session";
 
-  it("Good fetch", async () => {
+  test("Good fetch", async () => {
     await register();
     const key = await login();
 
     const res = await get(url, key);
 
     expect(res.status).toBe(200);
-
-    const sessions = (await res.json()).sessions;
-    expect(sessions.length).toBe(1);
-    expect(sessions[0]).toEqual({ sessionID: 1, deviceName: "some device" });
+    expect(await res.json()).toEqual({
+      sessions: [{ sessionID: 1, deviceName: "some device" }]
+    });
   });
 
-  it("Bad auth token", async () => {
+  test("Bad auth token", async () => {
     await register();
     await login();
 
     const res = await get(url, "~");
 
     expect(res.status).toBe(400);
-    expect((await res.json()).error).toBe("Invalid session key");
+    expect(await res.json()).toEqual({ error: "Invalid session key" });
+  });
+
+  test("No crossover", async () => {
+    // First user
+    await register();
+    const key = await login();
+    // Second user
+    await register("chance2@carey.sh");
+    await login("chance2@carey.sh");
+
+    const res = await get(url, key);
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({
+      sessions: [{ sessionID: 1, deviceName: "some device" }]
+    });
   });
 });
 
@@ -87,7 +102,7 @@ describe("Delete session", () => {
 
   const url = "http://core:3000/session/delete";
 
-  it("Delete session", async () => {
+  test("Delete session", async () => {
     await register();
     const key = await login();
 
@@ -97,17 +112,17 @@ describe("Delete session", () => {
     expect(await res.text()).toBe("");
   });
 
-  it("Can't delete nonexistent session", async () => {
+  test("Can't delete nonexistent session", async () => {
     await register();
     const key = await login();
 
     const res = await jsonPost(url, { sessionID: 2 }, key);
 
     expect(res.status).toBe(400);
-    expect((await res.json()).error).toBe("Unable to delete session");
+    expect(await res.json()).toEqual({ error: "Unable to delete session" });
   });
 
-  it("Actually deletes", async () => {
+  test("Actually deletes", async () => {
     await register();
     const key = await login();
 
@@ -119,6 +134,6 @@ describe("Delete session", () => {
     res = await jsonPost(url, { sessionID: 1 }, key);
 
     expect(res.status).toBe(400);
-    expect((await res.json()).error).toBe("Invalid session key");
+    expect(await res.json()).toEqual({ error: "Invalid session key" });
   });
 });

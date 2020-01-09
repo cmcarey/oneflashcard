@@ -1,7 +1,15 @@
 import { Client } from "pg";
-import { connect, get, insertCard, login, register, reset } from "./utils";
+import {
+  connect,
+  get,
+  insertCard,
+  insertCardTag,
+  login,
+  register,
+  reset
+} from "./utils";
 
-describe("Create card", () => {
+describe("Create card tag", () => {
   let client: Client;
   beforeAll(async () => (client = await connect()));
   afterAll(async () => await client.end());
@@ -12,28 +20,39 @@ describe("Create card", () => {
 
     const key = await login();
 
-    const res = await insertCard(
-      key,
-      "Some flash card",
-      "Some flash card body"
-    );
+    await insertCard(key, "Some flash card", "Some flash card body");
+
+    const res = await insertCardTag(key, "1", "Some tag");
 
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({
       cardID: 1,
-      cardTitle: "Some flash card",
-      cardBody: "Some flash card body"
+      cardTagID: 1,
+      tagName: "Some tag"
+    });
+  });
+
+  test("No such card", async () => {
+    await register();
+
+    const key = await login();
+
+    const res = await insertCardTag(key, "1", "Some tag");
+
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({
+      error: "No such card"
     });
   });
 });
 
-describe("Get cards", () => {
+describe("Get card tags", () => {
   let client: Client;
   beforeAll(async () => (client = await connect()));
   afterAll(async () => await client.end());
   afterEach(async () => await reset(client));
 
-  const url = "http://core:3000/card";
+  const url = "http://core:3000/cardtag";
 
   test("Good fetch", async () => {
     await register();
@@ -41,22 +60,23 @@ describe("Get cards", () => {
     const key = await login();
 
     await insertCard(key, "Some flash card", "Some flash card body");
-    await insertCard(key, "Some flash card2", "Some flash card body2");
+    await insertCardTag(key, "1", "Some tag");
+    await insertCardTag(key, "1", "Some tag2");
 
     const res = await get(url, key);
 
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({
-      cards: [
+      cardTags: [
         {
+          cardTagID: 1,
           cardID: 1,
-          cardTitle: "Some flash card",
-          cardBody: "Some flash card body"
+          tagName: "Some tag"
         },
         {
-          cardID: 2,
-          cardTitle: "Some flash card2",
-          cardBody: "Some flash card body2"
+          cardTagID: 2,
+          cardID: 1,
+          tagName: "Some tag2"
         }
       ]
     });
@@ -65,19 +85,21 @@ describe("Get cards", () => {
   test("No crossover", async () => {
     await register();
     const key = await login();
+
     await register("chance2@carey.sh");
     const key2 = await login("chance2@carey.sh");
 
     await insertCard(key, "Some flash card", "Some flash card body");
+    await insertCardTag(key, "1", "Some tag");
 
     let res = await get(url, key);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({
-      cards: [
+      cardTags: [
         {
+          cardTagID: 1,
           cardID: 1,
-          cardTitle: "Some flash card",
-          cardBody: "Some flash card body"
+          tagName: "Some tag"
         }
       ]
     });
@@ -85,7 +107,7 @@ describe("Get cards", () => {
     res = await get(url, key2);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({
-      cards: []
+      cardTags: []
     });
   });
 });
