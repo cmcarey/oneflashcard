@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  db:
+    build: ./db/
+
+  core:
+    build:
+      context: ./core/
+      dockerfile: watcher.Dockerfile
+    volumes:
+      - "./core/:/app/"
+
+  integration_tests:
+    build:
+      context: ./integration_tests/
+      dockerfile: watcher.Dockerfile
+    volumes:
+      - "./integration_tests/:/app/"
