@@ -1,7 +1,6 @@
 import Joi from "@hapi/joi";
 import bcrypt from "bcrypt";
 import { HandledError, RouteHandler } from "./utils";
-import Router = require("koa-router");
 
 export class CreateUserRoute extends RouteHandler {
   public async handle() {

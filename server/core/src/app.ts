@@ -3,6 +3,7 @@ import bodyParser from "koa-bodyparser";
 import KoaLogger from "koa-logger";
 import Router from "koa-router";
 import { IModel } from "./db/model";
+import { CreateCardRoute, GetCardsRoute } from "./routes/card";
 import {
   CreateSessionRoute,
   DeleteSessionsRoute,
@@ -41,14 +42,23 @@ export class App {
 
     type Route = ["post" | "get", string, RouteHandler];
     const routes: Route[] = [
+      // USER ROUTES
       ["post", "/user/create", new CreateUserRoute(this.router, this.model)],
-      ["post", "/user/login", new CreateSessionRoute(this.router, this.model)],
-      ["get", "/sessions", new GetSessionsRoute(this.router, this.model)],
+      // SESSION ROUTES
       [
         "post",
-        "/sessions/delete",
+        "/session/login",
+        new CreateSessionRoute(this.router, this.model)
+      ],
+      ["get", "/session", new GetSessionsRoute(this.router, this.model)],
+      [
+        "post",
+        "/session/delete",
         new DeleteSessionsRoute(this.router, this.model)
-      ]
+      ],
+      // CARD ROUTES
+      ["post", "/card", new CreateCardRoute(this.router, this.model)],
+      ["get", "/card", new GetCardsRoute(this.router, this.model)]
     ];
 
     routes.forEach(r => this.router[r[0]](r[1], build(r[2])));

@@ -75,19 +75,41 @@ export class PGModel implements IModel {
       .delete();
   }
 
-  createCard(userID: string, title: string, body: string): Promise<Card> {
+  async createCard(userID: string, title: string, body: string): Promise<Card> {
+    const card = await this.pgConn("cards")
+      .insert({
+        user_id: userID,
+        card_title: title,
+        card_body: body
+      })
+      .returning(["card_id", "user_id", "card_title", "card_body"]);
+
+    return {
+      cardID: card[0].card_id,
+      userID: card[0].user_id,
+      cardTitle: card[0].card_title,
+      cardBody: card[0].card_body
+    };
+  }
+
+  async getCardsByUserID(userID: string): Promise<Card[]> {
+    const cards = await this.pgConn("cards")
+      .where({ user_id: userID })
+      .select();
+
+    return cards.map(card => ({
+      cardID: card.card_id,
+      userID: card.user_id,
+      cardTitle: card.card_title,
+      cardBody: card.card_body
+    }));
+  }
+
+  async createCardTag(cardID: string, name: string): Promise<CardTag> {
     throw new Error("Method not implemented.");
   }
 
-  getCardsByUserID(userID: string): Promise<Card[]> {
-    throw new Error("Method not implemented.");
-  }
-
-  createCardTag(cardID: string, name: string): Promise<CardTag> {
-    throw new Error("Method not implemented.");
-  }
-
-  getCardTagsByUserID(cardID: string): Promise<CardTag> {
+  async getCardTagsByUserID(cardID: string): Promise<CardTag> {
     throw new Error("Method not implemented.");
   }
 }

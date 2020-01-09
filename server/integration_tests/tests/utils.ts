@@ -36,10 +36,25 @@ export const register = async () =>
 
 // Login, return session key
 export const login = async () => {
-  const r = await jsonPost("http://core:3000/user/login", {
+  const r = await jsonPost("http://core:3000/session/login", {
     email: "chance@carey.sh",
     password: "somegoodpass",
     deviceName: "some device"
   });
   return (await r.json()).sessionKey;
 };
+
+// Insert card
+export const insertCard = async (
+  key: string,
+  cardTitle: string,
+  cardBody: string
+) =>
+  await jsonPost(
+    "http://core:3000/card",
+    {
+      cardTitle,
+      cardBody
+    },
+    key
+  );

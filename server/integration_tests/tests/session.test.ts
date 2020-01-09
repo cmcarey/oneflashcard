@@ -1,13 +1,59 @@
 import { Client } from "pg";
 import { connect, get, jsonPost, login, register, reset } from "./utils";
 
+describe("Session login", () => {
+  let client: Client;
+  beforeAll(async () => (client = await connect()));
+  afterAll(async () => await client.end());
+  afterEach(async () => await reset(client));
+
+  const url = "http://core:3000/session/login";
+
+  it("Good login", async () => {
+    await register();
+
+    const res = await jsonPost(url, {
+      email: "chance@carey.sh",
+      password: "somegoodpass",
+      deviceName: "some device"
+    });
+
+    expect(res.status).toBe(200);
+    expect(Object.keys(await res.json())).toEqual(["sessionKey"]);
+  });
+
+  it("Bad email", async () => {
+    const res = await jsonPost(url, {
+      email: "chance@carey.sh",
+      password: "somegoodpass",
+      deviceName: "some device"
+    });
+
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe("Bad login details");
+  });
+
+  it("Bad password", async () => {
+    await register();
+
+    const res = await jsonPost(url, {
+      email: "chance@carey.sh",
+      password: "badpassword",
+      deviceName: "some device"
+    });
+
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe("Bad login details");
+  });
+});
+
 describe("Get sessions", () => {
   let client: Client;
   beforeAll(async () => (client = await connect()));
   afterAll(async () => await client.end());
   afterEach(async () => await reset(client));
 
-  const url = "http://core:3000/sessions";
+  const url = "http://core:3000/session";
 
   it("Good fetch", async () => {
     await register();
@@ -39,7 +85,7 @@ describe("Delete session", () => {
   afterAll(async () => await client.end());
   afterEach(async () => await reset(client));
 
-  const url = "http://core:3000/sessions/delete";
+  const url = "http://core:3000/session/delete";
 
   it("Delete session", async () => {
     await register();

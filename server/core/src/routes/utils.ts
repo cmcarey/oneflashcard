@@ -1,4 +1,4 @@
-import Router = require("koa-router");
+import Router from "koa-router";
 import { IModel } from "../db/model";
 
 export class HandledError extends Error {
