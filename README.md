@@ -54,6 +54,18 @@ $ ./server/utils.bash test
 
 This will build each element and run the integration tests.
 
+Alternatively, the integration tests can be run in watch mode where the server automatically reloads and the tests automatically re-run when changes are made. This requires **tmux** be installed, and can be run via:
+
+```
+$ ./server/utils.bash watch
+```
+
+Running tests in this way will split the terminal into three panes (hence the tmux requirement), showing the database log, core server log, and test log -
+
+![](images/integration_test_watcher.png)
+
+The test log is interactive and the tests can be run at any time by pressing `enter`. The tests also automatically re-run when any test files are changed. Quitting the test process (via either typing `q` or `ctrl-c`) will close both the DB and core processes as well.
+
 ## Deployment
 
 ![](images/ci.png)
