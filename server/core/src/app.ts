@@ -9,6 +9,7 @@ import {
   GetSessionsRoute
 } from "./routes/session";
 import { CreateUserRoute } from "./routes/user";
+import { RouteHandler } from "./routes/utils";
 
 export class App {
   public app: Koa;
@@ -34,26 +35,22 @@ export class App {
   }
 
   private registerRoutes() {
-    this.router.post(
-      "/user/create",
-      async (ctx: any) =>
-        await new CreateUserRoute(this.router, this.model).run(ctx)
-    );
-    this.router.post(
-      "/user/login",
-      async (ctx: any) =>
-        await new CreateSessionRoute(this.router, this.model).run(ctx)
-    );
+    const build = (routeHandler: RouteHandler) => async (ctx: any) => {
+      await routeHandler.run(ctx);
+    };
 
-    this.router.get(
-      "/sessions",
-      async (ctx: any) =>
-        await new GetSessionsRoute(this.router, this.model).run(ctx)
-    );
-    this.router.post(
-      "/sessions/delete",
-      async (ctx: any) =>
-        await new DeleteSessionsRoute(this.router, this.model).run(ctx)
-    );
+    type Route = ["post" | "get", string, RouteHandler];
+    const routes: Route[] = [
+      ["post", "/user/create", new CreateUserRoute(this.router, this.model)],
+      ["post", "/user/login", new CreateSessionRoute(this.router, this.model)],
+      ["get", "/sessions", new GetSessionsRoute(this.router, this.model)],
+      [
+        "post",
+        "/sessions/delete",
+        new DeleteSessionsRoute(this.router, this.model)
+      ]
+    ];
+
+    routes.forEach(r => this.router[r[0]](r[1], build(r[2])));
   }
 }
