@@ -3,7 +3,11 @@ import bodyParser from "koa-bodyparser";
 import KoaLogger from "koa-logger";
 import Router from "koa-router";
 import { IModel } from "./db/model";
-import { CreateSessionRoute, GetSessionsRoute } from "./routes/session";
+import {
+  CreateSessionRoute,
+  DeleteSessionsRoute,
+  GetSessionsRoute
+} from "./routes/session";
 import { CreateUserRoute } from "./routes/user";
 import { handleRoute } from "./routes/utils";
 
@@ -37,6 +41,8 @@ export class App {
 
     r.post("/user/create", h(r, m, new CreateUserRoute()));
     r.post("/user/login", h(r, m, new CreateSessionRoute()));
+
     r.get("/sessions", h(r, m, new GetSessionsRoute()));
+    r.post("/sessions/delete", h(r, m, new DeleteSessionsRoute()));
   }
 }

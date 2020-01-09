@@ -42,3 +42,29 @@ export class GetSessionsRoute implements RouteHandler {
     c.body = { sessions };
   }
 }
+
+export class DeleteSessionsRoute implements RouteHandler {
+  public requireAuth = true;
+
+  public schema = Joi.object({
+    sessionID: Joi.number().required()
+  });
+
+  public async handle(r: Router, m: IModel, c: any, vr: any) {
+    // Get user sessions
+    const sessions = await m.getSessions(c.userID);
+    // Check session ID belongs to this user
+    let belongs = false;
+
+    for (const s of sessions) {
+      if (s.sessionID === vr.sessionID) {
+        belongs = true;
+        break;
+      }
+    }
+
+    if (!belongs) throw new HandledError("Unable to delete session");
+    // Delete session
+    await m.deleteSession(vr.sessionID);
+  }
+}

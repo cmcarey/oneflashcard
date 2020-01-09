@@ -65,6 +65,8 @@ export class PGModel implements IModel {
   }
 
   async deleteSession(sessionID: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    await this.pgConn("sessions")
+      .where({ session_id: sessionID })
+      .delete();
   }
 }
