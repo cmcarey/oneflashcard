@@ -44,6 +44,7 @@ export class App {
     const routes: Route[] = [
       // USER ROUTES
       ["post", "/user/create", new CreateUserRoute(this.router, this.model)],
+
       // SESSION ROUTES
       [
         "post",
@@ -56,6 +57,7 @@ export class App {
         "/session/delete",
         new DeleteSessionsRoute(this.router, this.model)
       ],
+
       // CARD ROUTES
       ["post", "/card", new CreateCardRoute(this.router, this.model)],
       ["get", "/card", new GetCardsRoute(this.router, this.model)]
