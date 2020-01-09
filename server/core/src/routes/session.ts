@@ -1,8 +1,9 @@
 import Joi from "@hapi/joi";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
+import Router from "koa-router";
 import { IModel } from "../db/model";
 import { HandledError, RouteHandler } from "./utils";
-import Router = require("koa-router");
 
 export class CreateSessionRoute implements RouteHandler {
   public schema = Joi.object({
@@ -25,8 +26,9 @@ export class CreateSessionRoute implements RouteHandler {
     const match = await bcrypt.compare(vr.password, user.hashedPassword);
     if (!match) throw new HandledError("Bad login details");
 
-    // Create session and return session ID
-    const sessionKey = await m.createSession(userID, vr.deviceName);
+    // Create session and return session key
+    const sessionKey = crypto.randomBytes(40).toString("hex");
+    await m.createSession(userID, sessionKey, vr.deviceName);
     c.body = { sessionKey };
   }
 }
@@ -36,7 +38,7 @@ export class GetSessionsRoute implements RouteHandler {
 
   public async handle(r: Router, m: IModel, c: any, vr: any) {
     // Get and return all user sessions
-    const sessions = m.getSessions(c.userID);
+    const sessions = await m.getSessions(c.userID);
     c.body = { sessions };
   }
 }

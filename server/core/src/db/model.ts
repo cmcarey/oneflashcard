@@ -6,8 +6,9 @@ export interface IModel {
 
   createSession(
     userID: string,
+    sessionKey: string,
     deviceName: string
-  ): Promise<{ sessionKey: string }>;
+  ): Promise<void>;
   getSession(sessionKey: string): Promise<void | { userID: string }>;
   getSessions(
     userID: string

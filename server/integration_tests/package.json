@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest -i"
   },
   "dependencies": {
     "@types/jest": "^24.0.25",
