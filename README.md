@@ -1,6 +1,6 @@
 <div align="center">
 
-![](images/logo.png)
+![](media/logo.svg)
 
 [Status](#status) | [Documentation](#documentation) | [Technical details](#server) | [Contributing](#contributing) | A project by [cmcarey](https://github.com/cmcarey) 🎉
 
@@ -10,7 +10,7 @@
 
 ![](images/demo.png)
 
-![](images/logo_small.png)
+<img src="media/logo.svg" width="300px" />
 
 **oneflashcard** is a flashcard management system. Most flashcard applications only allow you to store a card in a set, with no nuance - so you cannot, for example, tag and later review only a _section_ of that set.
 
