@@ -7,3 +7,5 @@ const model = new PGModel(createPGConnection());
 const app = new App(model);
 // Start app
 app.start(3000);
+// Indicate
+console.log(":: SERVER STARTED");

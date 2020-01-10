@@ -9,7 +9,7 @@ services:
     volumes:
       - ../../core/:/app/
     working_dir: /app/
-    command: ["yarn", "start:dev"]
+    command: bash -c "sleep 2 && yarn start:dev"
     depends_on:
       - db
 
@@ -18,7 +18,7 @@ services:
     volumes:
       - ./src/:/app/
     working_dir: /app/
-    command: ["yarn", "test"]
+    command: bash -c "sleep 4 && yarn test"
     depends_on:
       - db
       - core

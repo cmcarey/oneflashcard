@@ -21,19 +21,12 @@ function acceptance {
   }
 
   function _install_deps {
-    (cd src && yarn install)
-    (cd ../../core && yarn install)
+    (cd src && docker run --rm -w /app/ -v $(pwd):/app/ node:13 yarn install)
+    (cd ../../core && docker run --rm -w /app/ -v $(pwd):/app/ node:13 yarn install)
   }
 
-  function _dev_db {
-    docker-compose -f $DC_DEV up $POSTARGS db
-    docker-compose -f $DC_DEV down
-  }
-
-  function _dev_core {
-    echo Starting core
-    sleep 2
-    docker-compose -f $DC_DEV up $POSTARGS core
+  function _dev_main {
+    docker-compose -f $DC_DEV up $POSTARGS db core
     docker-compose -f $DC_DEV down
   }
 

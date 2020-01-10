@@ -62,7 +62,7 @@ $ ./server/test/utils.bash acceptance dev
 
 Running tests in this way will split the terminal into three panes (hence the tmux requirement), showing the database log, core server log, and test log -
 
-![](images/acceptance_test_watcher.png)
+![](images/acceptance_test_dev.png)
 
 The test log is interactive and the tests can be run at any time by pressing `enter`. The tests also automatically re-run when any test files are changed. Quitting the test process (via either typing `q` or `ctrl-c`) will close both the DB and core processes as well.
 
