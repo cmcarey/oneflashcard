@@ -153,4 +153,10 @@ export class PGModel implements IModel {
       tagName: cardTag.tag_name
     }));
   }
+
+  async deleteCardTag(cardTagID: string): Promise<void> {
+    await this.pgConn("card_tags")
+      .where({ card_tag_id: cardTagID })
+      .delete();
+  }
 }

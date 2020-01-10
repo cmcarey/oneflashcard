@@ -4,6 +4,7 @@ import {
   get,
   insertCard,
   insertCardTag,
+  jsonPost,
   login,
   register,
   reset
@@ -119,8 +120,56 @@ describe("Get card tags", () => {
   });
 });
 
-describe("Update card tag", () => {
-  test("TODO", () => {
-    expect(true).toBe(false);
+describe("Delete card tag", () => {
+  let client: Client;
+  beforeAll(async () => (client = await connect()));
+  afterAll(async () => await client.end());
+  afterEach(async () => await reset(client));
+
+  const url = "http://core:3000/cardtag/delete";
+
+  test("Delete successfully", async () => {
+    await register();
+
+    const key = await login();
+
+    const c1 = await insertCard(key, "Some flash card", "Some flash card body");
+    const id1 = (await c1.json()).cardID;
+    const ct1 = await insertCardTag(key, id1, "Some tag");
+    const idct1 = (await ct1.json()).cardTagID;
+
+    let res = await jsonPost(
+      url,
+      {
+        cardTagID: idct1
+      },
+      key
+    );
+
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe("");
+
+    res = await get("http://core:3000/cardtag", key);
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({
+      cardTags: []
+    });
+  });
+
+  test("Fail to delete invalid card tag", async () => {
+    await register();
+    const key = await login();
+
+    let res = await jsonPost(
+      url,
+      {
+        cardTagID: "aaa"
+      },
+      key
+    );
+
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({ error: "Invalid cardTagID" });
   });
 });

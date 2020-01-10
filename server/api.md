@@ -80,6 +80,15 @@ RES
 - 400 {error: "Invalid cardID"}
 ```
 
+```
+POST /card/delete
++AUTH
+REQ {cardID}
+RES
+- 200
+- 400 {error: "Invalid cardID"}
+```
+
 # Card tag routes
 
 ```
@@ -99,10 +108,10 @@ RES
 ```
 
 ```
-POST /cardtag/update
+POST /cardtag/delete
 +AUTH
-REQ {cardID, tagName?}
+REQ {cardTagID}
 RES
-- 200 {cardTagID, cardID, tagName}
+- 200
 - 400 {error: "Invalid cardTagID"}
 ```

@@ -168,3 +168,49 @@ describe("Update card", () => {
     });
   });
 });
+
+// describe("Delete card", () => {
+//   let client: Client;
+//   beforeAll(async () => (client = await connect()));
+//   afterAll(async () => await client.end());
+//   afterEach(async () => await reset(client));
+
+//   const url = "http://core:3000/card/delete";
+
+//   test("Delete successfully", async () => {
+//     await register();
+//     const key = await login();
+//     const c1 = await insertCard(key, "Some flash card", "Some flash card body");
+//     const id1 = (await c1.json()).cardID;
+
+//     let res = await jsonPost(
+//       url,
+//       {
+//         cardID: id1,
+//         cardTitle: "Some other title",
+//         cardBody: "Some other body"
+//       },
+//       key
+//     );
+//     expect(res.status).toBe(200);
+//     expect(await res.json()).toEqual({
+//       cardID: id1,
+//       cardTitle: "Some other title",
+//       cardBody: "Some other body"
+//     });
+
+//     res = await get("http://core:3000/card", key);
+//     expect(res.status).toBe(200);
+//     expect(await res.json()).toEqual({
+//       cards: [
+//         {
+//           cardID: id1,
+//           cardTitle: "Some other title",
+//           cardBody: "Some other body"
+//         }
+//       ]
+//     });
+//   });
+// });
+
+//  TODO - delete card method

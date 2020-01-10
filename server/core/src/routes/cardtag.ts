@@ -52,3 +52,25 @@ export class GetCardTagsRoute extends RouteHandler {
     this.ctx.body = { cardTags: sanitizedCardTags };
   }
 }
+
+export class DeleteCardTagRoute extends RouteHandler {
+  public async handle() {
+    // Schema validation
+    this.validate(
+      Joi.object({
+        cardTagID: Joi.string().required()
+      })
+    );
+    // Require auth
+    await this.requireAuth();
+
+    // Get card tags
+    const cardTags = await this.model.getCardTagsByUserID(this.ctx.userID);
+    // Ensure we can delete it
+    if (!propMatches(cardTags, "cardTagID", this.body.cardTagID))
+      throw new HandledError("Invalid cardTagID");
+
+    // Delete it
+    await this.model.deleteCardTag(this.body.cardTagID);
+  }
+}

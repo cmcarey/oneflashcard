@@ -36,4 +36,5 @@ export interface IModel {
 
   createCardTag(cardID: string, name: string): Promise<CardTag>;
   getCardTagsByUserID(userID: string): Promise<CardTag[]>;
+  deleteCardTag(cardTagID: string): Promise<void>;
 }
