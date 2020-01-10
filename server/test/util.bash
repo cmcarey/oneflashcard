@@ -32,7 +32,6 @@ function acceptance {
 
   function _dev_acceptance {
     echo Starting acceptance tests
-    sleep 4
     docker-compose -f $DC_DEV run --rm acceptance
     docker-compose -f $DC_DEV down
   }
