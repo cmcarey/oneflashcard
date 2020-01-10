@@ -1,51 +1,60 @@
+import "normalize.css";
 import React from "react";
 import { cards } from "./cards";
+import { ReactComponent as Logo } from "./resources/logo.svg";
 import {
-  Bar,
-  BarLabel,
-  BarLink,
+  BarButton,
+  BarButtons,
+  Body,
+  BodyTitle,
   Card,
   CardBody,
-  CardTag,
-  CardTags,
+  Cards,
   CardTitle,
-  Container,
-  Content,
-  DetailBar,
-  Page,
-  Topbar
+  Centered,
+  ProfileBox,
+  TopBar,
+  VertBar
 } from "./ui";
 
-export default () => (
-  <Page>
-    <Topbar>oneflashcard</Topbar>
+export const App = () => {
+  return (
+    <div>
+      <VertBar>
+        <Centered>
+          <TopBar>
+            <Logo width="225px" height="auto" />
+            <ProfileBox>
+              <div>Chance Carey</div>
+              <div>Logout</div>
+            </ProfileBox>
+          </TopBar>
+        </Centered>
+      </VertBar>
 
-    <Container>
-      <Bar>
-        <BarLabel>Flashcards</BarLabel>
-        <BarLink selected>View all</BarLink>
-        <BarLink>Learn</BarLink>
+      <VertBar>
+        <Centered>
+          <BarButtons>
+            <BarButton selected>View cards</BarButton>
+            <BarButton>Review</BarButton>
+            <BarButton>Learn</BarButton>
+          </BarButtons>
+        </Centered>
+      </VertBar>
 
-        <BarLabel>Account</BarLabel>
-        <BarLink>Manage</BarLink>
-        <BarLink>Logout</BarLink>
-      </Bar>
-
-      <Content>
-        {true &&
-          cards.map(c => (
-            <Card>
-              <CardTags>
-                <CardTag>CS4202</CardTag>
-                <CardTag>Compiler</CardTag>
-              </CardTags>
-              <CardTitle>{c[0]}</CardTitle>
-              <CardBody>{c[1]}</CardBody>
-            </Card>
-          ))}
-      </Content>
-
-      <DetailBar>detail</DetailBar>
-    </Container>
-  </Page>
-);
+      <Body>
+        <Centered>
+          <BodyTitle>Viewing all cards</BodyTitle>
+          <Cards>
+            {cards.map(card => (
+              <Card>
+                <CardTitle>{card[0]}</CardTitle>
+                <CardBody>{card[1]}</CardBody>
+              </Card>
+            ))}
+          </Cards>
+        </Centered>
+      </Body>
+    </div>
+  );
+};

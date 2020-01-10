@@ -24,7 +24,7 @@ Wall clock time[[[Total execution time]]]CPU time[[[Time spent executing the pro
   Use sparse rows to replace defective ones]]]Chipkill[[[ECC, raid-like]]]Virtual memory[[[Separate address spaces
   Protects processes by keeping them in their own address space]]]Loop level parallelism[[[Unroll loops
   Use SIMD]]]Antidependence[[[\`i\` reads from location \`j\` later writes to
-  Must preserve order]]]Output dependence\`[[[\`i\` and \`j\` write to same place
+  Must preserve order]]]Output dependence[[[\`i\` and \`j\` write to same place
   Must preserve order]]]Control dependence[[[Cannot move instruction before branch if it depends on the branch (e.g. branch condition limits when it should run)]]]Tomasulo's Algorithm[[[Track when operands are available
   Does register renaming in hardware, minimizing WAR/WAW
   FIFO queue for RS]]]Reorder buffer[[[The buffer that holds results in a dynamically scheduled processor until it is safe to store the results to memory or a register]]]VLIW[[[Very Long Instruction Word
@@ -99,4 +99,3 @@ export const cards = cardStr
   .trim()
   .split("]]]")
   .map(c => c.split("[[[").map(c => c.trim()));
-// .slice(0, 10);
