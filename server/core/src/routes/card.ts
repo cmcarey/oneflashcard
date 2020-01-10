@@ -81,3 +81,24 @@ export class UpdateCardsRoute extends RouteHandler {
     };
   }
 }
+
+export class DeleteCardsRoute extends RouteHandler {
+  public async handle() {
+    // Schema validation
+    this.validate(
+      Joi.object({
+        cardID: Joi.string().required()
+      })
+    );
+    // Require auth
+    await this.requireAuth();
+
+    // Check we own this card
+    const cards = await this.model.getCardsByUserID(this.ctx.userID);
+    if (!propMatches(cards, "cardID", this.body.cardID))
+      throw new HandledError("Invalid cardID");
+
+    // If we do, delete
+    await this.model.deleteCard(this.body.cardID);
+  }
+}

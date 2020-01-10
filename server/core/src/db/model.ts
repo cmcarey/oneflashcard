@@ -33,6 +33,7 @@ export interface IModel {
   createCard(userID: string, title: string, body: string): Promise<Card>;
   getCardsByUserID(userID: string): Promise<Card[]>;
   updateCard(cardID: string, title?: string, body?: string): Promise<Card>;
+  deleteCard(cardID: string): Promise<void>;
 
   createCardTag(cardID: string, name: string): Promise<CardTag>;
   getCardTagsByUserID(userID: string): Promise<CardTag[]>;

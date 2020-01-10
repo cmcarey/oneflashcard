@@ -126,6 +126,12 @@ export class PGModel implements IModel {
     };
   }
 
+  async deleteCard(cardID: string): Promise<void> {
+    await this.pgConn("cards")
+      .where({ card_id: cardID })
+      .delete();
+  }
+
   async createCardTag(cardID: string, tagName: string): Promise<CardTag> {
     const cardTag = await this.pgConn("card_tags")
       .insert({

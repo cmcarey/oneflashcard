@@ -5,6 +5,7 @@ import Router from "koa-router";
 import { IModel } from "./db/model";
 import {
   CreateCardRoute,
+  DeleteCardsRoute,
   GetCardsRoute,
   UpdateCardsRoute
 } from "./routes/card";
@@ -71,6 +72,7 @@ export class App {
       ["post", "/card", new CreateCardRoute(this.router, this.model)],
       ["get", "/card", new GetCardsRoute(this.router, this.model)],
       ["post", "/card/update", new UpdateCardsRoute(this.router, this.model)],
+      ["post", "/card/delete", new DeleteCardsRoute(this.router, this.model)],
 
       // CARD TAG ROUTES
       ["post", "/cardtag", new CreateCardTagRoute(this.router, this.model)],
