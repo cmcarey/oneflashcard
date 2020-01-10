@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "watch": "jest -i --watchAll",
+    "test:dev": "jest -i --watchAll",
     "test": "jest -i"
   },
   "dependencies": {

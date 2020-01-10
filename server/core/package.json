@@ -15,8 +15,7 @@
   "scripts": {
     "start:dev": "ts-node-dev --clear src/entry.ts",
     "start": "node build/entry.js",
-    "build": "tsc --outDir build",
-    "clean": "rm -rf build"
+    "build": "tsc --outDir build/"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

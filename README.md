@@ -10,7 +10,7 @@
 
 ![](images/demo.png)
 
-![](images/logo-small.png)
+![](images/logo_small.png)
 
 **oneflashcard** is a flashcard management system. Most flashcard applications only allow you to store a card in a set, with no nuance - so you cannot, for example, tag and later review only a _section_ of that set.
 
@@ -42,27 +42,27 @@ The Postgres database similarly has a Dockerfile for initial deployment - all mi
 
 ![](images/testing.png)
 
-Full **integration testing** is used for the server. The [server/integration_tests.docker-compose.yml](server/integration_tests.docker-compose.yml) file starts and prepares the postgres database, builds and starts the server, and then builds and starts the integration tests program.
+Full **acceptance testing testing** is used for the server. A Postgres database is brought up and seeded for each test. The tests cover every API endpoint and all errors.
 
 The tests are run using **Jest**. Each test truncates every table in the database to ensure no cross-test contamination.
 
 The tests can be run locally on a system that has `docker` and `docker-compose` installed via running:
 
 ```
-$ ./server/utils.bash test
+$ ./server/test/utils.bash acceptance test
 ```
 
-This will build each element and run the integration tests.
+This will build each element and run the acceptance tests.
 
-Alternatively, the integration tests can be run in watch mode where the server automatically reloads and the tests automatically re-run when changes are made. This requires **tmux** be installed, and can be run via:
+Alternatively, the acceptance tests can be run in dev mode where the server automatically reloads and the tests automatically re-run when changes are made. This requires **tmux** be installed, and can be run via:
 
 ```
-$ ./server/utils.bash watch
+$ ./server/test/utils.bash acceptance dev
 ```
 
 Running tests in this way will split the terminal into three panes (hence the tmux requirement), showing the database log, core server log, and test log -
 
-![](images/integration_test_watcher.png)
+![](images/acceptance_test_watcher.png)
 
 The test log is interactive and the tests can be run at any time by pressing `enter`. The tests also automatically re-run when any test files are changed. Quitting the test process (via either typing `q` or `ctrl-c`) will close both the DB and core processes as well.
 
@@ -70,7 +70,7 @@ The test log is interactive and the tests can be run at any time by pressing `en
 
 ![](images/ci.png)
 
-**Github Actions** are used to run the CICD workflow. Currently, each change / PR triggers a full run of the integration tests. The integration tests are run in the same manner as they would be run locally
+**Github Actions** are used to run the CICD workflow. Currently, each change / PR triggers a full run of all tests. The tests are run in the same manner as they would be run locally.
 
 # Documentation
 
