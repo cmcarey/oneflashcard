@@ -105,6 +105,27 @@ export class PGModel implements IModel {
     }));
   }
 
+  async updateCard(
+    cardID: string,
+    title?: string,
+    body?: string
+  ): Promise<Card> {
+    const card = await this.pgConn("cards")
+      .where({ card_id: cardID })
+      .update({
+        card_title: title,
+        card_body: body
+      })
+      .returning(["card_id", "user_id", "card_title", "card_body"]);
+
+    return {
+      cardID: card[0].card_id,
+      userID: card[0].user_id,
+      cardTitle: card[0].card_title,
+      cardBody: card[0].card_body
+    };
+  }
+
   async createCardTag(cardID: string, tagName: string): Promise<CardTag> {
     const cardTag = await this.pgConn("card_tags")
       .insert({

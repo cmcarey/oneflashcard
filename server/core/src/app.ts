@@ -3,7 +3,11 @@ import bodyParser from "koa-bodyparser";
 import KoaLogger from "koa-logger";
 import Router from "koa-router";
 import { IModel } from "./db/model";
-import { CreateCardRoute, GetCardsRoute } from "./routes/card";
+import {
+  CreateCardRoute,
+  GetCardsRoute,
+  UpdateCardsRoute
+} from "./routes/card";
 import { CreateCardTagRoute, GetCardTagsRoute } from "./routes/cardtag";
 import {
   CreateSessionRoute,
@@ -62,6 +66,7 @@ export class App {
       // CARD ROUTES
       ["post", "/card", new CreateCardRoute(this.router, this.model)],
       ["get", "/card", new GetCardsRoute(this.router, this.model)],
+      ["post", "/card/update", new UpdateCardsRoute(this.router, this.model)],
 
       // CARD TAG ROUTES
       ["post", "/cardtag", new CreateCardTagRoute(this.router, this.model)],

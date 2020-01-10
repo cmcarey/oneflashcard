@@ -62,8 +62,11 @@ describe("Get sessions", () => {
     const res = await get(url, key);
 
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({
-      sessions: [{ sessionID: 1, deviceName: "some device" }]
+    const resJson = await res.json();
+    expect(resJson).toEqual({
+      sessions: [
+        { sessionID: resJson.sessions[0].sessionID, deviceName: "some device" }
+      ]
     });
   });
 
@@ -88,8 +91,11 @@ describe("Get sessions", () => {
     const res = await get(url, key);
 
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({
-      sessions: [{ sessionID: 1, deviceName: "some device" }]
+    const resJson = await res.json();
+    expect(resJson).toEqual({
+      sessions: [
+        { sessionID: resJson.sessions[0].sessionID, deviceName: "some device" }
+      ]
     });
   });
 });
@@ -106,7 +112,10 @@ describe("Delete session", () => {
     await register();
     const key = await login();
 
-    const res = await jsonPost(url, { sessionID: 1 }, key);
+    const session = await get("http://core:3000/session", key);
+    const sessionID = (await session.json()).sessions[0].sessionID;
+
+    const res = await jsonPost(url, { sessionID }, key);
 
     expect(res.status).toBe(200);
     expect(await res.text()).toBe("");
@@ -116,22 +125,25 @@ describe("Delete session", () => {
     await register();
     const key = await login();
 
-    const res = await jsonPost(url, { sessionID: 2 }, key);
+    const res = await jsonPost(url, { sessionID: "2" }, key);
 
     expect(res.status).toBe(400);
-    expect(await res.json()).toEqual({ error: "Unable to delete session" });
+    expect(await res.json()).toEqual({ error: "Invalid sessionID" });
   });
 
   test("Actually deletes", async () => {
     await register();
     const key = await login();
 
-    let res = await jsonPost(url, { sessionID: 1 }, key);
+    const session = await get("http://core:3000/session", key);
+    const sessionID = (await session.json()).sessions[0].sessionID;
+
+    let res = await jsonPost(url, { sessionID }, key);
 
     expect(res.status).toBe(200);
     expect(await res.text()).toBe("");
 
-    res = await jsonPost(url, { sessionID: 1 }, key);
+    res = await jsonPost(url, { sessionID: "1" }, key);
 
     expect(res.status).toBe(400);
     expect(await res.json()).toEqual({ error: "Invalid session key" });

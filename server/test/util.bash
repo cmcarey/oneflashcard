@@ -11,16 +11,17 @@ function acceptance {
   DC_DEV="dev.docker-compose.yml"
 
   function test {
-    _install_deps
+    _prep
     docker-compose -f $DC up $POSTARGS
   }
 
   function dev {
-    _install_deps
+    _prep
     tmux -f tmux.conf attach
   }
 
-  function _install_deps {
+  function _prep {
+    docker network prune -f
     (cd src && docker run --rm -w /app/ -v $(pwd):/app/ node:13 yarn install)
     (cd ../../core && docker run --rm -w /app/ -v $(pwd):/app/ node:13 yarn install)
   }
@@ -32,6 +33,7 @@ function acceptance {
 
   function _dev_acceptance {
     echo Starting acceptance tests
+    sleep 2
     docker-compose -f $DC_DEV run --rm acceptance
     docker-compose -f $DC_DEV down
   }

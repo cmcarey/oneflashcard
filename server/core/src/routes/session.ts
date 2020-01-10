@@ -1,6 +1,7 @@
 import Joi from "@hapi/joi";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
+import { propMatches } from "../db/utils";
 import { HandledError, RouteHandler } from "./utils";
 
 export class CreateSessionRoute extends RouteHandler {
@@ -55,7 +56,7 @@ export class DeleteSessionsRoute extends RouteHandler {
     // Schema validation
     this.validate(
       Joi.object({
-        sessionID: Joi.number().required()
+        sessionID: Joi.string().required()
       })
     );
     // Require auth
@@ -64,16 +65,8 @@ export class DeleteSessionsRoute extends RouteHandler {
     // Get user sessions
     const sessions = await this.model.getSessionsByUserID(this.ctx.userID);
     // Check session ID belongs to this user
-    let belongs = false;
-
-    for (const session of sessions) {
-      if (session.sessionID === this.body.sessionID) {
-        belongs = true;
-        break;
-      }
-    }
-
-    if (!belongs) throw new HandledError("Unable to delete session");
+    if (!propMatches(sessions, "sessionID", this.body.sessionID))
+      throw new HandledError("Invalid sessionID");
     // Delete session
     await this.model.deleteSession(this.body.sessionID);
   }

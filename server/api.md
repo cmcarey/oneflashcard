@@ -51,7 +51,7 @@ POST /session/delete
 REQ {sessionID}
 RES
 - 200
-- 400 {error: "Unable to delete session"}
+- 400 {error: "Invalid sessionID"}
 ```
 
 # Card routes
@@ -71,20 +71,38 @@ RES
 - 200 {cards: [{cardID, cardTitle, cardBody}]}
 ```
 
+```
+POST /card/update
++AUTH
+REQ {cardID, cardTitle?, cardBody?}
+RES
+- 200 {cardID, cardTitle, cardBody}
+- 400 {error: "Invalid cardID"}
+```
+
 # Card tag routes
 
 ```
 POST /cardtag
-+ AUTH
++AUTH
 REQ {cardID, tagName}
 RES
 - 200 {cardTagID, cardID, tagName}
-- 400 {error: "No such card"}
+- 400 {error: "Invalid cardID"}
 ```
 
 ```
 /GET /cardtag
-+ AUTH
++AUTH
 RES
 - 200 {cardTags: [{cardTagID, cardID, tagName}]}
+```
+
+```
+POST /cardtag/update
++AUTH
+REQ {cardID, tagName?}
+RES
+- 200 {cardTagID, cardID, tagName}
+- 400 {error: "Invalid cardTagID"}
 ```

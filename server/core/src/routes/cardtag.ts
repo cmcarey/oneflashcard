@@ -1,4 +1,5 @@
 import Joi from "@hapi/joi";
+import { propMatches } from "../db/utils";
 import { HandledError, RouteHandler } from "./utils";
 
 export class CreateCardTagRoute extends RouteHandler {
@@ -13,16 +14,10 @@ export class CreateCardTagRoute extends RouteHandler {
     // Require auth
     await this.requireAuth();
 
-    // Check card exists
+    // Check card exists and is owned by user
     const cards = await this.model.getCardsByUserID(this.ctx.userID);
-    let belongs = false;
-    for (const card of cards) {
-      if (card.userID === this.ctx.userID) {
-        belongs = true;
-        break;
-      }
-    }
-    if (!belongs) throw new HandledError("No such card");
+    if (!propMatches(cards, "cardID", this.body.cardID))
+      throw new HandledError("Invalid cardID");
 
     // Create card tag
     const cardTag = await this.model.createCardTag(
