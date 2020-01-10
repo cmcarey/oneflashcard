@@ -1,6 +1,6 @@
 <div align="center">
 
-![](media/logo.svg)
+<img src="media/logo.svg" width="450px" />
 
 [Status](#status) | [Documentation](#documentation) | [Technical details](#server) | [Contributing](#contributing) | A project by [cmcarey](https://github.com/cmcarey) 🎉
 
