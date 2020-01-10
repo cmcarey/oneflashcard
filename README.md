@@ -10,8 +10,6 @@
 
 ![](images/demo.png)
 
-<img src="media/logo.svg" width="300px" />
-
 **oneflashcard** is a flashcard management system. Most flashcard applications only allow you to store a card in a set, with no nuance - so you cannot, for example, tag and later review only a _section_ of that set.
 
 Oneflashcard eschews this concept of a set in favor of a system of tags; apply as many tags as you like to a card, and then later filter, review, and learn all of the cards that have a specific tag.
