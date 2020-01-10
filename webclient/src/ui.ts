@@ -73,11 +73,34 @@ export const Body = styled.div`
   padding: 0 0.5rem;
 `;
 
-export const BodyTitle = styled.div`
+export const BodyBar = styled.div`
   margin-bottom: 1rem;
 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const BodyTitle = styled.div`
   font-size: 1.5rem;
   color: #888;
+`;
+
+export const BodyBarAction = styled.div`
+  :hover {
+    border-color: #575757;
+  }
+
+  float: right;
+
+  border: 1px solid #ddd;
+  color: #575757;
+  border-radius: 0.2rem;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  transition: 0.1s border-color;
 `;
 
 export const Cards = styled.div`

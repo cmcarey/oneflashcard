@@ -6,6 +6,8 @@ import {
   BarButton,
   BarButtons,
   Body,
+  BodyBar,
+  BodyBarAction,
   BodyTitle,
   Card,
   CardBody,
@@ -64,7 +66,10 @@ export const App = () => {
 
       <Body>
         <Centered>
-          <BodyTitle>Viewing all cards</BodyTitle>
+          <BodyBar>
+            <BodyTitle>Viewing all cards</BodyTitle>
+            <BodyBarAction>Add card</BodyBarAction>
+          </BodyBar>
           <Cards>
             {cards.map(card => {
               const ts = getTags();
