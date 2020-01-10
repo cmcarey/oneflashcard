@@ -10,6 +10,8 @@ import {
   Card,
   CardBody,
   Cards,
+  CardTag,
+  CardTags,
   CardTitle,
   Centered,
   ProfileBox,
@@ -18,6 +20,24 @@ import {
 } from "./ui";
 
 export const App = () => {
+  const tags: [string, string][] = [
+    ["Compilers", "#d4d4ff"],
+    ["Memory", "#ffd4da"],
+    ["OpenCL", "#fff0d4"],
+    ["Cache", "#d4ffdb"],
+    ["Hardware", "#d4ddff"]
+  ];
+
+  const getTags = () => {
+    const rTags = () => Math.floor(Math.random() * tags.length);
+    const numTags = rTags();
+    const sTags: [string, string][] = [];
+    while (sTags.length < numTags) {
+      const t = tags[rTags()];
+      if (sTags.indexOf(t) < 0) sTags.push(t);
+    }
+    return sTags.sort();
+  };
   return (
     <div>
       <VertBar>
@@ -46,12 +66,22 @@ export const App = () => {
         <Centered>
           <BodyTitle>Viewing all cards</BodyTitle>
           <Cards>
-            {cards.map(card => (
-              <Card>
-                <CardTitle>{card[0]}</CardTitle>
-                <CardBody>{card[1]}</CardBody>
-              </Card>
-            ))}
+            {cards.map(card => {
+              const ts = getTags();
+              return (
+                <Card>
+                  <CardTitle>{card[0]}</CardTitle>
+                  <CardBody>{card[1]}</CardBody>
+                  {ts.length > 0 && (
+                    <CardTags>
+                      {ts.map(t => (
+                        <CardTag color={t[1]}>{t[0]}</CardTag>
+                      ))}
+                    </CardTags>
+                  )}
+                </Card>
+              );
+            })}
           </Cards>
         </Centered>
       </Body>

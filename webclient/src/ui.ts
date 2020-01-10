@@ -101,6 +101,22 @@ export const CardBody = styled.div`
   color: #888;
 `;
 
+export const CardTags = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 0.5rem;
+  justify-content: start;
+
+  padding-top: 0.5rem;
+  font-size: 0.7rem;
+`;
+
+export const CardTag = styled.div<{ color: string }>`
+  background: ${p => p.color};
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.2rem;
+`;
+
 // ======================
 // ======================
 // Custom design elements
