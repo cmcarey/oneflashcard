@@ -40,6 +40,7 @@ export const App = () => {
     }
     return sTags.sort();
   };
+
   return (
     <div>
       <VertBar>

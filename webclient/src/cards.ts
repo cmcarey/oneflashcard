@@ -1,3 +1,5 @@
+import { present } from "./ui";
+
 const cardStr = `
 Wall clock time[[[Total execution time]]]CPU time[[[Time spent executing the program]]]Compulsory misses[[[First time a block is used (first reference)]]]Capacity misses[[[Block used, later discarded, used again]]]Conflict misses[[[Repeated references to different blocks that map to same cache location]]]Way prediction[[[Extra bits kept in cache to predict the way (or block within the set) of the next cache access
   Mux set early to select the desired block]]]Victim cache[[[A small cache that holds items recently expelled from the cache]]]Critical word first[[[Request missed word from memory first, send to proc as soon as it arrives]]]Early restart[[[Request words in normal order, send missed word to proc as soon as it arrives]]]Compiler blocking[[[Subdivide matrices into blocks, more memory access but improves spatial locality]]]Hardware prefetch[[[Fetch next sequential block, spatial locality]]]Compiler prefetch[[[Compiler inserts prefetch instructions]]]Nonblocking cache[[[A cache that allows the processor to make references to the cache while the cache is handling an earlier miss]]]Cycle time[[[Time between starting memory accesses]]]SRAM[[[Static RAM
@@ -95,7 +97,9 @@ Wall clock time[[[Total execution time]]]CPU time[[[Time spent executing the pro
   All other cached copies are invalidated]]]Data hazard[[[Occurs when dependence results in incorrect execution
 `;
 
-export const cards = cardStr
+const allCards = cardStr
   .trim()
   .split("]]]")
   .map(c => c.split("[[[").map(c => c.trim()));
+
+export const cards = present ? allCards.slice(0, 9) : allCards;

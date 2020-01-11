@@ -1,5 +1,7 @@
 import styled, { createGlobalStyle } from "styled-components";
 
+export const present = false;
+
 // =============
 // =============
 // Global design
@@ -8,8 +10,25 @@ import styled, { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
 body {
   background: #f6f7fc;
+
+  ${present &&
+    `
+    background: white;
+  `}
+}
+
+#root {
   font-family: "Source Sans Pro", sans-serif;
   padding-bottom: 0.5rem;
+
+  ${present &&
+    `
+    background: #f6f7fc;
+    width: 870px;
+    overflow: hidden;
+    margin: 20px;
+    border-radius: 1rem;
+  `}
 }
 `;
 
@@ -27,6 +46,11 @@ export const VertBar = styled.div`
 export const Centered = styled.div`
   margin: 0 auto;
   max-width: 1400px;
+
+  ${present &&
+    `
+    max-width: 800px;
+  `}
 `;
 
 export const ProfileBox = styled.div`
@@ -88,7 +112,8 @@ export const BodyTitle = styled.div`
 
 export const BodyBarAction = styled.div`
   :hover {
-    border-color: #575757;
+    border-color: #5050ff;
+    color: #5050ff;
   }
 
   float: right;
@@ -105,8 +130,13 @@ export const BodyBarAction = styled.div`
 
 export const Cards = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+  ${present &&
+    `
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  `}
 `;
 
 export const Card = styled.div`
@@ -125,10 +155,10 @@ export const CardBody = styled.div`
 `;
 
 export const CardTags = styled.div`
-  display: grid;
-  grid-auto-flow: column;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   grid-gap: 0.5rem;
-  justify-content: start;
 
   padding-top: 0.5rem;
   font-size: 0.7rem;
