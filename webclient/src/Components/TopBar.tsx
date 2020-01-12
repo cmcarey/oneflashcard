@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../Resources/logo.svg";
-import { Centered, ProfileBox, VertBar } from "../ui";
+import { PageCenterBox, ProfileBox, VertBar } from "../ui";
 
 const TopBarStyle = styled.div`
   padding: 0.5rem;
@@ -12,7 +12,7 @@ const TopBarStyle = styled.div`
 
 export const TopBar = ({ username }: { username?: string }) => (
   <VertBar>
-    <Centered>
+    <PageCenterBox>
       <TopBarStyle>
         <Logo width="225px" height="auto" />
         {username && (
@@ -22,6 +22,6 @@ export const TopBar = ({ username }: { username?: string }) => (
           </ProfileBox>
         )}
       </TopBarStyle>
-    </Centered>
+    </PageCenterBox>
   </VertBar>
 );

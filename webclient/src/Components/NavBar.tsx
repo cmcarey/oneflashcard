@@ -1,12 +1,12 @@
 import React from "react";
 import { useLocation } from "react-router";
-import { BarButton, BarButtons, Centered, VertBar } from "../ui";
+import { BarButton, BarButtons, PageCenterBox, VertBar } from "../ui";
 
 export const NavBar = () => {
   const path = useLocation().pathname.split("/")[1];
   return (
     <VertBar>
-      <Centered>
+      <PageCenterBox>
         <BarButtons>
           <BarButton to="/" selected={path === ""}>
             View cards
@@ -15,7 +15,7 @@ export const NavBar = () => {
             Learn
           </BarButton>
         </BarButtons>
-      </Centered>
+      </PageCenterBox>
     </VertBar>
   );
 };
