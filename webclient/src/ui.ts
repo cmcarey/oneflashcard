@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
 export const present = false;
@@ -68,7 +69,7 @@ export const BarButtons = styled.div`
   padding: 0 0.5rem;
 `;
 
-export const BarButton = styled.div<{ selected?: boolean }>`
+export const BarButton = styled(Link)<{ selected?: boolean }>`
   :not(:first-child) {
     margin-left: 2rem;
   }
@@ -78,16 +79,24 @@ export const BarButton = styled.div<{ selected?: boolean }>`
     border-bottom-color: #444;
   }
 
+  :focus {
+    outline: none;
+  }
+
   padding: 0.7rem 0;
   border-bottom: 1px solid transparent;
   transition: 0.2s border-bottom-color;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 
   ${p =>
     p.selected &&
     `
-    color: #5050ff;
-    border-bottom-color: #5050ff;
+    &, :hover {
+      color: #5050ff;
+      border-bottom-color: #5050ff;
+    }
   `}
 `;
 
@@ -128,7 +137,7 @@ export const BodyBarAction = styled.div`
   transition: 0.1s border-color;
 `;
 
-export const Cards = styled.div`
+export const CardsContainer = styled.div`
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -139,7 +148,7 @@ export const Cards = styled.div`
   `}
 `;
 
-export const Card = styled.div`
+export const Box = styled.div`
   padding: 0.5rem;
 
   background: white;
@@ -164,20 +173,8 @@ export const CardTags = styled.div`
   font-size: 0.7rem;
 `;
 
-export const CardTag = styled.div<{ color: string }>`
+export const Tag = styled.div<{ color: string }>`
   background: ${p => p.color};
   padding: 0.2rem 0.5rem;
   border-radius: 0.2rem;
-`;
-
-// ======================
-// ======================
-// Custom design elements
-// ----------------------
-
-export const TopBar = styled.div`
-  padding: 0.5rem;
-  display: grid;
-  grid-auto-flow: column;
-  align-items: center;
 `;
