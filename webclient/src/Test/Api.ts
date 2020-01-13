@@ -25,14 +25,19 @@ export class MockApi implements IServer {
   async login(
     email: string,
     password: string
-  ): ApiResponse<INPUT | "INVALID_DETAILS", { sessionKey: string }> {
+  ): ApiResponse<
+    INPUT | "INVALID_DETAILS",
+    { name: string; sessionKey: string }
+  > {
     if (password.length < 8 || !email.indexOf("@"))
       return Promise.resolve({ error: "BAD_INPUT" });
 
     if (email !== "chance@carey.sh" || password !== "somepass")
       return Promise.resolve({ error: "INVALID_DETAILS" });
 
-    return Promise.resolve({ value: { sessionKey: key } });
+    return Promise.resolve({
+      value: { name: "Chance Carey", sessionKey: key }
+    });
   }
 
   async getCards(sessionKey: string): ApiResponse<AUTH, Card[]> {

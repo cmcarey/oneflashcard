@@ -1,4 +1,5 @@
 import React from "react";
+import { Field, Form } from "react-final-form";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
@@ -7,10 +8,10 @@ import {
   Box,
   BoxBody,
   BoxTitle,
-  Form,
-  FormButton,
-  FormInput,
-  PageCenterBox
+  PageCenterBox,
+  StyledForm,
+  StyledFormButton,
+  StyledFormInput
 } from "../ui";
 
 const Boxes = styled.div`
@@ -43,24 +44,30 @@ export const LoginPage = () => {
           <Box>
             <BoxTitle>Login</BoxTitle>
             <BoxBody>
-              <Form onSubmit={login}>
-                Login with your existing account.
-                <FormInput placeholder="Email address" />
-                <FormInput placeholder="Password" type="password" />
-                <FormButton>Login</FormButton>
-              </Form>
+              <Form
+                onSubmit={login}
+                render={({ handleSubmit }) => (
+                  <StyledForm onSubmit={handleSubmit}>
+                    Login with your existing account.
+                    <Field name="email" component="input" />
+                    <StyledFormInput placeholder="Email address" />
+                    <StyledFormInput placeholder="Password" type="password" />
+                    <StyledFormButton>Login</StyledFormButton>
+                  </StyledForm>
+                )}
+              />
             </BoxBody>
           </Box>
           <Box>
             <BoxTitle>Register</BoxTitle>
             <BoxBody>
-              <Form onSubmit={register}>
+              <StyledForm onSubmit={register}>
                 Create a new account.
-                <FormInput placeholder="Username" />
-                <FormInput placeholder="Email address" />
-                <FormInput placeholder="Password" type="password" />
-                <FormButton>Register</FormButton>
-              </Form>
+                <StyledFormInput placeholder="Username" />
+                <StyledFormInput placeholder="Email address" />
+                <StyledFormInput placeholder="Password" type="password" />
+                <StyledFormButton>Register</StyledFormButton>
+              </StyledForm>
             </BoxBody>
           </Box>
         </Boxes>

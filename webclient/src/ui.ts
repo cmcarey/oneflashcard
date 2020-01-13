@@ -182,12 +182,12 @@ export const Tag = styled.div<{ color: string }>`
   border-radius: 0.2rem;
 `;
 
-export const Form = styled.form`
+export const StyledForm = styled.form`
   display: grid;
   grid-gap: 0.5rem;
 `;
 
-const FormStyles = css`
+const formStyles = css`
   padding: 0.3rem;
   border: 1px solid #e4e4e4;
   border-radius: 0.3rem;
@@ -198,12 +198,12 @@ const FormStyles = css`
   }
 `;
 
-export const FormInput = styled.input`
-  ${FormStyles}
+export const StyledFormInput = styled.input`
+  ${formStyles}
 `;
 
-export const FormButton = styled.button`
-  ${FormStyles}
+export const StyledFormButton = styled.button`
+  ${formStyles}
   justify-self: right;
   background: none;
   color: #0e4bff;

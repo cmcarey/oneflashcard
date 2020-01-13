@@ -18,7 +18,10 @@ export interface IServer {
   login(
     email: string,
     password: string
-  ): ApiResponse<INPUT | "INVALID_DETAILS", { sessionKey: string }>;
+  ): ApiResponse<
+    INPUT | "INVALID_DETAILS",
+    { name: string; sessionKey: string }
+  >;
 
   getCards(sessionKey: string): ApiResponse<AUTH, Card[]>;
 

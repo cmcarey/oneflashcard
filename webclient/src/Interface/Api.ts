@@ -13,7 +13,10 @@ export class Api implements IServer {
   async login(
     email: string,
     password: string
-  ): ApiResponse<INPUT | "INVALID_DETAILS", { sessionKey: string }> {
+  ): ApiResponse<
+    INPUT | "INVALID_DETAILS",
+    { name: string; sessionKey: string }
+  > {
     throw new Error("Not yet implemented");
   }
 
