@@ -31,6 +31,10 @@ REQ {email, password}
 => 200 {sessionKey}
 => 400 {error: "INVALID_DETAILS"}
 
+GET /user
++AUTH
+=> 200 {name, email}
+
 GET /cards
 +AUTH
 => 200 {cardID, title, text, tagIDs: string[]}[]

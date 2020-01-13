@@ -1,4 +1,4 @@
-import { Card, Tag } from "../Store/Model";
+import { Card, Tag, User } from "../Store/Model";
 
 export type AUTH = "INVALID_SESSION_KEY";
 export type INPUT = "BAD_INPUT";
@@ -22,6 +22,8 @@ export interface IServer {
     INPUT | "INVALID_DETAILS",
     { name: string; sessionKey: string }
   >;
+
+  getUser(sessionKey: string): ApiResponse<AUTH, User>;
 
   getCards(sessionKey: string): ApiResponse<AUTH, Card[]>;
 

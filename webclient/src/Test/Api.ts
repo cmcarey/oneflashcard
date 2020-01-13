@@ -1,5 +1,5 @@
 import { ApiResponse, AUTH, INPUT, IServer } from "../Interface/IApi";
-import { Card, Tag } from "../Store/Model";
+import { Card, Tag, User } from "../Store/Model";
 
 const key = "some-session-key";
 let nextCardID = 0;
@@ -13,7 +13,7 @@ export class MockApi implements IServer {
     email: string,
     password: string
   ): ApiResponse<INPUT | "EMAIL_USED", { sessionKey: string }> {
-    if (name.length < 6 || password.length < 8 || !email.indexOf("@"))
+    if (name.length < 6 || password.length < 8 || email.indexOf("@") === -1)
       return Promise.resolve({ error: "BAD_INPUT" });
 
     if (email === "taken@carey.sh")
@@ -29,7 +29,7 @@ export class MockApi implements IServer {
     INPUT | "INVALID_DETAILS",
     { name: string; sessionKey: string }
   > {
-    if (password.length < 8 || !email.indexOf("@"))
+    if (password.length < 8 || email.indexOf("@") === -1)
       return Promise.resolve({ error: "BAD_INPUT" });
 
     if (email !== "chance@carey.sh" || password !== "somepass")
@@ -37,6 +37,15 @@ export class MockApi implements IServer {
 
     return Promise.resolve({
       value: { name: "Chance Carey", sessionKey: key }
+    });
+  }
+
+  async getUser(sessionKey: string): ApiResponse<AUTH, User> {
+    if (sessionKey !== key)
+      return Promise.resolve({ error: "INVALID_SESSION_KEY" });
+
+    return Promise.resolve({
+      value: { name: "Chance Carey", email: "chance@carey.sh" }
     });
   }
 

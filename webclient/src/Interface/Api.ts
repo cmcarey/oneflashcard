@@ -1,4 +1,4 @@
-import { Card, Tag } from "../Store/Model";
+import { Card, Tag, User } from "../Store/Model";
 import { ApiResponse, AUTH, INPUT, IServer } from "./IApi";
 
 export class Api implements IServer {
@@ -17,6 +17,10 @@ export class Api implements IServer {
     INPUT | "INVALID_DETAILS",
     { name: string; sessionKey: string }
   > {
+    throw new Error("Not yet implemented");
+  }
+
+  async getUser(sessionKey: string): ApiResponse<AUTH, User> {
     throw new Error("Not yet implemented");
   }
 

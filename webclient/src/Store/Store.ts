@@ -31,6 +31,10 @@ const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
+    resetState(state) {
+      localStorage.clear();
+      return initialState;
+    },
     setApiLoading(state, action: PayloadAction<boolean>) {
       state.apiLoading = action.payload;
     },
@@ -42,6 +46,7 @@ const appSlice = createSlice({
     },
     setSessionKey(state, action: PayloadAction<string>) {
       state.sessionKey = action.payload;
+      localStorage.setItem("sessionKey", action.payload);
     },
     setUser(state, action: PayloadAction<User>) {
       state.user = action.payload;
@@ -64,6 +69,7 @@ const appSlice = createSlice({
 });
 
 export const {
+  resetState,
   setApiLoading,
   setErrorMessage,
   clearErrorMessage,
