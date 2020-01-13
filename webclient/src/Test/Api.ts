@@ -1,13 +1,12 @@
 import { ApiResponse, AUTH, INPUT, IServer } from "../Interface/IApi";
 import { Card, Tag, User } from "../Store/Model";
+import { resCards, resTags } from "./Res";
 
 const key = "some-session-key";
-let nextCardID = 2;
-const cards: Card[] = [
-  { cardID: "1", title: "Some card", text: "Some text", tagIDs: ["1"] }
-];
-let nextTagID = 2;
-const tags: Tag[] = [{ tagID: "1", name: "Compilers", color: "red" }];
+let nextCardID = 1000;
+const cards: Card[] = resCards;
+let nextTagID = 1000;
+const tags: Tag[] = resTags;
 
 export class MockApi implements IServer {
   async register(

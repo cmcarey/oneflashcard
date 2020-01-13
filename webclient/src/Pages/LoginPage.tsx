@@ -36,7 +36,7 @@ export const LoginPage = () => {
       {loggedIn && <Redirect to="/" />}
       <SBody>
         <SBoxes>
-          <SBox>
+          <SBoxAligned>
             <SBoxTitle>Login</SBoxTitle>
             <SBoxBody>
               <Formik initialValues={loginInitial} onSubmit={login}>
@@ -61,9 +61,9 @@ export const LoginPage = () => {
                 )}
               </Formik>
             </SBoxBody>
-          </SBox>
+          </SBoxAligned>
 
-          <SBox>
+          <SBoxAligned>
             <SBoxTitle>Register</SBoxTitle>
             <SBoxBody>
               <Formik initialValues={registerInitial} onSubmit={register}>
@@ -94,7 +94,7 @@ export const LoginPage = () => {
                 )}
               </Formik>
             </SBoxBody>
-          </SBox>
+          </SBoxAligned>
         </SBoxes>
       </SBody>
     </SPageCenter>
@@ -102,10 +102,15 @@ export const LoginPage = () => {
 };
 
 const SBoxes = styled.div`
-  max-width: calc(600px + 2rem);
   margin: 0 auto;
+  max-width: calc(600px + 2rem);
+
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   justify-content: center;
   grid-gap: 2rem;
+`;
+
+const SBoxAligned = styled(SBox)`
+  align-self: start;
 `;

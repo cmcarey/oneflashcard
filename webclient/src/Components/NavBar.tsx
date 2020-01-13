@@ -21,7 +21,6 @@ export const NavBar = ({ path }: { path: string }) => (
 const SBarButtons = styled.div`
   display: flex;
   flex-direction: row;
-
   padding: 0 0.5rem;
 `;
 
@@ -40,6 +39,7 @@ const SBarButton = styled(Link)<{ selected?: boolean }>`
   }
 
   padding: 0.7rem 0;
+
   border-bottom: 1px solid transparent;
   transition: 0.2s border-bottom-color;
   cursor: pointer;

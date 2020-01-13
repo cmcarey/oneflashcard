@@ -41,13 +41,14 @@ const STags = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   grid-gap: 0.5rem;
-
   padding-top: 0.5rem;
+
   font-size: 0.7rem;
 `;
 
 const STag = styled.div<{ color: string }>`
-  background: ${p => p.color};
   padding: 0.2rem 0.5rem;
+
+  background: ${p => p.color};
   border-radius: 0.2rem;
 `;

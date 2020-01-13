@@ -18,12 +18,15 @@ const SOuter = styled.div`
   left: 0;
   right: 0;
   margin: 0 auto;
+
   padding: 0.5rem;
+
   max-width: 600px;
 `;
 
 const SNotification = styled.div<{ color: string }>`
   padding: 0.5rem;
+
   color: white;
   border-radius: 0.5rem;
   line-height: 1.8rem;
