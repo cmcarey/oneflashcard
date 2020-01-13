@@ -72,7 +72,7 @@ The test log is interactive and the tests can be run at any time by pressing `en
 
 # Documentation
 
-The API endpoints are documented [here](server/api.md). The format is currently adhoc, and will later be converted to OpenAPI.
+The API endpoints are documented [here](./api.md). The format is currently adhoc, and will later be converted to OpenAPI.
 
 # Contributing
 

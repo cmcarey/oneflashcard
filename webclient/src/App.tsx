@@ -11,7 +11,7 @@ export const App = () => {
   const loc = useLocation();
   const history = useHistory();
 
-  const username = useSelector(state => state.appSlice.user?.username);
+  const username = useSelector(state => state.appSlice.user?.name);
 
   // If not logged in, redirect to login page
   if (!username && loc.pathname !== "/login") history.push("/login");

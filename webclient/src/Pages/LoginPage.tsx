@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components";
-import { setUser } from "../Store/Store";
 import {
   Body,
   Box,
@@ -35,7 +34,7 @@ export const LoginPage = () => {
   const register = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO Register
-  }
+  };
 
   return (
     <PageCenterBox>
