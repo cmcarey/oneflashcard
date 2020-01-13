@@ -1,32 +1,22 @@
 import { Formik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Redirect, useHistory } from "react-router";
+import { Redirect } from "react-router";
 import styled from "styled-components";
 import { loginOp, registerOp } from "../Store/Operations";
 import { useSelector } from "../Store/Store";
 import {
-  Body,
-  Box,
-  BoxBody,
-  BoxTitle,
-  PageCenterBox,
-  StyledForm,
-  StyledFormButton,
-  StyledFormInput
+  SBody,
+  SBox,
+  SBoxBody,
+  SBoxTitle,
+  SForm,
+  SFormButton,
+  SFormInput,
+  SPageCenter
 } from "../ui";
 
-const Boxes = styled.div`
-  max-width: calc(600px + 2rem);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  justify-content: center;
-  grid-gap: 2rem;
-`;
-
 export const LoginPage = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
   const loggedIn =
     useSelector(state => state.appSlice.user?.name) !== undefined;
@@ -42,71 +32,80 @@ export const LoginPage = () => {
   };
 
   return (
-    <PageCenterBox>
+    <SPageCenter>
       {loggedIn && <Redirect to="/" />}
-      <Body>
-        <Boxes>
-          <Box>
-            <BoxTitle>Login</BoxTitle>
-            <BoxBody>
+      <SBody>
+        <SBoxes>
+          <SBox>
+            <SBoxTitle>Login</SBoxTitle>
+            <SBoxBody>
               <Formik initialValues={loginInitial} onSubmit={login}>
                 {props => (
-                  <StyledForm onSubmit={props.handleSubmit}>
+                  <SForm onSubmit={props.handleSubmit}>
                     Login with your existing account.
-                    <StyledFormInput
+                    <SFormInput
                       name="email"
                       value={props.values.email}
                       onChange={props.handleChange}
                       placeholder="Email address"
                     />
-                    <StyledFormInput
+                    <SFormInput
                       name="password"
                       value={props.values.password}
                       onChange={props.handleChange}
                       placeholder="Password"
                       type="password"
                     />
-                    <StyledFormButton type="submit">Login</StyledFormButton>
-                  </StyledForm>
+                    <SFormButton type="submit">Login</SFormButton>
+                  </SForm>
                 )}
               </Formik>
-            </BoxBody>
-          </Box>
+            </SBoxBody>
+          </SBox>
 
-          <Box>
-            <BoxTitle>Register</BoxTitle>
-            <BoxBody>
+          <SBox>
+            <SBoxTitle>Register</SBoxTitle>
+            <SBoxBody>
               <Formik initialValues={registerInitial} onSubmit={register}>
                 {props => (
-                  <StyledForm onSubmit={props.handleSubmit}>
+                  <SForm onSubmit={props.handleSubmit}>
                     Create a new account.
-                    <StyledFormInput
+                    <SFormInput
                       name="name"
                       value={props.values.name}
                       onChange={props.handleChange}
                       placeholder="Name"
                     />
-                    <StyledFormInput
+                    <SFormInput
                       name="email"
                       value={props.values.email}
                       onChange={props.handleChange}
                       placeholder="Email address"
                     />
-                    <StyledFormInput
+                    <SFormInput
                       name="password"
                       value={props.values.password}
                       onChange={props.handleChange}
                       placeholder="Password"
                       type="password"
                     />
-                    <StyledFormButton type="submit">Register</StyledFormButton>
-                  </StyledForm>
+                    <SFormButton type="submit">Register</SFormButton>
+                  </SForm>
                 )}
               </Formik>
-            </BoxBody>
-          </Box>
-        </Boxes>
-      </Body>
-    </PageCenterBox>
+            </SBoxBody>
+          </SBox>
+        </SBoxes>
+      </SBody>
+    </SPageCenter>
   );
 };
+
+const SBoxes = styled.div`
+  max-width: calc(600px + 2rem);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  justify-content: center;
+  grid-gap: 2rem;
+`;

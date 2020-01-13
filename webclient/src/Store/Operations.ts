@@ -86,18 +86,6 @@ export const fetchCardsAndTags = (
 ): Thunk => async dispatch => {
   dispatch(setApiLoading(true));
 
-  const cardsRes = await api.getCards(sessionKey);
-  if (cardsRes.error === "INVALID_SESSION_KEY") {
-    // Reset state
-    dispatch(resetState());
-    dispatch(displayError("Session expired"));
-    return;
-  } else if (cardsRes.error === "SERVER_ERROR") {
-    dispatch(displayError("Unknown error occurred"));
-  } else {
-    dispatch(setCards(cardsRes.value!));
-  }
-
   const tagsRes = await api.getTags(sessionKey);
   if (tagsRes.error === "INVALID_SESSION_KEY") {
     // Reset state
@@ -108,6 +96,18 @@ export const fetchCardsAndTags = (
     dispatch(displayError("Unknown error occurred"));
   } else {
     dispatch(setTags(tagsRes.value!));
+  }
+
+  const cardsRes = await api.getCards(sessionKey);
+  if (cardsRes.error === "INVALID_SESSION_KEY") {
+    // Reset state
+    dispatch(resetState());
+    dispatch(displayError("Session expired"));
+    return;
+  } else if (cardsRes.error === "SERVER_ERROR") {
+    dispatch(displayError("Unknown error occurred"));
+  } else {
+    dispatch(setCards(cardsRes.value!));
   }
 
   dispatch(setApiLoading(false));

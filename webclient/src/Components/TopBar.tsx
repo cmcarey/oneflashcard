@@ -1,39 +1,45 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../Resources/logo.svg";
-import { resetState } from "../Store/Store";
-import { PageCenterBox, ProfileBox, VertBar } from "../ui";
+import { SPageCenter, SVertBar } from "../ui";
 
-const TopBarStyle = styled.div`
+export const TopBar = ({
+  username,
+  logout
+}: {
+  username?: string;
+  logout: () => void;
+}) => (
+  <SVertBar>
+    <SPageCenter>
+      <STopBar>
+        <Logo width="225px" height="auto" />
+        {username && (
+          <SProfileBox>
+            <div>{username}</div>
+            <SLogoutButton onClick={logout}>Logout</SLogoutButton>
+          </SProfileBox>
+        )}
+      </STopBar>
+    </SPageCenter>
+  </SVertBar>
+);
+
+const STopBar = styled.div`
   padding: 0.5rem;
   display: grid;
   grid-auto-flow: column;
   align-items: center;
 `;
 
-const LogoutButton = styled.div`
+const SLogoutButton = styled.div`
   cursor: pointer;
 `;
 
-export const TopBar = ({ username }: { username?: string }) => {
-  const dispatch = useDispatch();
+const SProfileBox = styled.div`
+  > *:first-child {
+    color: black;
+  }
 
-  const logout = () => dispatch(resetState());
-
-  return (
-    <VertBar>
-      <PageCenterBox>
-        <TopBarStyle>
-          <Logo width="225px" height="auto" />
-          {username && (
-            <ProfileBox>
-              <div>{username}</div>
-              <LogoutButton onClick={logout}>Logout</LogoutButton>
-            </ProfileBox>
-          )}
-        </TopBarStyle>
-      </PageCenterBox>
-    </VertBar>
-  );
-};
+  text-align: right;
+`;
