@@ -1,13 +1,13 @@
 import React from "react";
-import { Cards } from "../Components/Cards";
-import { useSelector } from "../Store/Store";
 import {
   SBody,
-  SBodyBar,
-  SBodyBarAction,
+  SBodyAction,
+  SBodyHeader,
   SBodyTitle,
-  SPageCenter
-} from "../ui";
+  SCenter
+} from "../../SharedStyles";
+import { useSelector } from "../../Store/Store";
+import { Cards } from "./Components/Cards";
 
 export const ViewCardsPage = () => {
   const cards = useSelector(state => state.appSlice.cards);
@@ -15,13 +15,13 @@ export const ViewCardsPage = () => {
 
   return (
     <SBody>
-      <SPageCenter>
-        <SBodyBar>
+      <SCenter>
+        <SBodyHeader>
           <SBodyTitle>Viewing all cards</SBodyTitle>
-          <SBodyBarAction>Add card</SBodyBarAction>
-        </SBodyBar>
+          <SBodyAction>Add card</SBodyAction>
+        </SBodyHeader>
         <Cards cards={cards} tags={tags} />
-      </SPageCenter>
+      </SCenter>
     </SBody>
   );
 };

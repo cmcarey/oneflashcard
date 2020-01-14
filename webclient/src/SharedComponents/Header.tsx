@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../Resources/logo.svg";
-import { SPageCenter, SVertBar } from "../ui";
+import { SCenter, SVertbar } from "../SharedStyles";
 
 export const TopBar = ({
   username,
@@ -10,9 +10,9 @@ export const TopBar = ({
   username?: string;
   logout: () => void;
 }) => (
-  <SVertBar>
-    <SPageCenter>
-      <STopBar>
+  <SVertbar>
+    <SCenter>
+      <STopbar>
         <Logo width="225px" height="auto" />
         {username && (
           <SProfileBox>
@@ -20,12 +20,12 @@ export const TopBar = ({
             <SLogoutButton onClick={logout}>Logout</SLogoutButton>
           </SProfileBox>
         )}
-      </STopBar>
-    </SPageCenter>
-  </SVertBar>
+      </STopbar>
+    </SCenter>
+  </SVertbar>
 );
 
-const STopBar = styled.div`
+const STopbar = styled.div`
   padding: 0.5rem;
 
   display: grid;

@@ -1,24 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { SPageCenter, SVertBar } from "../ui";
+import { SCenter, SVertbar } from "../SharedStyles";
 
 export const NavBar = ({ path }: { path: string }) => (
-  <SVertBar>
-    <SPageCenter>
-      <SBarButtons>
+  <SVertbar>
+    <SCenter>
+      <SBar>
         <SBarButton to="/" selected={path === ""}>
           View cards
         </SBarButton>
         <SBarButton to="/learn" selected={path === "learn"}>
           Learn
         </SBarButton>
-      </SBarButtons>
-    </SPageCenter>
-  </SVertBar>
+      </SBar>
+    </SCenter>
+  </SVertbar>
 );
 
-const SBarButtons = styled.div`
+const SBar = styled.div`
   display: flex;
   flex-direction: row;
   padding: 0 0.5rem;

@@ -126,7 +126,7 @@ export class MockApi implements IServer {
     card.text = text;
     card.tagIDs = tagIDs;
 
-    return Promise.resolve({});
+    return Promise.resolve({ value: undefined });
   }
 
   async updateTag(
@@ -148,6 +148,6 @@ export class MockApi implements IServer {
     tag.name = name;
     tag.color = color;
 
-    return Promise.resolve({});
+    return Promise.resolve({ value: undefined });
   }
 }

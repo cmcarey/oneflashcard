@@ -23,7 +23,7 @@ Detected and fixed via ECC*ROWHard memory errors*COLPermanent
 Use sparse rows to replace defective ones*ROWChipkill*COLECC, raid-like*ROWVirtual memory*COLSeparate address spaces
 Protects processes by keeping them in their own address space*ROWLoop level parallelism*COLUnroll loops
 Use SIMD*ROWAntidependence*COL\`i\` reads from location \`j\` later writes to
-Must preserve order*ROWOutput dependence\`*COL\`i\` and \`j\` write to same place
+Must preserve order*ROWOutput dependence*COL\`i\` and \`j\` write to same place
 Must preserve order*ROWControl dependence*COLCannot move instruction before branch if it depends on the branch (e.g. branch condition limits when it should run)*ROWTomasulo's Algorithm*COLTrack when operands are available
 Does register renaming in hardware, minimizing WAR/WAW
 FIFO queue for RS*ROWReorder buffer*COLThe buffer that holds results in a dynamically scheduled processor until it is safe to store the results to memory or a register*ROWVLIW*COLVery Long Instruction Word

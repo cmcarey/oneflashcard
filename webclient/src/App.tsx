@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Redirect, Route, Switch, useLocation } from "react-router";
-import { NavBar } from "./Components/NavBar";
-import { Notification } from "./Components/Notification";
-import { TopBar } from "./Components/TopBar";
-import { LearnPage } from "./Pages/LearnPage";
-import { LoginPage } from "./Pages/LoginPage";
-import { ViewCardsPage } from "./Pages/ViewCardsPage";
+import { LearnPage } from "./Pages/Learn/LearnPage";
+import { LoginPage } from "./Pages/Login/LoginController";
+import { ViewCardsPage } from "./Pages/View/ViewCardsPage";
+import { TopBar } from "./SharedComponents/Header";
+import { NavBar } from "./SharedComponents/Navbar";
+import { Notification } from "./SharedComponents/Notification";
 import { fetchCardsAndTags } from "./Store/Operations";
 import { resetState, useSelector } from "./Store/Store";
 
@@ -42,14 +42,16 @@ export const App = () => {
       {username && <NavBar path={path} />}
 
       <Switch>
+        <Route exact path="/">
+          <ViewCardsPage />
+        </Route>
+
         <Route exact path="/learn">
           <LearnPage />
         </Route>
+
         <Route exact path="/login">
           <LoginPage />
-        </Route>
-        <Route exact path="/">
-          <ViewCardsPage />
         </Route>
 
         <Route>

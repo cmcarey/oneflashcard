@@ -8,12 +8,12 @@ export const Notification = ({
   message: string;
   color: string;
 }) => (
-  <SOuter>
+  <SContainer>
     <SNotification color={color}>{message}</SNotification>
-  </SOuter>
+  </SContainer>
 );
 
-const SOuter = styled.div`
+const SContainer = styled.div`
   position: fixed;
   left: 0;
   right: 0;

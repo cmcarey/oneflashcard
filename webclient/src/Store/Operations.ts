@@ -26,15 +26,17 @@ export const loginOp = (
   dispatch(setApiLoading(true));
 
   const res = await api.login(email, password);
-  if (res.error === "BAD_INPUT") {
-    dispatch(displayError("Bad input"));
-  } else if (res.error === "INVALID_DETAILS") {
-    dispatch(displayError("Invalid login details"));
-  } else if (res.error === "SERVER_ERROR") {
-    dispatch(displayError("Unknown error occurred"));
+  if ("error" in res) {
+    if (res.error === "BAD_INPUT") {
+      dispatch(displayError("Bad input"));
+    } else if (res.error === "INVALID_DETAILS") {
+      dispatch(displayError("Invalid login details"));
+    } else if (res.error === "SERVER_ERROR") {
+      dispatch(displayError("Unknown error occurred"));
+    }
   } else {
-    dispatch(setSessionKey(res.value!.sessionKey));
-    dispatch(setUser({ name: res.value!.name, email }));
+    dispatch(setSessionKey(res.value.sessionKey));
+    dispatch(setUser({ name: res.value.name, email }));
   }
 
   dispatch(setApiLoading(false));
@@ -48,14 +50,16 @@ export const registerOp = (
   dispatch(setApiLoading(true));
 
   const res = await api.register(name, email, password);
-  if (res.error === "BAD_INPUT") {
-    dispatch(displayError("Bad input"));
-  } else if (res.error === "EMAIL_USED") {
-    dispatch(displayError("Email address is in use"));
-  } else if (res.error === "SERVER_ERROR") {
-    dispatch(displayError("Unknown error occurred"));
+  if ("error" in res) {
+    if (res.error === "BAD_INPUT") {
+      dispatch(displayError("Bad input"));
+    } else if (res.error === "EMAIL_USED") {
+      dispatch(displayError("Email address is in use"));
+    } else if (res.error === "SERVER_ERROR") {
+      dispatch(displayError("Unknown error occurred"));
+    }
   } else {
-    dispatch(setSessionKey(res.value!.sessionKey));
+    dispatch(setSessionKey(res.value.sessionKey));
     dispatch(setUser({ name: name, email }));
   }
 
@@ -66,16 +70,18 @@ export const fetchUserOp = (sessionKey: string): Thunk => async dispatch => {
   dispatch(setApiLoading(true));
 
   const res = await api.getUser(sessionKey);
-  if (res.error === "INVALID_SESSION_KEY") {
-    // Reset state
-    dispatch(resetState());
-    dispatch(displayError("Session expired"));
-    return;
-  } else if (res.error === "SERVER_ERROR") {
-    dispatch(displayError("Unknown error occurred"));
+  if ("error" in res) {
+    if (res.error === "INVALID_SESSION_KEY") {
+      // Reset state
+      dispatch(resetState());
+      dispatch(displayError("Session expired"));
+      return;
+    } else if (res.error === "SERVER_ERROR") {
+      dispatch(displayError("Unknown error occurred"));
+    }
   } else {
     dispatch(setSessionKey(sessionKey));
-    dispatch(setUser(res.value!));
+    dispatch(setUser(res.value));
   }
 
   dispatch(setApiLoading(false));
@@ -87,27 +93,31 @@ export const fetchCardsAndTags = (
   dispatch(setApiLoading(true));
 
   const tagsRes = await api.getTags(sessionKey);
-  if (tagsRes.error === "INVALID_SESSION_KEY") {
-    // Reset state
-    dispatch(resetState());
-    dispatch(displayError("Session expired"));
-    return;
-  } else if (tagsRes.error === "SERVER_ERROR") {
-    dispatch(displayError("Unknown error occurred"));
+  if ("error" in tagsRes) {
+    if (tagsRes.error === "INVALID_SESSION_KEY") {
+      // Reset state
+      dispatch(resetState());
+      dispatch(displayError("Session expired"));
+      return;
+    } else if (tagsRes.error === "SERVER_ERROR") {
+      dispatch(displayError("Unknown error occurred"));
+    }
   } else {
-    dispatch(setTags(tagsRes.value!));
+    dispatch(setTags(tagsRes.value));
   }
 
   const cardsRes = await api.getCards(sessionKey);
-  if (cardsRes.error === "INVALID_SESSION_KEY") {
-    // Reset state
-    dispatch(resetState());
-    dispatch(displayError("Session expired"));
-    return;
-  } else if (cardsRes.error === "SERVER_ERROR") {
-    dispatch(displayError("Unknown error occurred"));
+  if ("error" in cardsRes) {
+    if (cardsRes.error === "INVALID_SESSION_KEY") {
+      // Reset state
+      dispatch(resetState());
+      dispatch(displayError("Session expired"));
+      return;
+    } else if (cardsRes.error === "SERVER_ERROR") {
+      dispatch(displayError("Unknown error occurred"));
+    }
   } else {
-    dispatch(setCards(cardsRes.value!));
+    dispatch(setCards(cardsRes.value));
   }
 
   dispatch(setApiLoading(false));

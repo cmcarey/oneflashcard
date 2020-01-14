@@ -21,13 +21,13 @@ body {
 // Shared design elements
 // -----------------------
 
-export const SVertBar = styled.div`
+export const SVertbar = styled.div`
   background: white;
   border-bottom: 1px solid #ddd;
   color: #888;
 `;
 
-export const SPageCenter = styled.div`
+export const SCenter = styled.div`
   margin: 0 auto;
   max-width: 1400px;
 
@@ -38,7 +38,7 @@ export const SBody = styled.div`
   margin-top: 2rem;
 `;
 
-export const SBodyBar = styled.div`
+export const SBodyHeader = styled.div`
   margin-bottom: 1rem;
 
   display: flex;
@@ -51,7 +51,7 @@ export const SBodyTitle = styled.div`
   color: #888;
 `;
 
-export const SBodyBarAction = styled.div`
+export const SBodyAction = styled.div`
   :hover {
     border-color: #5050ff;
     color: #5050ff;

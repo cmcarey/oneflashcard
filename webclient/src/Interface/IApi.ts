@@ -3,10 +3,14 @@ import { Card, Tag, User } from "../Store/Model";
 export type AUTH = "INVALID_SESSION_KEY";
 export type INPUT = "BAD_INPUT";
 
-export type ApiResponse<E, T> = Promise<{
-  error?: E | "SERVER_ERROR";
-  value?: T;
-}>;
+export type ApiResponse<E, T> = Promise<
+  | {
+      error: E | "SERVER_ERROR";
+    }
+  | {
+      value: T;
+    }
+>;
 
 export interface IServer {
   register(

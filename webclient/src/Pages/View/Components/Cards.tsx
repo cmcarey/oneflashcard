@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Card, Tag } from "../Store/Model";
-import { SBox, SBoxBody, SBoxTitle } from "../ui";
+import { SBox, SBoxBody, SBoxTitle } from "../../../SharedStyles";
+import { Card, Tag } from "../../../Store/Model";
 
 export const Cards = ({ cards, tags }: { cards: Card[]; tags: Tag[] }) => {
   const allTagIDs = tags.map(tag => tag.tagID);
