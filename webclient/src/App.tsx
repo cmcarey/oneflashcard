@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Redirect, Route, Switch, useLocation } from "react-router";
 import { LearnPage } from "./Pages/Learn/LearnPage";
 import { LoginPage } from "./Pages/Login/LoginController";
-import { ViewCardsPage } from "./Pages/View/ViewCardsPage";
+import { ViewController } from "./Pages/View/ViewController";
 import { TopBar } from "./SharedComponents/Header";
 import { NavBar } from "./SharedComponents/Navbar";
 import { Notification } from "./SharedComponents/Notification";
@@ -43,7 +43,7 @@ export const App = () => {
 
       <Switch>
         <Route exact path="/">
-          <ViewCardsPage />
+          <ViewController />
         </Route>
 
         <Route exact path="/learn">
