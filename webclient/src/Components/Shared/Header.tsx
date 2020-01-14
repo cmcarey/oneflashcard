@@ -13,7 +13,7 @@ export const TopBar = ({
   <SVertbar>
     <SCenter>
       <STopbar>
-        <Logo width="225px" height="auto" />
+        <Logo width="225px" height={undefined} />
         {username && (
           <SProfileBox>
             <div>{username}</div>

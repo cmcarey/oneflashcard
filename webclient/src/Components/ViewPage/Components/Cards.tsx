@@ -54,10 +54,13 @@ const SContainer = styled.div`
 `;
 
 const STags = styled.div`
+  > *:not(:first-child) {
+    margin-left: 0.5rem;
+  }
+
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  grid-gap: 0.5rem;
   padding-top: 0.5rem;
 
   font-size: 0.7rem;
