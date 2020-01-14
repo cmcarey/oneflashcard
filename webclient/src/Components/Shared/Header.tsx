@@ -26,7 +26,7 @@ export const TopBar = ({
 );
 
 const STopbar = styled.div`
-  padding: 0.5rem;
+  padding: 0.5rem 0;
 
   display: grid;
   grid-auto-flow: column;

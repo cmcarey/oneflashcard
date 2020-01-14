@@ -3,7 +3,15 @@ import styled from "styled-components";
 import { SBox, SBoxBody, SBoxTitle } from "../../../SharedStyles";
 import { Card, Tag } from "../../../Store/Model";
 
-export const Cards = ({ cards, tags }: { cards: Card[]; tags: Tag[] }) => {
+export const Cards = ({
+  cards,
+  tags,
+  editCard
+}: {
+  cards: Card[];
+  tags: Tag[];
+  editCard: (card: Card) => void;
+}) => {
   const allTagIDs = tags.map(tag => tag.tagID);
 
   const tagsOfCard = (card: Card): Tag[] =>
@@ -12,7 +20,7 @@ export const Cards = ({ cards, tags }: { cards: Card[]; tags: Tag[] }) => {
   return (
     <SContainer>
       {cards.map(card => (
-        <SBoxHover key={card.cardID}>
+        <SBoxHover key={card.cardID} onClick={() => editCard(card)}>
           <SBoxTitle>{card.title}</SBoxTitle>
           <SBoxBody>{card.text}</SBoxBody>
           {card.tagIDs.length > 0 && (

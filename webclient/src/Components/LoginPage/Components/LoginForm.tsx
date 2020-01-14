@@ -22,6 +22,7 @@ export const LoginForm = ({
             value={props.values.email}
             onChange={props.handleChange}
             placeholder="Email address"
+            type="email"
           />
           <SFormInput
             name="password"

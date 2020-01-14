@@ -9,14 +9,22 @@ import {
 import { Card, Tag } from "../../Store/Model";
 import { Cards } from "./Components/Cards";
 
-export const ViewView = ({ cards, tags }: { cards: Card[]; tags: Tag[] }) => (
+export const ViewView = ({
+  cards,
+  tags,
+  editCard
+}: {
+  cards: Card[];
+  tags: Tag[];
+  editCard: (card: Card) => void;
+}) => (
   <SBody>
     <SCenter>
       <SBodyHeader>
         <SBodyTitle>Viewing all cards</SBodyTitle>
         <SBodyAction>Add card</SBodyAction>
       </SBodyHeader>
-      <Cards cards={cards} tags={tags} />
+      <Cards {...{ cards, tags, editCard }} />
     </SCenter>
   </SBody>
 );

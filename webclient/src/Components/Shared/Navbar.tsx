@@ -21,7 +21,6 @@ export const NavBar = ({ path }: { path: string }) => (
 const SBar = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 0 0.5rem;
 `;
 
 const SBarButton = styled(Link)<{ selected?: boolean }>`
