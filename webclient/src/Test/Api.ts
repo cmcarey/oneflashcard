@@ -1,5 +1,5 @@
 import { ApiResponse, AUTH, INPUT, IServer } from "../Interface/IApi";
-import { Card, Tag, User } from "../Store/Model";
+import { Card, Tag, User } from "../Model";
 import { resCards, resTags } from "./Res";
 
 const key = "some-session-key";

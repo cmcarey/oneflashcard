@@ -74,6 +74,9 @@ export const SBox = styled.div`
   max-width: 500px;
 
   padding: 0.5rem;
+  display: grid;
+  grid-gap: 0.5rem;
+  align-content: start;
 
   background: white;
   border-radius: 0.5rem;
@@ -82,8 +85,6 @@ export const SBox = styled.div`
 `;
 
 export const SBoxTitle = styled.div`
-  margin-bottom: 0.5rem;
-
   font-weight: bold;
 `;
 
@@ -109,6 +110,10 @@ const formStyles = css`
 `;
 
 export const SFormInput = styled.input`
+  ${formStyles};
+`;
+
+export const SFormTextArea = styled.textarea`
   ${formStyles};
 `;
 

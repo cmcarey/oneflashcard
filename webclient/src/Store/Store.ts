@@ -10,39 +10,35 @@ import {
   useSelector as useReduxSelector
 } from "react-redux";
 import { ThunkAction } from "redux-thunk";
-import { Card, Tag, User } from "./Model";
+import { Card, Tag, User } from "../Model";
 
 const initialState: {
   errorMessage?: string;
   sessionKey?: string;
   user?: User;
-  editingCard?: Card;
 
-  apiLoading: boolean;
+  apiCallsInProgress: number;
   cards: Card[];
   tags: Tag[];
 } = {
-  apiLoading: false,
+  apiCallsInProgress: 0,
   cards: [],
   tags: []
 };
 
-const appSlice = createSlice({
+const AppSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    setEditingCard(state, action: PayloadAction<Card>) {
-      state.editingCard = action.payload;
-    },
-    clearEditingCard(state) {
-      state.editingCard = undefined;
-    },
     resetState(state) {
       localStorage.clear();
       return initialState;
     },
-    setApiLoading(state, action: PayloadAction<boolean>) {
-      state.apiLoading = action.payload;
+    startApiCall(state) {
+      state.apiCallsInProgress++;
+    },
+    finishApiCall(state) {
+      state.apiCallsInProgress--;
     },
     setErrorMessage(state, action: PayloadAction<string>) {
       state.errorMessage = action.payload;
@@ -74,9 +70,11 @@ const appSlice = createSlice({
   }
 });
 
-export const actions = appSlice.actions;
-export const reducer = combineReducers({ appSlice: appSlice.reducer });
+export const AppActions = AppSlice.actions;
+const reducer = combineReducers({ App: AppSlice.reducer });
+
 export type RootState = ReturnType<typeof reducer>;
 export type Thunk = ThunkAction<void, RootState, null, Action<string>>;
-export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
+
 export const store = configureStore({ reducer });
+export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;

@@ -1,17 +1,17 @@
 import { api } from "..";
-import { actions, Thunk } from "./Store";
+import { AppActions, Thunk } from "./Store";
 
 export const operations = {
   displayError: (message: string): Thunk => async dispatch => {
-    dispatch(actions.setErrorMessage(message));
+    dispatch(AppActions.setErrorMessage(message));
 
     setTimeout(() => {
-      dispatch(actions.clearErrorMessage());
+      dispatch(AppActions.clearErrorMessage());
     }, 3000);
   },
 
   login: (email: string, password: string): Thunk => async dispatch => {
-    dispatch(actions.setApiLoading(true));
+    dispatch(AppActions.startApiCall());
 
     const res = await api.login(email, password);
     if ("error" in res) {
@@ -23,11 +23,11 @@ export const operations = {
         dispatch(operations.displayError("Unknown error occurred"));
       }
     } else {
-      dispatch(actions.setSessionKey(res.value.sessionKey));
-      dispatch(actions.setUser({ name: res.value.name, email }));
+      dispatch(AppActions.setSessionKey(res.value.sessionKey));
+      dispatch(AppActions.setUser({ name: res.value.name, email }));
     }
 
-    dispatch(actions.setApiLoading(false));
+    dispatch(AppActions.finishApiCall());
   },
 
   register: (
@@ -35,7 +35,7 @@ export const operations = {
     email: string,
     password: string
   ): Thunk => async dispatch => {
-    dispatch(actions.setApiLoading(true));
+    dispatch(AppActions.startApiCall());
 
     const res = await api.register(name, email, password);
     if ("error" in res) {
@@ -47,65 +47,65 @@ export const operations = {
         dispatch(operations.displayError("Unknown error occurred"));
       }
     } else {
-      dispatch(actions.setSessionKey(res.value.sessionKey));
-      dispatch(actions.setUser({ name: name, email }));
+      dispatch(AppActions.setSessionKey(res.value.sessionKey));
+      dispatch(AppActions.setUser({ name: name, email }));
     }
 
-    dispatch(actions.setApiLoading(false));
+    dispatch(AppActions.finishApiCall());
   },
 
   fetchUser: (sessionKey: string): Thunk => async dispatch => {
-    dispatch(actions.setApiLoading(true));
+    dispatch(AppActions.startApiCall());
 
     const res = await api.getUser(sessionKey);
     if ("error" in res) {
       if (res.error === "INVALID_SESSION_KEY") {
         // Reset state
-        dispatch(actions.resetState());
+        dispatch(AppActions.resetState());
         dispatch(operations.displayError("Session expired"));
         return;
       } else if (res.error === "SERVER_ERROR") {
         dispatch(operations.displayError("Unknown error occurred"));
       }
     } else {
-      dispatch(actions.setSessionKey(sessionKey));
-      dispatch(actions.setUser(res.value));
+      dispatch(AppActions.setSessionKey(sessionKey));
+      dispatch(AppActions.setUser(res.value));
     }
 
-    dispatch(actions.setApiLoading(false));
+    dispatch(AppActions.finishApiCall());
   },
 
   fetchCardsAndTags: (sessionKey: string): Thunk => async dispatch => {
-    dispatch(actions.setApiLoading(true));
+    dispatch(AppActions.startApiCall());
 
     const tagsRes = await api.getTags(sessionKey);
     if ("error" in tagsRes) {
       if (tagsRes.error === "INVALID_SESSION_KEY") {
         // Reset state
-        dispatch(actions.resetState());
+        dispatch(AppActions.resetState());
         dispatch(operations.displayError("Session expired"));
         return;
       } else if (tagsRes.error === "SERVER_ERROR") {
         dispatch(operations.displayError("Unknown error occurred"));
       }
     } else {
-      dispatch(actions.setTags(tagsRes.value));
+      dispatch(AppActions.setTags(tagsRes.value));
     }
 
     const cardsRes = await api.getCards(sessionKey);
     if ("error" in cardsRes) {
       if (cardsRes.error === "INVALID_SESSION_KEY") {
         // Reset state
-        dispatch(actions.resetState());
+        dispatch(AppActions.resetState());
         dispatch(operations.displayError("Session expired"));
         return;
       } else if (cardsRes.error === "SERVER_ERROR") {
         dispatch(operations.displayError("Unknown error occurred"));
       }
     } else {
-      dispatch(actions.setCards(cardsRes.value));
+      dispatch(AppActions.setCards(cardsRes.value));
     }
 
-    dispatch(actions.setApiLoading(false));
+    dispatch(AppActions.finishApiCall());
   }
 };

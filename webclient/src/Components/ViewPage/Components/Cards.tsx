@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { Card, Tag } from "../../../Model";
 import { SBox, SBoxBody, SBoxTitle } from "../../../SharedStyles";
-import { Card, Tag } from "../../../Store/Model";
 
 export const Cards = ({
   cards,
@@ -61,7 +61,6 @@ const STags = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding-top: 0.5rem;
 
   font-size: 0.7rem;
 `;

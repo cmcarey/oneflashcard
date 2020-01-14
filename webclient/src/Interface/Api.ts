@@ -1,4 +1,4 @@
-import { Card, Tag, User } from "../Store/Model";
+import { Card, Tag, User } from "../Model";
 import { ApiResponse, AUTH, INPUT, IServer } from "./IApi";
 
 export class Api implements IServer {

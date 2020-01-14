@@ -1,4 +1,4 @@
-import { Card, Tag, User } from "../Store/Model";
+import { Card, Tag, User } from "../Model";
 
 export type AUTH = "INVALID_SESSION_KEY";
 export type INPUT = "BAD_INPUT";

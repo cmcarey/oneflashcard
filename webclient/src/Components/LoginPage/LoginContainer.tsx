@@ -4,10 +4,9 @@ import { operations } from "../../Store/Operations";
 import { useSelector } from "../../Store/Store";
 import { LoginView } from "./LoginView";
 
-export const LoginController = () => {
+export const LoginContainer = () => {
   const dispatch = useDispatch();
-  const loggedIn =
-    useSelector(state => state.appSlice.user?.name) !== undefined;
+  const loggedIn = useSelector(state => state.App.user?.name) !== undefined;
 
   const login = (email: string, password: string) => {
     dispatch(operations.login(email, password));
