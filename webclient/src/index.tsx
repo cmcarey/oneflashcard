@@ -7,7 +7,7 @@ import { App } from "./App";
 import { Api } from "./Interface/Api";
 import "./Resources/index.css";
 import { GlobalStyle } from "./SharedStyles";
-import { fetchUserOp } from "./Store/Operations";
+import { operations } from "./Store/Operations";
 import { store } from "./Store/Store";
 import { MockApi } from "./Test/Api";
 
@@ -17,7 +17,7 @@ export const api = testing ? new MockApi() : new Api();
 
 // Check if session key is already set - if it is, initiate user fetch
 const sessionKey = localStorage.getItem("sessionKey");
-if (sessionKey) store.dispatch(fetchUserOp(sessionKey));
+if (sessionKey) store.dispatch(operations.fetchUser(sessionKey));
 
 ReactDOM.render(
   <Provider store={store}>

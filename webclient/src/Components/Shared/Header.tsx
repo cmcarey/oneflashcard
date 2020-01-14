@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as Logo } from "../Resources/logo.svg";
-import { SCenter, SVertbar } from "../SharedStyles";
+import { ReactComponent as Logo } from "../../Resources/logo.svg";
+import { SCenter, SVertbar } from "../../SharedStyles";
 
 export const TopBar = ({
   username,

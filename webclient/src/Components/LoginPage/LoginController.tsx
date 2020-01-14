@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { loginOp, registerOp } from "../../Store/Operations";
+import { operations } from "../../Store/Operations";
 import { useSelector } from "../../Store/Store";
 import { LoginView } from "./LoginView";
 
@@ -10,11 +10,11 @@ export const LoginPage = () => {
     useSelector(state => state.appSlice.user?.name) !== undefined;
 
   const login = (email: string, password: string) => {
-    dispatch(loginOp(email, password));
+    dispatch(operations.login(email, password));
   };
 
   const register = (name: string, email: string, password: string) => {
-    dispatch(registerOp(name, email, password));
+    dispatch(operations.register(name, email, password));
   };
 
   return <LoginView {...{ loggedIn, login, register }} />;

@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Redirect, Route, Switch, useLocation } from "react-router";
-import { LearnPage } from "./Pages/Learn/LearnPage";
-import { LoginPage } from "./Pages/Login/LoginController";
-import { ViewController } from "./Pages/View/ViewController";
-import { TopBar } from "./SharedComponents/Header";
-import { NavBar } from "./SharedComponents/Navbar";
-import { Notification } from "./SharedComponents/Notification";
-import { fetchCardsAndTags } from "./Store/Operations";
-import { resetState, useSelector } from "./Store/Store";
+import { LearnPage } from "./Components/LearnPage/LearnPage";
+import { LoginPage } from "./Components/LoginPage/LoginController";
+import { TopBar } from "./Components/Shared/Header";
+import { NavBar } from "./Components/Shared/Navbar";
+import { Notification } from "./Components/Shared/Notification";
+import { ViewController } from "./Components/ViewPage/ViewController";
+import { operations } from "./Store/Operations";
+import { actions, useSelector } from "./Store/Store";
 
 export const App = () => {
   const loc = useLocation();
@@ -21,7 +21,7 @@ export const App = () => {
 
   const path = loc.pathname.split("/")[1];
 
-  const logoutAction = () => dispatch(resetState());
+  const logoutAction = () => dispatch(actions.resetState());
 
   // If not logged in, redirect to login page
   const redirectToLogin = !username && loc.pathname !== "/login";
@@ -29,7 +29,7 @@ export const App = () => {
   // Every time location updates, fetch all cards and tags
   useEffect(() => {
     if (!sessionKey) return;
-    dispatch(fetchCardsAndTags(sessionKey));
+    dispatch(operations.fetchCardsAndTags(sessionKey));
   }, [loc.pathname, dispatch, sessionKey]);
 
   return (

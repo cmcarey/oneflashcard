@@ -12,7 +12,7 @@ export const Cards = ({ cards, tags }: { cards: Card[]; tags: Tag[] }) => {
   return (
     <SContainer>
       {cards.map(card => (
-        <SBox key={card.cardID}>
+        <SBoxHover key={card.cardID}>
           <SBoxTitle>{card.title}</SBoxTitle>
           <SBoxBody>{card.text}</SBoxBody>
           {card.tagIDs.length > 0 && (
@@ -24,11 +24,20 @@ export const Cards = ({ cards, tags }: { cards: Card[]; tags: Tag[] }) => {
               ))}
             </STags>
           )}
-        </SBox>
+        </SBoxHover>
       ))}
     </SContainer>
   );
 };
+
+const SBoxHover = styled(SBox)`
+  :hover {
+    box-shadow: 0 1px 2px 3px #e8e8e8;
+  }
+
+  cursor: pointer;
+  transition: 0.1s box-shadow;
+`;
 
 const SContainer = styled.div`
   display: grid;

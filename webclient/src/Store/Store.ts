@@ -12,16 +12,16 @@ import {
 import { ThunkAction } from "redux-thunk";
 import { Card, Tag, User } from "./Model";
 
-type AppState = {
-  apiLoading: boolean;
+const initialState: {
   errorMessage?: string;
   sessionKey?: string;
   user?: User;
+  editingCard?: Card;
+
+  apiLoading: boolean;
   cards: Card[];
   tags: Tag[];
-};
-
-const initialState: AppState = {
+} = {
   apiLoading: false,
   cards: [],
   tags: []
@@ -31,6 +31,12 @@ const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
+    setEditingCard(state, action: PayloadAction<Card>) {
+      state.editingCard = action.payload;
+    },
+    clearEditingCard(state) {
+      state.editingCard = undefined;
+    },
     resetState(state) {
       localStorage.clear();
       return initialState;
@@ -68,19 +74,7 @@ const appSlice = createSlice({
   }
 });
 
-export const {
-  resetState,
-  setApiLoading,
-  setErrorMessage,
-  clearErrorMessage,
-  setSessionKey,
-  setUser,
-  setCards,
-  updateCard,
-  setTags,
-  updateTag
-} = appSlice.actions;
-
+export const actions = appSlice.actions;
 export const reducer = combineReducers({ appSlice: appSlice.reducer });
 export type RootState = ReturnType<typeof reducer>;
 export type Thunk = ThunkAction<void, RootState, null, Action<string>>;

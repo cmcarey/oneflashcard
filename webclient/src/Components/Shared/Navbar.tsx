@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { SCenter, SVertbar } from "../SharedStyles";
+import { SCenter, SVertbar } from "../../SharedStyles";
 
 export const NavBar = ({ path }: { path: string }) => (
   <SVertbar>

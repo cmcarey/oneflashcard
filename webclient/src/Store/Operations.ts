@@ -1,124 +1,111 @@
 import { api } from "..";
-import {
-  clearErrorMessage,
-  resetState,
-  setApiLoading,
-  setCards,
-  setErrorMessage,
-  setSessionKey,
-  setTags,
-  setUser,
-  Thunk
-} from "./Store";
+import { actions, Thunk } from "./Store";
 
-const displayError = (message: string): Thunk => async dispatch => {
-  dispatch(setErrorMessage(message));
+export const operations = {
+  displayError: (message: string): Thunk => async dispatch => {
+    dispatch(actions.setErrorMessage(message));
 
-  setTimeout(() => {
-    dispatch(clearErrorMessage());
-  }, 3000);
-};
+    setTimeout(() => {
+      dispatch(actions.clearErrorMessage());
+    }, 3000);
+  },
 
-export const loginOp = (
-  email: string,
-  password: string
-): Thunk => async dispatch => {
-  dispatch(setApiLoading(true));
+  login: (email: string, password: string): Thunk => async dispatch => {
+    dispatch(actions.setApiLoading(true));
 
-  const res = await api.login(email, password);
-  if ("error" in res) {
-    if (res.error === "BAD_INPUT") {
-      dispatch(displayError("Bad input"));
-    } else if (res.error === "INVALID_DETAILS") {
-      dispatch(displayError("Invalid login details"));
-    } else if (res.error === "SERVER_ERROR") {
-      dispatch(displayError("Unknown error occurred"));
+    const res = await api.login(email, password);
+    if ("error" in res) {
+      if (res.error === "BAD_INPUT") {
+        dispatch(operations.displayError("Bad input"));
+      } else if (res.error === "INVALID_DETAILS") {
+        dispatch(operations.displayError("Invalid login details"));
+      } else if (res.error === "SERVER_ERROR") {
+        dispatch(operations.displayError("Unknown error occurred"));
+      }
+    } else {
+      dispatch(actions.setSessionKey(res.value.sessionKey));
+      dispatch(actions.setUser({ name: res.value.name, email }));
     }
-  } else {
-    dispatch(setSessionKey(res.value.sessionKey));
-    dispatch(setUser({ name: res.value.name, email }));
-  }
 
-  dispatch(setApiLoading(false));
-};
+    dispatch(actions.setApiLoading(false));
+  },
 
-export const registerOp = (
-  name: string,
-  email: string,
-  password: string
-): Thunk => async dispatch => {
-  dispatch(setApiLoading(true));
+  register: (
+    name: string,
+    email: string,
+    password: string
+  ): Thunk => async dispatch => {
+    dispatch(actions.setApiLoading(true));
 
-  const res = await api.register(name, email, password);
-  if ("error" in res) {
-    if (res.error === "BAD_INPUT") {
-      dispatch(displayError("Bad input"));
-    } else if (res.error === "EMAIL_USED") {
-      dispatch(displayError("Email address is in use"));
-    } else if (res.error === "SERVER_ERROR") {
-      dispatch(displayError("Unknown error occurred"));
+    const res = await api.register(name, email, password);
+    if ("error" in res) {
+      if (res.error === "BAD_INPUT") {
+        dispatch(operations.displayError("Bad input"));
+      } else if (res.error === "EMAIL_USED") {
+        dispatch(operations.displayError("Email address is in use"));
+      } else if (res.error === "SERVER_ERROR") {
+        dispatch(operations.displayError("Unknown error occurred"));
+      }
+    } else {
+      dispatch(actions.setSessionKey(res.value.sessionKey));
+      dispatch(actions.setUser({ name: name, email }));
     }
-  } else {
-    dispatch(setSessionKey(res.value.sessionKey));
-    dispatch(setUser({ name: name, email }));
-  }
 
-  dispatch(setApiLoading(false));
-};
+    dispatch(actions.setApiLoading(false));
+  },
 
-export const fetchUserOp = (sessionKey: string): Thunk => async dispatch => {
-  dispatch(setApiLoading(true));
+  fetchUser: (sessionKey: string): Thunk => async dispatch => {
+    dispatch(actions.setApiLoading(true));
 
-  const res = await api.getUser(sessionKey);
-  if ("error" in res) {
-    if (res.error === "INVALID_SESSION_KEY") {
-      // Reset state
-      dispatch(resetState());
-      dispatch(displayError("Session expired"));
-      return;
-    } else if (res.error === "SERVER_ERROR") {
-      dispatch(displayError("Unknown error occurred"));
+    const res = await api.getUser(sessionKey);
+    if ("error" in res) {
+      if (res.error === "INVALID_SESSION_KEY") {
+        // Reset state
+        dispatch(actions.resetState());
+        dispatch(operations.displayError("Session expired"));
+        return;
+      } else if (res.error === "SERVER_ERROR") {
+        dispatch(operations.displayError("Unknown error occurred"));
+      }
+    } else {
+      dispatch(actions.setSessionKey(sessionKey));
+      dispatch(actions.setUser(res.value));
     }
-  } else {
-    dispatch(setSessionKey(sessionKey));
-    dispatch(setUser(res.value));
-  }
 
-  dispatch(setApiLoading(false));
-};
+    dispatch(actions.setApiLoading(false));
+  },
 
-export const fetchCardsAndTags = (
-  sessionKey: string
-): Thunk => async dispatch => {
-  dispatch(setApiLoading(true));
+  fetchCardsAndTags: (sessionKey: string): Thunk => async dispatch => {
+    dispatch(actions.setApiLoading(true));
 
-  const tagsRes = await api.getTags(sessionKey);
-  if ("error" in tagsRes) {
-    if (tagsRes.error === "INVALID_SESSION_KEY") {
-      // Reset state
-      dispatch(resetState());
-      dispatch(displayError("Session expired"));
-      return;
-    } else if (tagsRes.error === "SERVER_ERROR") {
-      dispatch(displayError("Unknown error occurred"));
+    const tagsRes = await api.getTags(sessionKey);
+    if ("error" in tagsRes) {
+      if (tagsRes.error === "INVALID_SESSION_KEY") {
+        // Reset state
+        dispatch(actions.resetState());
+        dispatch(operations.displayError("Session expired"));
+        return;
+      } else if (tagsRes.error === "SERVER_ERROR") {
+        dispatch(operations.displayError("Unknown error occurred"));
+      }
+    } else {
+      dispatch(actions.setTags(tagsRes.value));
     }
-  } else {
-    dispatch(setTags(tagsRes.value));
-  }
 
-  const cardsRes = await api.getCards(sessionKey);
-  if ("error" in cardsRes) {
-    if (cardsRes.error === "INVALID_SESSION_KEY") {
-      // Reset state
-      dispatch(resetState());
-      dispatch(displayError("Session expired"));
-      return;
-    } else if (cardsRes.error === "SERVER_ERROR") {
-      dispatch(displayError("Unknown error occurred"));
+    const cardsRes = await api.getCards(sessionKey);
+    if ("error" in cardsRes) {
+      if (cardsRes.error === "INVALID_SESSION_KEY") {
+        // Reset state
+        dispatch(actions.resetState());
+        dispatch(operations.displayError("Session expired"));
+        return;
+      } else if (cardsRes.error === "SERVER_ERROR") {
+        dispatch(operations.displayError("Unknown error occurred"));
+      }
+    } else {
+      dispatch(actions.setCards(cardsRes.value));
     }
-  } else {
-    dispatch(setCards(cardsRes.value));
-  }
 
-  dispatch(setApiLoading(false));
+    dispatch(actions.setApiLoading(false));
+  }
 };
