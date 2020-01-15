@@ -1,5 +1,7 @@
 <template lang="pug">
-  div Viewing cards
+  div
+    p heh
+    button(@click="$store.commit('logout')") logout
 </template>
 
 <script lang="ts">
