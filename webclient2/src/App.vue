@@ -1,7 +1,13 @@
-<template>
-  <div>
-    <router-view />
-  </div>
+<template lang="pug">
+  .div
+    router-view
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="sass">
+@import "https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700&display=swap"
+
+body
+  font-family: "Source Sans Pro", sans-serif
+  background: #fff6ea
+  min-height: 100vh
+</style>

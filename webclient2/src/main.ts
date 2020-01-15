@@ -1,3 +1,5 @@
+import "@fortawesome/fontawesome-free/css/all.css";
+import "bulma/css/bulma.css";
 import "normalize.css";
 import Vue from "vue";
 import App from "./App.vue";
