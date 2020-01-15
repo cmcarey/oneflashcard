@@ -1,5 +1,5 @@
 <template lang="pug">
-  div Viewing cards
+  //- div Viewing cards
 </template>
 
 <script lang="ts">

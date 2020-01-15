@@ -9,11 +9,7 @@ import store, { useStore } from "./store";
 Vue.config.productionTip = false;
 
 const sessionKey = localStorage.getItem("sessionKey");
-if (sessionKey) {
-  const s = useStore(store);
-  s.mutations.setSessionKey({ key: sessionKey });
-  useStore(store).actions.fetchUser();
-}
+if (sessionKey) useStore(store).actions.restore({ sessionKey });
 
 new Vue({
   router,

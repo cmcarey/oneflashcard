@@ -18,14 +18,12 @@ export const api = {
     return { error: "INVALID_DETAILS" };
   },
 
-  async getUser(
-    sessionKey: string
-  ): ApiResponse<"BAD_KEY", { username: string }> {
+  async getUser(sessionKey: string): ApiResponse<"BAD_KEY", { name: string }> {
     // Delay
     await sleep(1000);
     // Ensure session key is correct
     if (sessionKey !== "some-session-key") return { error: "BAD_KEY" };
     // Return user
-    return { value: { username: "Chance Carey" } };
+    return { value: { name: "Chance Carey" } };
   }
 };

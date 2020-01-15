@@ -1,8 +1,8 @@
-import store, { useStore } from "@/store";
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import App from "../components/app/App.vue";
 import Home from "../components/home/Home.vue";
+import Viewcards from "../components/viewcards/Viewcards.vue";
 
 Vue.use(VueRouter);
 
@@ -11,17 +11,14 @@ const routes: RouteConfig[] = [
   {
     path: "/app",
     component: App,
-    beforeEnter(to, from, next) {
-      const s = useStore(store);
-      if (!s.state.loadingUser && !s.getters.authenticated) next("/");
-    }
+    children: [
+      {
+        path: "",
+        component: Viewcards
+      }
+    ]
   },
-  {
-    path: "*",
-    beforeEnter(to, from, next) {
-      next("/");
-    }
-  }
+  { path: "*", redirect: "/" }
 ];
 
 const router = new VueRouter({
