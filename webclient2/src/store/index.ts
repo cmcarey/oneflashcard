@@ -13,17 +13,25 @@ Vue.use(Vuex);
 
 class AppState {
   sessionKey: string | null = null;
+  loadingUser = false;
 }
 
 class AppGetters extends Getters<AppState> {
   get authenticated() {
-    return !!this.state.sessionKey;
+    return this.state.sessionKey !== null;
   }
 }
 
 class AppMutations extends Mutations<AppState> {
   setSessionKey(payload: { key: string }) {
     this.state.sessionKey = payload.key;
+  }
+  setLoadingUser(payload: { to: boolean }) {
+    this.state.loadingUser = payload.to;
+  }
+  logout() {
+    localStorage.clear();
+    this.state.sessionKey = null;
   }
 }
 
@@ -44,7 +52,23 @@ class AppActions extends Actions<
       localStorage.setItem("sessionKey", res.value.key);
     }
 
+    await this.actions.fetchUser();
+
     return {};
+  }
+
+  async fetchUser() {
+    this.mutations.setLoadingUser({ to: true });
+
+    const res = await api.getUser(this.state.sessionKey!);
+
+    if ("error" in res) {
+      // TODO Error with session key
+    } else {
+      // TODO Logged in
+    }
+
+    this.mutations.setLoadingUser({ to: false });
   }
 }
 

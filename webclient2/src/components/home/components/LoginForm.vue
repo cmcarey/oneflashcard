@@ -4,6 +4,7 @@
       label.label Email address
       .control.has-icons-left
         input.input(
+          ref="email"
           v-model="email" 
           type="email"
           placeholder="e.g. chance@carey.sh")
@@ -41,6 +42,10 @@ export default Vue.extend({
       attemptingLogin: false,
       badDetails: false
     };
+  },
+
+  mounted() {
+    (this.$refs.email as any).focus();
   },
 
   methods: {

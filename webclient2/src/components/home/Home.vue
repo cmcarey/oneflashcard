@@ -8,27 +8,36 @@
 
         .level-right
           .level-item
-            .buttons
+            .buttons(v-if="$store.state.loadingUser")
+              button.button.is-loading.is-outlined loading
+
+            .buttons(v-else-if="!$store.getters.authenticated")
               button.button(
                 :class="{'is-link': displayLoginForm}"
                 @click="displayLoginForm = !displayLoginForm") Login
 
-      .level.form-area
-        .level-left
-        .level-right
-          .level-item
-            LoginForm(v-if="displayLoginForm")
+            .buttons.has-addons(v-else)
+              button.button.is-outlined.is-link(@click="goToApp") Go to app
+              button.button.is-outlined.is-danger(
+                @click="$store.commit('logout')") Logout
 
-      p other stuff
+    .container.level.form-area(v-if="displayLoginForm")
+      .level-left
+      .level-right
+        .level-item
+          LoginForm
+
+    Landing
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { AppStore, useStore } from "../../store";
 import LoginForm from "./components/LoginForm.vue";
+import Landing from "./components/Landing.vue";
 
 export default Vue.extend({
-  components: { LoginForm },
+  components: { LoginForm, Landing },
 
   data() {
     return {
@@ -36,7 +45,17 @@ export default Vue.extend({
     };
   },
 
-  methods: {}
+  watch: {
+    "$store.getters.authenticated"(val) {
+      if (val) this.displayLoginForm = false;
+    }
+  },
+
+  methods: {
+    goToApp() {
+      this.$router.push("/app");
+    }
+  }
 });
 </script>
 
@@ -46,8 +65,8 @@ export default Vue.extend({
 
 .form-area
   padding: 0 1rem
-  margin-top: -1rem
   position: absolute
+  z-index: 100
   left: 0
   right: 0
 </style>
