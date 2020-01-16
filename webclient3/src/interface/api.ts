@@ -4,7 +4,7 @@ type AUTH = "INVALID_SESSION_KEY";
 
 type ApiResponse<E, V> = Promise<{ error: E } | { value: V }>;
 
-const sleep = (ms: number = 500) => new Promise(r => setTimeout(r(), ms));
+const sleep = (ms: number = 500) => new Promise(r => setTimeout(r, ms));
 
 export default {
   async login(
