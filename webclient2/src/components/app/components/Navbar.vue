@@ -32,7 +32,7 @@ export default Vue.extend({
 
 a
   display: inline-block
-  padding: 1rem
+  padding: .75rem 1rem
   color: #a8a8a8
   border-bottom: 1px solid transparent
   transition: .1s border-bottom-color, .1s color

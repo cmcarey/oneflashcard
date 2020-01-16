@@ -26,8 +26,9 @@ export default Vue.extend({
 
 .inner
   padding: 1rem
-  display: grid
-  grid-template-columns: 1fr auto
+  display: flex
+  justify-content: space-between
+  flex-wrap: wrap
 
 .logo
   height: 40px
