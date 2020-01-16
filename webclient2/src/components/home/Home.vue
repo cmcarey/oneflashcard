@@ -1,20 +1,20 @@
 <template lang="pug">
-  div
-    .container.padded
-      .level
-        .level-left
-          .level-item
-            img(width="250px" src="../../assets/logo.svg")
+div
+  .container.padded
+    .level
+      .level-left
+        .level-item
+          img(width="250px" src="../../assets/logo.svg")
 
-        .level-right
-          .level-item
-            button.button.is-loading(v-if="loadingUser") loading
-            Login(v-else-if="!loggedIn")
-            .buttons.has-addons(v-else)
-              button.button.is-outlined.is-link(@click="goToApp") Go to app
-              button.button.is-outlined.is-danger(@click="logout") Logout
+      .level-right
+        .level-item
+          button.button.is-loading(v-if="loadingUser") loading
+          Login(v-else-if="!loggedIn")
+          .buttons.has-addons(v-else)
+            button.button.is-outlined.is-link(@click="goToApp") Go to app
+            button.button.is-outlined.is-danger(@click="logout") Logout
 
-    Landing
+  Landing
 </template>
 
 <script lang="ts">

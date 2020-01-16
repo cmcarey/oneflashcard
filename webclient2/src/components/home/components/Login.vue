@@ -1,37 +1,37 @@
 <template lang="pug">
-  div
-    button.button(@click="toggleForm") Login
-    .floating
-      .level
-        .level-left
-        .level-right
-          .level-item
-            .box(v-if="showForm")
-              form(@submit.prevent="login")
-                .field
-                  label.label Email
-                  .control.has-icons-left
-                    input.input(
-                      ref="email"
-                      v-model="email"
-                      placeholder="Email address"
-                      type="email")
-                    span.icon.is-small.is-left
-                      i.fas.fa-envelope
+div
+  button.button(@click="toggleForm") Login
+  .floating
+    .level
+      .level-left
+      .level-right
+        .level-item
+          .box(v-if="showForm")
+            form(@submit.prevent="login")
+              .field
+                label.label Email
+                .control.has-icons-left
+                  input.input(
+                    ref="email"
+                    v-model="email"
+                    placeholder="Email address"
+                    type="email")
+                  span.icon.is-small.is-left
+                    i.fas.fa-envelope
 
-                .field
-                  label.label Password
-                  .control.has-icons-left
-                    input.input(
-                      v-model="password"
-                      placeholder="Password"
-                      type="password")
-                    span.icon.is-small.is-left
-                      i.fas.fa-key
+              .field
+                label.label Password
+                .control.has-icons-left
+                  input.input(
+                    v-model="password"
+                    placeholder="Password"
+                    type="password")
+                  span.icon.is-small.is-left
+                    i.fas.fa-key
 
-                button.button.is-primary(
-                  :class="{'is-loading': loggingIn}") Login
-                p.help.is-danger(v-if="badDetails") Invalid details
+              button.button.is-primary(
+                :class="{'is-loading': loggingIn}") Login
+              p.help.is-danger(v-if="badDetails") Invalid details
 </template>
 
 <script lang="ts">

@@ -1,33 +1,35 @@
 <template lang="pug">
-  div
-    .topbar
-      img.logo(src="../../assets/logo.svg")
-      button.button.is-outlined.is-danger(@click="logout") logout
-    .optbar
-      a.selected
-        span.icon
-          i.fas.fa-bars
-        | View all cards
-      a 
-        span.icon
-          i.fas.fa-graduation-cap
-        | Learn cards
-    div(v-if="loadingUser") loading
-    div(v-else-if="!loggedIn") not logged in
-    router-view(v-else)
+div
+  Topbar(:loadingUser="loadingUser" :logout="logout")
+  Navbar(:routes="routes")
+  router-view
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import store, { useStore, AppMapper, AppStore } from "../../store";
+import Topbar from "./components/Topbar.vue";
+import Navbar from "./components/Navbar.vue";
 
 export default Vue.extend({
+  components: { Topbar, Navbar },
   mounted() {
     if (!this.loggedIn && !this.loadingUser) this.$router.push("/");
   },
+
   computed: {
+    routes() {
+      const currRouteName = this.$route.name;
+      const routes = [
+        ["/app", "View all cards", "viewcards", "fa-bars"],
+        ["/app/learn", "Learn cards", "learncards", "fa-graduation-cap"]
+      ];
+
+      return routes.map(route => [...route, route[2] === currRouteName]);
+    },
     ...AppMapper.mapGetters(["loggedIn", "loadingUser"])
   },
+
   methods: {
     logout() {
       AppStore.context(this.$store).mutations.logout();
@@ -36,38 +38,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style lang="sass" scoped>
-.topbar
-  display: grid
-  grid-template-columns: 1fr auto
-  background: white
-  padding: 1rem
-  border-bottom: 1px solid #d0e0ff
-
-  .logo
-    height: 40px
-
-.optbar
-  background: white
-  border-bottom: 1px solid #d0e0ff
-  padding: 0 1rem
-
-  a
-    display: inline-block
-    padding: 1rem
-    color: #a8a8a8
-    border-bottom: 1px solid transparent
-    transition: .1s border-bottom-color, .1s color
-
-    span
-      margin-right: .3rem
-
-    &.selected
-      color: black
-      border-bottom-color: black
-
-    &:hover
-      color: blue
-      border-bottom-color: blue
-</style>

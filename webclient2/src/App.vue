@@ -1,6 +1,6 @@
 <template lang="pug">
-  .div
-    router-view
+.div
+  router-view
 </template>
 
 <style lang="sass">
@@ -8,6 +8,7 @@
 
 body
   font-family: "Source Sans Pro", sans-serif
-  background: #fff6ea
+  background: #effaff
   min-height: 100vh
+  font-size: .9rem
 </style>

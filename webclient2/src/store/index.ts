@@ -12,9 +12,14 @@ import {
 
 Vue.use(Vuex);
 
+type Card = { cardID: string; title: string; text: string; tagIDs: string[] };
+type Tag = { tagID: string; text: string; color: string };
+
 class AppState {
   sessionKey: string | null = null;
   user: { name: string } | null = null;
+  cards: Card[] = [];
+  tags: Tag[] = [];
 }
 
 class AppGetters extends Getters<AppState> {
@@ -24,6 +29,18 @@ class AppGetters extends Getters<AppState> {
 
   get loadingUser() {
     return this.state.sessionKey !== null && this.state.user === null;
+  }
+
+  get mappedCards() {
+    const tags = this.state.tags;
+    const tagIDs = tags.map(tag => tag.tagID);
+
+    return this.state.cards.map(card => ({
+      cardID: card.cardID,
+      title: card.title,
+      text: card.text,
+      tags: card.tagIDs.map(tagID => tags[tagIDs.indexOf(tagID)])
+    }));
   }
 }
 
@@ -38,6 +55,12 @@ class AppMutations extends Mutations<AppState> {
     localStorage.clear();
     this.state.sessionKey = null;
     this.state.user = null;
+  }
+  setCards(payload: { to: Card[] }) {
+    this.state.cards = payload.to;
+  }
+  setTags(payload: { to: Tag[] }) {
+    this.state.tags = payload.to;
   }
 }
 
@@ -64,6 +87,13 @@ class AppActions extends Actions<
     return {};
   }
 
+  async restore(payload: { sessionKey: string }) {
+    this.mutations.setSessionKey({ to: payload.sessionKey });
+
+    // Fetch user info
+    await this.actions.fetchUser();
+  }
+
   async fetchUser() {
     const res = await api.getUser(this.state.sessionKey!);
 
@@ -72,13 +102,28 @@ class AppActions extends Actions<
     } else {
       this.mutations.setUser({ user: res.value });
     }
+
+    await this.actions.fetchCardsAndTags();
   }
 
-  async restore(payload: { sessionKey: string }) {
-    this.mutations.setSessionKey({ to: payload.sessionKey });
+  async fetchCardsAndTags() {
+    const cardRes = await api.getCards(this.state.sessionKey!);
 
-    // Fetch user info
-    await this.actions.fetchUser();
+    if ("error" in cardRes) {
+      if (cardRes.error === "BAD_KEY") this.mutations.logout();
+      return;
+    }
+
+    this.mutations.setCards({ to: cardRes.value });
+
+    const tagRes = await api.getTags(this.state.sessionKey!);
+
+    if ("error" in tagRes) {
+      if (tagRes.error === "BAD_KEY") this.mutations.logout();
+      return;
+    }
+
+    this.mutations.setTags({ to: tagRes.value });
   }
 }
 
