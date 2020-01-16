@@ -24,6 +24,12 @@ export default observer((props: Props) => (
 const SBox = styled.div.attrs({ className: "box" })`
   margin-bottom: 0 !important;
   max-width: 400px;
+  cursor: pointer;
+  transition: 0.2s background;
+
+  :hover {
+    background: #faf6ff;
+  }
 `;
 
 const SCardTags = styled.div`
