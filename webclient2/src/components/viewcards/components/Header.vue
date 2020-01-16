@@ -1,11 +1,18 @@
 <template lang="pug">
 .page-header
   .page-title Viewing all cards
-  button.button.is-outlined.is-link
-    span.icon
-      i.far.fa-plus-square
+  .buttons
+    button.button
+      span.icon
+        i.fas.fa-filter
 
-    span Add card
+      span Filter cards
+      
+    button.button
+      span.icon
+        i.far.fa-plus-square
+
+      span Add card
 </template>
 
 <script lang="ts">
@@ -16,11 +23,13 @@ export default Vue.extend({});
 
 <style lang="sass" scoped>
 .page-header
-  display: grid
-  grid-template-columns: 1fr auto
-  align-items: center
+  display: flex
+  justify-content: space-between
+  flex-wrap: wrap
 
 .page-title
   font-size: 1.5rem
   color: #7b7b7b
+
+.buttons
 </style>
