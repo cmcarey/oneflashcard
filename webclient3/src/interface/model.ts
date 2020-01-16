@@ -3,11 +3,18 @@ export interface User {
   email: string;
 }
 
-export interface Card {
+export interface LinkedCard {
   cardID: string;
   title: string;
   text: string;
   tags: Tag[];
+}
+
+export interface Card {
+  cardID: string;
+  title: string;
+  text: string;
+  tagIDs: string[];
 }
 
 export interface Tag {

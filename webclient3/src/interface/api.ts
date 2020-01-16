@@ -1,4 +1,5 @@
-import { User } from "./model";
+import { resCards, resTags } from "./cards";
+import { Card, Tag, User } from "./model";
 
 type AUTH = "INVALID_SESSION_KEY";
 
@@ -33,5 +34,23 @@ export default {
       };
 
     return { error: "INVALID_SESSION_KEY" };
+  },
+
+  async fetchCards(sessionKey: string): ApiResponse<AUTH, { cards: Card[] }> {
+    await sleep();
+
+    if (sessionKey !== "some-session-key")
+      return { error: "INVALID_SESSION_KEY" };
+
+    return { value: { cards: resCards } };
+  },
+
+  async fetchTags(sessionKey: string): ApiResponse<AUTH, { tags: Tag[] }> {
+    await sleep();
+
+    if (sessionKey !== "some-session-key")
+      return { error: "INVALID_SESSION_KEY" };
+
+    return { value: { tags: resTags } };
   }
 };

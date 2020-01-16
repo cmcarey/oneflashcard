@@ -1,10 +1,13 @@
 import { observer, useLocalStore } from "mobx-react";
 import React from "react";
+import { useHistory } from "react-router";
 import userStore from "../../stores/userStore";
 import LoginForm from "./components/LoginForm";
 import Topbar from "./components/Topbar";
 
 export default observer(() => {
+  const history = useHistory();
+
   const state = useLocalStore(() => ({
     loginFormOpen: false
   }));
@@ -17,6 +20,8 @@ export default observer(() => {
     state.loginFormOpen = false;
   };
 
+  const goToApp = () => history.push("/app");
+
   return (
     <div>
       <Topbar
@@ -24,6 +29,7 @@ export default observer(() => {
         loading={userStore.fetchingUser}
         toggleLogin={toggleLogin}
         logout={() => userStore.logout()}
+        goToApp={goToApp}
       />
 
       {state.loginFormOpen && <LoginForm attemptLogin={attemptLogin} />}

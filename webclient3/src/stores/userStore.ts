@@ -1,6 +1,7 @@
 import { action, computed, observable } from "mobx";
 import api from "../interface/api";
 import { User } from "../interface/model";
+import cardStore from "./cardStore";
 
 class UserStore {
   @observable
@@ -28,6 +29,8 @@ class UserStore {
     this.user = res.value.user;
 
     localStorage.setItem("sessionKey", this.sessionKey!);
+
+    cardStore.fetchAll();
   }
 
   @action
@@ -36,11 +39,13 @@ class UserStore {
     const res = await api.restore(sessionKey);
 
     if ("error" in res) {
-      this.sessionKey = undefined;
+      this.logout();
       return res.error;
     }
 
     this.user = res.value.user;
+
+    cardStore.fetchAll();
   }
 
   @action
