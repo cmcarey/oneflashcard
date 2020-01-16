@@ -8,15 +8,18 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { PropValidator } from "vue/types/options";
+import { createComponent } from "@vue/composition-api";
 
-export default Vue.extend({
-  props: {
-    loadingUser: Boolean,
-    logout: Function as PropValidator<() => void>
-  }
+export default createComponent({
+  props: { loadingUser: Boolean, logout: Function }
 });
+
+// export default Vue.extend({
+//   props: {
+//     loadingUser: Boolean,
+//     logout: Function as PropValidator<() => void>
+//   }
+// });
 </script>
 
 <style lang="sass" scoped>

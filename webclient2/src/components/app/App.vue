@@ -6,35 +6,71 @@ div
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import store, { useStore, AppMapper, AppStore } from "../../store";
 import Topbar from "./components/Topbar.vue";
 import Navbar from "./components/Navbar.vue";
+import { createComponent, onMounted, computed } from "@vue/composition-api";
+import { createMapper } from "vuex-smart-module";
 
-export default Vue.extend({
+const allRoutes = [
+  ["/app", "View all cards", "viewcards", "fa-bars"],
+  ["/app/learn", "Learn cards", "learncards", "fa-graduation-cap"]
+];
+
+export default createComponent({
   components: { Topbar, Navbar },
-  mounted() {
-    if (!this.loggedIn && !this.loadingUser) this.$router.push("/");
-  },
 
-  computed: {
-    routes() {
-      const currRouteName = this.$route.name;
-      const routes = [
-        ["/app", "View all cards", "viewcards", "fa-bars"],
-        ["/app/learn", "Learn cards", "learncards", "fa-graduation-cap"]
-      ];
+  setup(_, context) {
+    const store = AppStore.context(context.root.$store);
 
-      return routes.map(route => [...route, route[2] === currRouteName]);
-    },
-    ...AppMapper.mapGetters(["loggedIn", "loadingUser"])
-  },
+    const routes = computed(() => {
+      const currRouteName = context.root.$route.name;
+      return allRoutes.map(route => [...route, route[2] === currRouteName]);
+    });
 
-  methods: {
-    logout() {
-      AppStore.context(this.$store).mutations.logout();
-      this.$router.push("/");
-    }
+    const { loggedIn, loadingUser } = AppStore.mapGetters([
+      "loggedIn",
+      "loadingUser"
+    ]);
+
+    const logout = () => {
+      useStore(context.root.$store).mutations.logout();
+      context.root.$router.push("/");
+    };
+
+    onMounted(() => {
+      if (!store.getters.loggedIn && !store.getters.loadingUser)
+        context.root.$router.push("/");
+    });
+
+    return { routes, loadingUser, logout };
   }
 });
+
+// export default Vue.extend({
+//   components: { Topbar, Navbar },
+//   mounted() {
+//     if (!this.loggedIn && !this.loadingUser) this.$router.push("/");
+//   },
+
+//   computed: {
+//     routes() {
+//       const currRouteName = this.$route.name;
+//       const routes = [
+//         ["/app", "View all cards", "viewcards", "fa-bars"],
+//         ["/app/learn", "Learn cards", "learncards", "fa-graduation-cap"]
+//       ];
+
+//       return routes.map(route => [...route, route[2] === currRouteName]);
+//     },
+//     ...AppMapper.mapGetters(["loggedIn", "loadingUser"])
+//   },
+
+//   methods: {
+//     logout() {
+//       AppStore.context(this.$store).mutations.logout();
+//       this.$router.push("/");
+//     }
+//   }
+// });
 </script>
