@@ -1,4 +1,4 @@
-import { resCards, resTags } from "./cards";
+import { randomColor, resCards, resTags } from "./cards";
 import { Card, Tag, User } from "./model";
 
 type AUTH = "INVALID_SESSION_KEY";
@@ -6,6 +6,10 @@ type AUTH = "INVALID_SESSION_KEY";
 type ApiResponse<E, V> = Promise<{ error: E } | { value: V }>;
 
 const sleep = (ms: number = 500) => new Promise(r => setTimeout(r, ms));
+
+const cards = resCards;
+const tags = resTags;
+let nextTagID = tags.length + 1;
 
 export default {
   async login(
@@ -42,7 +46,7 @@ export default {
     if (sessionKey !== "some-session-key")
       return { error: "INVALID_SESSION_KEY" };
 
-    return { value: { cards: resCards } };
+    return { value: { cards } };
   },
 
   async fetchTags(sessionKey: string): ApiResponse<AUTH, { tags: Tag[] }> {
@@ -51,6 +55,32 @@ export default {
     if (sessionKey !== "some-session-key")
       return { error: "INVALID_SESSION_KEY" };
 
-    return { value: { tags: resTags } };
+    return { value: { tags } };
+  },
+
+  async newTag(
+    sessionKey: string,
+    text: string
+  ): ApiResponse<AUTH, { tag: Tag }> {
+    await sleep();
+
+    if (sessionKey !== "some-session-key")
+      return { error: "INVALID_SESSION_KEY" };
+
+    const tag = { tagID: (nextTagID++).toString(), text, color: randomColor() };
+    tags.push(tag);
+    return { value: { tag } };
+  },
+
+  async updateCard(sessionKey: string, card: Card): ApiResponse<AUTH, void> {
+    await sleep();
+
+    if (sessionKey !== "some-session-key")
+      return { error: "INVALID_SESSION_KEY" };
+
+    const cardIDs = cards.map(card => card.cardID);
+    cards.splice(cardIDs.indexOf(card.cardID), 1, card);
+
+    return { value: undefined };
   }
 };

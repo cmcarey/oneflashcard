@@ -14,7 +14,7 @@ export default observer(() => {
     { text: "Learn cards", icon: "fas fa-chalkboard", route: "/app/learn" }
   ];
 
-  const logout = () => userStore.logout();
+  const logout = () => userStore.reset();
 
   const loadingClass = userStore.fetchingUser ? "is-loading" : "";
 

@@ -28,7 +28,7 @@ export default observer(() => {
         loggedIn={userStore.loggedIn}
         loading={userStore.fetchingUser}
         toggleLogin={toggleLogin}
-        logout={() => userStore.logout()}
+        logout={() => userStore.reset()}
         goToApp={goToApp}
       />
 

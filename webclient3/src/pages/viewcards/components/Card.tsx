@@ -1,35 +1,65 @@
-import { observer } from "mobx-react";
+import { observer, useLocalStore } from "mobx-react";
 import React from "react";
 import styled from "styled-components";
-import { LinkedCard } from "../../../interface/model";
+import { Card, LinkedCard, Tag } from "../../../interface/model";
+import SCardBox from "../styles/SCardBox";
+import Editor from "./Editor";
 
-type Props = { card: LinkedCard };
+type Props = {
+  card: LinkedCard;
+  allTags: Tag[];
+  addTag: (text: string) => Promise<Tag | undefined>;
+  updateCard: (card: Card) => Promise<void>;
+};
 
-export default observer((props: Props) => (
-  <SBox>
-    <b>{props.card.title}</b>
-    <p>{props.card.text}</p>
-    {props.card.tags.length > 0 && (
-      <SCardTags>
-        {props.card.tags.map(tag => (
-          <SCardTag key={tag.tagID} color={tag.color}>
-            {tag.text}
-          </SCardTag>
-        ))}
-      </SCardTags>
-    )}
-  </SBox>
-));
+export default observer((props: Props) => {
+  const state = useLocalStore(() => ({ editing: false }));
 
-const SBox = styled.div.attrs({ className: "box" })`
-  margin-bottom: 0 !important;
-  max-width: 400px;
+  const submitCard = async (title: string, text: string, tagIDs: string[]) => {
+    await props.updateCard({ cardID: props.card.cardID, title, text, tagIDs });
+    console.log(tagIDs);
+    state.editing = false;
+  };
+
+  if (state.editing)
+    return (
+      <Editor
+        card={props.card}
+        allTags={props.allTags}
+        addTag={props.addTag}
+        closeEditor={() => (state.editing = false)}
+        submitCard={submitCard}
+      />
+    );
+
+  return (
+    <SBox onClick={() => (state.editing = true)}>
+      <b>{props.card.title}</b>
+      <SCardText>{props.card.text}</SCardText>
+      {props.card.tags.length > 0 && (
+        <SCardTags>
+          {props.card.tags.map(tag => (
+            <SCardTag key={tag.tagID} color={tag.color}>
+              {tag.text}
+            </SCardTag>
+          ))}
+        </SCardTags>
+      )}
+    </SBox>
+  );
+});
+
+const SBox = styled(SCardBox)`
   cursor: pointer;
   transition: 0.2s background;
 
   :hover {
     background: #faf6ff;
   }
+`;
+
+const SCardText = styled.p`
+  white-space: pre-line;
 `;
 
 const SCardTags = styled.div`

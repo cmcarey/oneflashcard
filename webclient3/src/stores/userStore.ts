@@ -39,7 +39,7 @@ class UserStore {
     const res = await api.restore(sessionKey);
 
     if ("error" in res) {
-      this.logout();
+      this.reset();
       return res.error;
     }
 
@@ -49,7 +49,7 @@ class UserStore {
   }
 
   @action
-  logout() {
+  reset() {
     this.sessionKey = undefined;
     this.user = undefined;
     localStorage.clear();

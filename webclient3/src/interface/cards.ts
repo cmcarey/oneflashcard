@@ -96,12 +96,16 @@ All other cached copies are invalidated*ROWData hazard*COLOccurs when dependence
 let nextTagID = 1;
 let nextCardID = 1;
 
+const colors = ["#ffc1c1", "#ffedc1", "#c1ffdc", "#c1f9ff", "#f1c1ff"];
+export const randomColor = () =>
+  colors[Math.floor(Math.random() * colors.length)];
+
 const tagTexts: [string, string][] = [
-  ["Compiler", "#ffc1c1"],
-  ["Cache", "#ffedc1"],
-  ["Memory", "#c1ffdc"],
-  ["GPU", "#c1f9ff"],
-  ["CPU", "#f1c1ff"]
+  ["Compiler", randomColor()],
+  ["Cache", randomColor()],
+  ["Memory", randomColor()],
+  ["GPU", randomColor()],
+  ["CPU", randomColor()]
 ];
 
 export const resTags = tagTexts.map(tagText => ({

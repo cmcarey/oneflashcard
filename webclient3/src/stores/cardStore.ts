@@ -28,14 +28,38 @@ class CardStore {
     if (!sessionKey) return;
 
     const cards = await api.fetchCards(sessionKey);
-    if ("error" in cards) return userStore.logout();
+    if ("error" in cards) return userStore.reset();
 
     this.cards = cards.value.cards;
 
     const tags = await api.fetchTags(sessionKey);
-    if ("error" in tags) return userStore.logout();
+    if ("error" in tags) return userStore.reset();
 
     this.tags = tags.value.tags;
+  }
+
+  @action
+  async addTag(text: string) {
+    const sessionKey = userStore.sessionKey;
+    if (!sessionKey) return;
+
+    const res = await api.newTag(sessionKey, text);
+    if ("error" in res) return;
+
+    this.tags.push(res.value.tag);
+
+    return res.value.tag;
+  }
+
+  @action
+  async updateCard(card: Card) {
+    const sessionKey = userStore.sessionKey;
+    if (!sessionKey) return;
+
+    const res = await api.updateCard(sessionKey, card);
+    if ("error" in res) return;
+
+    await this.fetchAll();
   }
 }
 
