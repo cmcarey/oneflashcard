@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import styled from "styled-components";
 
-type Props = { children: JSX.Element };
+type Props = { children: JSX.Element | JSX.Element[] };
 
 export default observer((props: Props) => {
   return (
