@@ -17,6 +17,7 @@
     "@types/react-textarea-autosize": "^4.3.5",
     "@types/styled-components": "^4.4.2",
     "bulma": "^0.8.0",
+    "fuse.js": "^3.4.6",
     "mobx": "^5.15.2",
     "mobx-react": "^6.1.5",
     "normalize.css": "^8.0.1",

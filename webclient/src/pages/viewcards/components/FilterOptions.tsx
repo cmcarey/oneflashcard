@@ -8,6 +8,8 @@ type Props = {
   allTags: Tag[];
   filteredTagIDs: string[];
   setFilteredTagIDs: (ids: string[]) => void;
+  filterString: string;
+  setFilterString: (s: string) => void;
 };
 
 export default observer((props: Props) => {
@@ -26,11 +28,17 @@ export default observer((props: Props) => {
   return (
     <SContainer>
       <div className="control has-icons-left">
-        <input className="input" placeholder="Search by card title"></input>
+        <input
+          className="input"
+          placeholder="Search by card title"
+          value={props.filterString}
+          onChange={e => props.setFilterString(e.target.value)}
+        ></input>
         <span className="icon is-left">
           <i className="fas fa-search" />
         </span>
       </div>
+
       <SFilterContainer>
         <Select
           isMulti
