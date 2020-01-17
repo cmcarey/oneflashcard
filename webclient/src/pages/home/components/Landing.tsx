@@ -11,7 +11,7 @@ export default observer(() => (
         <h1>Flashcards, improved</h1>
         <p>
           <b>oneflashcard</b> allows you to organize your flashcard items by
-          tags rather than just by sets.
+          <b> tags</b> rather than by <b>sets</b>.
         </p>
         <p>Sort, filter, and learn your flashcards in intelligent ways.</p>
       </SText>

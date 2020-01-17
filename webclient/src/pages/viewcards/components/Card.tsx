@@ -54,6 +54,9 @@ export default observer((props: Props) => {
 const SBox = styled(SCardBox)`
   cursor: pointer;
   transition: 0.2s background;
+  display: grid;
+  align-content: start;
+  grid-template-rows: auto 1fr auto;
 
   :hover {
     background: #faf6ff;

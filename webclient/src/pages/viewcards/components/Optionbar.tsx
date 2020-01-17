@@ -95,5 +95,4 @@ const SButtonContainer = styled.div`
 
 const SFilterContainer = styled.div`
   min-width: 300px;
-  // margin-left: 1rem;
 `;
