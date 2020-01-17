@@ -8,6 +8,7 @@ type ApiResponse<E, V> = Promise<{ error: E } | { value: V }>;
 const sleep = (ms: number = 500) => new Promise(r => setTimeout(r, ms));
 
 const cards = resCards;
+let nextCardID = cards.length + 1;
 const tags = resTags;
 let nextTagID = tags.length + 1;
 
@@ -70,6 +71,23 @@ export default {
     const tag = { tagID: (nextTagID++).toString(), text, color: randomColor() };
     tags.push(tag);
     return { value: { tag } };
+  },
+
+  async newCard(
+    sessionKey: string,
+    title: string,
+    text: string,
+    tagIDs: string[]
+  ): ApiResponse<AUTH, { card: Card }> {
+    await sleep();
+
+    if (sessionKey !== "some-session-key")
+      return { error: "INVALID_SESSION_KEY" };
+
+    const card = { cardID: (nextCardID++).toString(), title, text, tagIDs };
+    cards.splice(0, 0, card);
+
+    return { value: { card } };
   },
 
   async updateCard(sessionKey: string, card: Card): ApiResponse<AUTH, void> {

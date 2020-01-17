@@ -5,18 +5,27 @@ import { Card } from "../../interface/model";
 import Body from "../../shared/components/Body";
 import cardStore from "../../stores/cardStore";
 import Cards from "./components/Cards";
-import FilterOptions from "./components/FilterOptions";
+import Optionbar from "./components/Optionbar";
 
 export default observer(() => {
   const state = useLocalStore(() => ({
     filterTagIDs: [] as string[],
-    filterString: ""
+    filterString: "",
+    addingCard: false
   }));
 
   const setFilteredTagIDs = (ids: string[]) => (state.filterTagIDs = ids);
   const setFilterString = (s: string) => (state.filterString = s);
   const addTag = (v: string) => cardStore.addTag(v);
   const updateCard = (card: Card) => cardStore.updateCard(card);
+  const openAddCardBox = () => (state.addingCard = true);
+  const closeAddCardBox = () => (state.addingCard = false);
+
+  const addCard = async (title: string, text: string, tagIDs: string[]) => {
+    const t = await cardStore.newCard(title, text, tagIDs);
+    state.addingCard = false;
+    return t;
+  };
 
   let cards = cardStore.linkedCards;
 
@@ -38,18 +47,22 @@ export default observer(() => {
 
   return (
     <Body>
-      <FilterOptions
+      <Optionbar
         allTags={cardStore.tags}
         filteredTagIDs={state.filterTagIDs}
         setFilteredTagIDs={setFilteredTagIDs}
         filterString={state.filterString}
         setFilterString={setFilterString}
+        addCard={openAddCardBox}
       />
       <Cards
         cards={cards}
         allTags={cardStore.tags}
         addTag={addTag}
         updateCard={updateCard}
+        addingCard={state.addingCard}
+        closeAddCardBox={closeAddCardBox}
+        addCard={addCard}
       />
     </Body>
   );

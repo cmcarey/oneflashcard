@@ -9,16 +9,10 @@ export default observer((props: Props) => {
   return (
     <SBar>
       <div className="container">
-        <div className="level">
-          <div className="level-left">
-            <div className="level-item">
-              <Logo height="40px" width={undefined} />
-            </div>
-          </div>
-          <div className="level-right">
-            <div className="level-item">{props.children}</div>
-          </div>
-        </div>
+        <SContainer>
+          <Logo height="40px" width={undefined} />
+          {props.children}
+        </SContainer>
       </div>
     </SBar>
   );
@@ -28,4 +22,16 @@ const SBar = styled.div`
   background: white;
   padding: 0.5rem 1rem;
   border-bottom: 1px solid #e1e1e1;
+`;
+
+const SContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  @media only screen and (max-width: 500px) {
+    flex-direction: column;
+    & > *:first-child {
+      margin-bottom: 1rem;
+    }
+  }
 `;

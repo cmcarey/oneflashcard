@@ -52,6 +52,17 @@ class CardStore {
   }
 
   @action
+  async newCard(title: string, text: string, tagIDs: string[]) {
+    const sessionKey = userStore.sessionKey;
+    if (!sessionKey) return;
+
+    const res = await api.newCard(sessionKey, title, text, tagIDs);
+    if ("error" in res) return;
+
+    await this.fetchAll();
+  }
+
+  @action
   async updateCard(card: Card) {
     const sessionKey = userStore.sessionKey;
     if (!sessionKey) return;

@@ -10,6 +10,7 @@ type Props = {
   setFilteredTagIDs: (ids: string[]) => void;
   filterString: string;
   setFilterString: (s: string) => void;
+  addCard: () => void;
 };
 
 export default observer((props: Props) => {
@@ -27,6 +28,15 @@ export default observer((props: Props) => {
 
   return (
     <SContainer>
+      <SButtonContainer>
+        <button className="button" onClick={props.addCard}>
+          <span className="icon is-left">
+            <i className="far fa-plus-square" />
+          </span>
+          <span>New card</span>
+        </button>
+      </SButtonContainer>
+
       <div className="control has-icons-left">
         <input
           className="input"
@@ -54,13 +64,36 @@ export default observer((props: Props) => {
 });
 
 const SContainer = styled.div`
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 1rem;
-  justify-content: left;
+  display: flex;
   align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  @media only screen and (min-width: 731px) {
+    & > *:last-child {
+      margin-left: 1rem;
+    }
+  }
+
+  @media only screen and (max-width: 730px) {
+    flex-direction: column;
+    align-items: stretch;
+    & > *:not(:first-child) {
+      margin-top: 0.5rem;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+`;
+
+const SButtonContainer = styled.div`
+  flex-grow: 1;
 `;
 
 const SFilterContainer = styled.div`
   min-width: 300px;
+  // margin-left: 1rem;
 `;
