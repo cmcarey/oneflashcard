@@ -28,7 +28,7 @@ export default observer((rawProps: Props) => {
   if (props.card) {
     // Check each tag ID is in state.lastPropTagIDs
     // If not and not in tagIDs, add there, then add to tagIDs
-    props.card.tags.map(tag => {
+    props.card.tags.forEach(tag => {
       if (
         state.lastPropTagIDs.indexOf(tag.tagID) === -1 &&
         state.tagIDs.indexOf(tag.tagID) === -1

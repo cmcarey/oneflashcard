@@ -15,7 +15,7 @@ export default observer(() => {
       <Cards
         cards={cardStore.linkedCards}
         allTags={cardStore.tags}
-        addTag={(v: string) => cardStore.addTag(v)}
+        addTag={addTag}
         updateCard={updateCard}
       />
     </Body>
