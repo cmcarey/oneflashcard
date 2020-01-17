@@ -1,7 +1,7 @@
 {
-  "name": "oneflashcard.server.core",
+  "name": "oneflashcard-server",
   "version": "1.0.0",
-  "license": "MIT",
+  "private": true,
   "dependencies": {
     "@hapi/joi": "^17.0.0",
     "bcrypt": "^3.0.7",

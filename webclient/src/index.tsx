@@ -1,30 +1,14 @@
+import "@fortawesome/fontawesome-free/css/all.css";
+import "bulma/css/bulma.css";
 import "normalize.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import { App } from "./App";
-import { Api } from "./Interface/Api";
-import "./Resources/index.css";
-import { GlobalStyle } from "./SharedStyles";
-import { operations } from "./Store/Operations";
-import { store } from "./Store/Store";
-import { MockApi } from "./Test/Api";
+import App from "./App";
+import "./index.css";
+import userStore from "./stores/userStore";
 
-// TODO Determine when testing or not
-const testing = true;
-export const api = testing ? new MockApi() : new Api();
+// Restore session
+const key = localStorage.getItem("sessionKey");
+if (key) userStore.restore(key);
 
-// Check if session key is already set - if it is, initiate user fetch
-const sessionKey = localStorage.getItem("sessionKey");
-if (sessionKey) store.dispatch(operations.fetchUser(sessionKey));
-
-ReactDOM.render(
-  <Provider store={store}>
-    <GlobalStyle />
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));
