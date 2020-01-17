@@ -50,6 +50,7 @@ const SContainer = styled.div`
   grid-auto-flow: column;
   grid-gap: 1rem;
   justify-content: left;
+  align-items: center;
 `;
 
 const SFilterContainer = styled.div`
