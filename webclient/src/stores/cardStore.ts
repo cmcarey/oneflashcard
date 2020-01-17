@@ -72,6 +72,17 @@ class CardStore {
 
     await this.fetchAll();
   }
+
+  @action
+  async deleteCard(cardID: string) {
+    const sessionKey = userStore.sessionKey;
+    if (!sessionKey) return;
+
+    const res = await api.deleteCard(sessionKey, cardID);
+    if ("error" in res) return;
+
+    await this.fetchAll();
+  }
 }
 
 export default new CardStore();

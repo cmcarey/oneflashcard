@@ -27,6 +27,10 @@ export default observer(() => {
     return t;
   };
 
+  const deleteCard = async (cardID: string) => {
+    await cardStore.deleteCard(cardID);
+  };
+
   let cards = cardStore.linkedCards;
 
   if (state.filterTagIDs.length > 0)
@@ -63,6 +67,7 @@ export default observer(() => {
         addingCard={state.addingCard}
         closeAddCardBox={closeAddCardBox}
         addCard={addCard}
+        deleteCard={deleteCard}
       />
     </Body>
   );

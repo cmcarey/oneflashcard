@@ -100,5 +100,20 @@ export default {
     cards.splice(cardIDs.indexOf(card.cardID), 1, card);
 
     return { value: undefined };
+  },
+
+  async deleteCard(
+    sessionKey: string,
+    cardID: string
+  ): ApiResponse<AUTH, void> {
+    await sleep();
+
+    if (sessionKey !== "some-session-key")
+      return { error: "INVALID_SESSION_KEY" };
+
+    const cardIDs = cards.map(card => card.cardID);
+    cards.splice(cardIDs.indexOf(cardID), 1);
+
+    return { value: undefined };
   }
 };

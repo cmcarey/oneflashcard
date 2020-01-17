@@ -13,6 +13,7 @@ type Props = {
   addingCard: boolean;
   closeAddCardBox: () => void;
   addCard: (title: string, text: string, tagIDs: string[]) => void;
+  deleteCard: (cardID: string) => void;
 };
 
 export default observer((props: Props) => (
@@ -32,6 +33,7 @@ export default observer((props: Props) => (
         allTags={props.allTags}
         addTag={props.addTag}
         updateCard={props.updateCard}
+        deleteCard={() => props.deleteCard(card.cardID)}
       />
     ))}
   </SCardsContainer>

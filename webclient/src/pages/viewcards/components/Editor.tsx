@@ -12,13 +12,14 @@ type Props = {
   addTag: (text: string) => Promise<Tag | undefined>;
   closeEditor: () => void;
   submitCard: (title: string, text: string, tagIDs: string[]) => void;
+  deleteCard?: () => void;
 };
 
 export default observer((rawProps: Props) => {
   const props = useAsObservableSource(rawProps);
 
   const state = useLocalStore(() => ({
-    submitting: false,
+    loading: false,
     title: props.card?.title || "",
     text: props.card?.text || "",
     tagIDs: props.card?.tags.map(tag => tag.tagID) || [],
@@ -52,13 +53,19 @@ export default observer((rawProps: Props) => {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (state.submitting) return;
-    state.submitting = true;
+    if (state.loading) return;
+    state.loading = true;
 
     props.submitCard(state.title, state.text, state.tagIDs);
   };
 
-  const submitClass = state.submitting ? "is-loading" : "";
+  const deleteCard = () => {
+    state.loading = true;
+
+    props.deleteCard!();
+  };
+
+  const submitClass = state.loading ? "is-loading" : "";
 
   return (
     <SBox>
@@ -67,6 +74,7 @@ export default observer((rawProps: Props) => {
           <label className="label">Card title</label>
           <div className="control has-icons-left">
             <input
+              autoFocus
               className="input"
               value={state.title}
               onChange={e => (state.title = e.target.value)}
@@ -104,13 +112,23 @@ export default observer((rawProps: Props) => {
           >
             Update
           </button>
-          {!state.submitting && (
-            <button
-              onClick={props.closeEditor}
-              className="button is-outlined is-small is-danger"
-            >
-              Cancel
-            </button>
+          {!state.loading && (
+            <div>
+              <button
+                onClick={props.closeEditor}
+                className="button is-outlined is-small is-primary"
+              >
+                Cancel
+              </button>
+              {props.deleteCard && (
+                <button
+                  onClick={deleteCard}
+                  className="button is-outlined is-small is-danger"
+                >
+                  Delete
+                </button>
+              )}
+            </div>
           )}
         </div>
       </form>

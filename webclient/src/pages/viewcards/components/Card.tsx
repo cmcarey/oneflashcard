@@ -10,6 +10,7 @@ type Props = {
   allTags: Tag[];
   addTag: (text: string) => Promise<Tag | undefined>;
   updateCard: (card: Card) => Promise<void>;
+  deleteCard: () => void;
 };
 
 export default observer((props: Props) => {
@@ -29,6 +30,7 @@ export default observer((props: Props) => {
         addTag={props.addTag}
         closeEditor={() => (state.editing = false)}
         submitCard={submitCard}
+        deleteCard={props.deleteCard}
       />
     );
 

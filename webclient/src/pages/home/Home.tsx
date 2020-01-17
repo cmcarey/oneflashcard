@@ -2,6 +2,7 @@ import { observer, useLocalStore } from "mobx-react";
 import React from "react";
 import { useHistory } from "react-router";
 import userStore from "../../stores/userStore";
+import Landing from "./components/Landing";
 import LoginForm from "./components/LoginForm";
 import Topbar from "./components/Topbar";
 
@@ -34,7 +35,7 @@ export default observer(() => {
 
       {state.loginFormOpen && <LoginForm attemptLogin={attemptLogin} />}
 
-      <div>Home content</div>
+      <Landing />
     </div>
   );
 });

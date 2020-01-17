@@ -86,6 +86,7 @@ const SWrapper = styled.div`
   padding: 0 1rem;
   position: absolute;
   width: 100%;
+  z-index: 100;
 `;
 
 const SFloat = styled.div`
