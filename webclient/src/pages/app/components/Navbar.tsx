@@ -21,7 +21,7 @@ export default observer((props: Props) => {
             <span className="icon">
               <i className={route.icon} />
             </span>
-            {route.text}
+            <span className="text">{route.text}</span>
           </SLink>
         ))}
       </div>
@@ -33,6 +33,15 @@ const SBar = styled.div`
   background: white;
   padding: 0rem 1rem;
   border-bottom: 1px solid #e1e1e1;
+
+  @media only screen and (max-width: 400px) {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 100;
+    border-bottom: none;
+    border-top: 1px solid #e1e1e1;
+  }
 `;
 
 const SLink = styled(Link)`
@@ -40,23 +49,38 @@ const SLink = styled(Link)`
   padding: 0.8rem 1rem;
   color: #919191;
   border-bottom: 1px solid transparent;
-  transition: 0.1s color, 0.1s border-bottom-color;
+  transition: 0.1s color, 0.1s border-color;
 
-  span {
+  @media only screen and (max-width: 400px) {
+    border-bottom: none;
+    border-top: 1px solid transparent;
+  }
+
+  .icon {
     margin-right: 0.5rem;
   }
 
   &.selected {
     color: black;
-    border-bottom-color: black;
+    border-color: black;
   }
 
   :not(.selected):hover {
     color: #3769ff;
-    border-bottom-color: #3769ff;
+    border-color: #3769ff;
   }
 
   :focus {
     outline: none;
+  }
+
+  @media only screen and (max-width: 500px) {
+    .text {
+      display: none;
+    }
+
+    .icon {
+      margin-right: 0;
+    }
   }
 `;

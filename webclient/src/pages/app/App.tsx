@@ -4,14 +4,17 @@ import { Redirect, Route, Switch, useLocation } from "react-router";
 import Topbar from "../../shared/components/Topbar";
 import userStore from "../../stores/userStore";
 import Viewcards from "../viewcards/Viewcards";
+import LogoutButton from "./components/LogoutButton";
 import Navbar from "./components/Navbar";
+import SPageGrid from "./components/SPageGrid";
 
 export default observer(() => {
   const loc = useLocation();
 
   const routes: { text: string; icon: string; route: string }[] = [
     { text: "View all cards", icon: "fas fa-bars", route: "/app" },
-    { text: "Learn cards", icon: "fas fa-chalkboard", route: "/app/learn" }
+    { text: "Learn cards", icon: "fas fa-chalkboard", route: "/app/learn" },
+    { text: "Manage tags", icon: "fas fa-tags", route: "" }
   ];
 
   const logout = () => userStore.reset();
@@ -21,29 +24,26 @@ export default observer(() => {
   return (
     <div>
       <Topbar>
-        <button
-          className={`button is-danger is-outlined ${loadingClass}`}
-          onClick={logout}
-        >
-          Logout
-        </button>
+        <LogoutButton isLoading={userStore.fetchingUser} logout={logout} />
       </Topbar>
 
-      <Navbar routes={routes} currRoute={loc.pathname} />
+      <SPageGrid>
+        <Navbar routes={routes} currRoute={loc.pathname} />
 
-      <Switch>
-        <Route exact path="/app">
-          <Viewcards />
-        </Route>
+        <Switch>
+          <Route exact path="/app">
+            <Viewcards />
+          </Route>
 
-        <Route exact path="/app/learn">
-          <div>Learn cards</div>
-        </Route>
+          <Route exact path="/app/learn">
+            <div>Learn cards</div>
+          </Route>
 
-        <Route path="*">
-          <Redirect to="/app" />
-        </Route>
-      </Switch>
+          <Route path="*">
+            <Redirect to="/app" />
+          </Route>
+        </Switch>
+      </SPageGrid>
     </div>
   );
 });

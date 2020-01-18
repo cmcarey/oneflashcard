@@ -11,7 +11,7 @@ export default observer((props: Props) => {
       <div className="container">
         <SContainer>
           <Logo height="40px" width={undefined} />
-          {props.children}
+          <div>{props.children}</div>
         </SContainer>
       </div>
     </SBar>
@@ -27,11 +27,4 @@ const SBar = styled.div`
 const SContainer = styled.div`
   display: flex;
   justify-content: space-between;
-
-  @media only screen and (max-width: 500px) {
-    flex-direction: column;
-    & > *:first-child {
-      margin-bottom: 1rem;
-    }
-  }
 `;
