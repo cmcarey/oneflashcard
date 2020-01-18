@@ -106,31 +106,35 @@ export default observer((rawProps: Props) => {
           />
         </div>
 
-        <div className="buttons">
+        <SButtons className="buttons">
           <button
-            className={`button is-outlined is-small is-link ${submitClass}`}
+            className={`button is-small is-link is-outlined ${submitClass}`}
           >
-            Update
+            <span>Save</span>
           </button>
           {!state.loading && (
             <div>
-              <button
-                onClick={props.closeEditor}
-                className="button is-outlined is-small is-primary"
-              >
-                Cancel
-              </button>
               {props.deleteCard && (
                 <button
                   onClick={deleteCard}
-                  className="button is-outlined is-small is-danger"
+                  className="button is-small is-danger is-outlined"
                 >
-                  Delete
+                  <span className="icon">
+                    <i className="fas fa-trash" />
+                  </span>
                 </button>
               )}
+              <button
+                onClick={props.closeEditor}
+                className="button is-small is-danger is-outlined"
+              >
+                <span className="icon">
+                  <i className="far fa-window-close" />
+                </span>
+              </button>
             </div>
           )}
-        </div>
+        </SButtons>
       </form>
     </SBox>
   );
@@ -143,4 +147,10 @@ const SBox = styled(SCardBox)`
 const STextArea = styled(TextareaAutosize)`
   resize: none;
   font-size: 0.9rem;
+`;
+
+const SButtons = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
