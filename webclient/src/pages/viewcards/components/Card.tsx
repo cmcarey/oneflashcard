@@ -68,14 +68,13 @@ const SCardText = styled.p`
 `;
 
 const SCardTags = styled.div`
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 0.3rem;
-  justify-content: start;
-  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const SCardTag = styled.div<{ color: string }>`
+  margin: 0.3rem 0.3rem 0 0;
   font-size: 0.7rem;
   padding: 0 0.3rem;
   border-radius: 0.3rem;
