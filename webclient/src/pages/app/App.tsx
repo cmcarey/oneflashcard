@@ -3,6 +3,7 @@ import React from "react";
 import { Redirect, Route, Switch, useLocation } from "react-router";
 import Topbar from "../../shared/components/Topbar";
 import userStore from "../../stores/userStore";
+import Managetags from "../managetags/Managetags";
 import Viewcards from "../viewcards/Viewcards";
 import LogoutButton from "./components/LogoutButton";
 import Navbar from "./components/Navbar";
@@ -14,12 +15,10 @@ export default observer(() => {
   const routes: { text: string; icon: string; route: string }[] = [
     { text: "View all cards", icon: "fas fa-bars", route: "/app" },
     { text: "Learn cards", icon: "fas fa-chalkboard", route: "/app/learn" },
-    { text: "Manage tags", icon: "fas fa-tags", route: "" }
+    { text: "Manage tags", icon: "fas fa-tags", route: "/app/tags" }
   ];
 
   const logout = () => userStore.reset();
-
-  const loadingClass = userStore.fetchingUser ? "is-loading" : "";
 
   return (
     <div>
@@ -37,6 +36,10 @@ export default observer(() => {
 
           <Route exact path="/app/learn">
             <div>Learn cards</div>
+          </Route>
+
+          <Route exact path="/app/tags">
+            <Managetags />
           </Route>
 
           <Route path="*">

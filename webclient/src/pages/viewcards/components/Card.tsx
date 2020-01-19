@@ -18,7 +18,6 @@ export default observer((props: Props) => {
 
   const submitCard = async (title: string, text: string, tagIDs: string[]) => {
     await props.updateCard({ cardID: props.card.cardID, title, text, tagIDs });
-    console.log(tagIDs);
     state.editing = false;
   };
 
@@ -41,7 +40,7 @@ export default observer((props: Props) => {
       {props.card.tags.length > 0 && (
         <SCardTags>
           {props.card.tags.map(tag => (
-            <SCardTag key={tag.tagID} color={tag.color}>
+            <SCardTag key={tag.tagID} tagColor={tag.color}>
               {tag.text}
             </SCardTag>
           ))}
@@ -73,11 +72,11 @@ const SCardTags = styled.div`
   flex-wrap: wrap;
 `;
 
-const SCardTag = styled.div<{ color: string }>`
+const SCardTag = styled.div<{ tagColor: string }>`
   margin: 0.3rem 0.3rem 0 0;
   font-size: 0.7rem;
   padding: 0 0.3rem;
   border-radius: 0.3rem;
   color: black;
-  background: ${p => p.color};
+  background: ${p => p.tagColor};
 `;
