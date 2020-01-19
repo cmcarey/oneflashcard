@@ -30,6 +30,12 @@ The **view all cards** tab allows you to view all of the cards that exist under 
 
 The **manage tags** tab allows you to modify tags by changing their text, color, or deleting them.
 
+## Responsive UI
+
+![](images/ui_mobile.png)
+
+The UI is fully responsive and adapts to tablet and mobile form factors.
+
 # Status
 
 This project is still in early stage development. Some (quite important) missing features are:
