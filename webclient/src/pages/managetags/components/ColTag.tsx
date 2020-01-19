@@ -31,7 +31,9 @@ export default observer((props: Props) => {
     <STag key={props.tag.tagID} ref={ref}>
       <STopRow tagCol={props.tag.color}>
         <STagText onClick={toggleColorPicker}>{props.tag.text}</STagText>
-        <SDelButton onClick={deleteTag}>X</SDelButton>
+        <SDelButton onClick={deleteTag}>
+          <i className="fas fa-minus-circle" />
+        </SDelButton>
       </STopRow>
       {state.colorPickerOpen && (
         <SPickerContainer>
@@ -44,12 +46,6 @@ export default observer((props: Props) => {
 
 const STag = styled.div`
   margin: 0.5rem 0.5rem 0 0;
-  background: transparent
-
-  box-shadow: 0 0.5em 1em -0.125em rgba(98, 98, 98, 0.1),
-    0 0px 0 1px rgba(189, 189, 189, 0.02);
-
-  cursor: pointer;
 `;
 
 const STopRow = styled.div<{ tagCol: string }>`
@@ -58,6 +54,10 @@ const STopRow = styled.div<{ tagCol: string }>`
   display: flex;
   flex-direction: columns;
   justify-content: space-between;
+  cursor: pointer;
+
+  box-shadow: 0 0.5em 1em -0.125em rgba(98, 98, 98, 0.1),
+    0 0px 0 1px rgba(189, 189, 189, 0.02);
 `;
 
 const STagText = styled.div`
@@ -76,9 +76,8 @@ const STagText = styled.div`
 `;
 
 const SDelButton = styled.div`
-  font-weight: bold;
   padding: 0.5rem;
-  color: #8a8a8a;
+  color: white;
 
   background: inherit;
   transition: 0.1s filter;
