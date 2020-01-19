@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import { TwitterPicker } from "react-color";
 import styled from "styled-components";
 import { Tag } from "../../../interface/model";
+import { allTagColors } from "../../../shared/colors";
 import useOutsideClick from "../../../shared/useOutsideClick";
 
 type Props = { tag: Tag };
@@ -18,29 +19,36 @@ export default observer((props: Props) => {
   useOutsideClick(ref, () => (state.colorPickerOpen = false));
 
   return (
-    <STag key={props.tag.tagID} tagCol={props.tag.color} ref={ref}>
-      <STagText onClick={toggleColorPicker}>{props.tag.text}</STagText>
-      <SDelButton>X</SDelButton>
+    <STag key={props.tag.tagID} ref={ref}>
+      <STopRow tagCol={props.tag.color}>
+        <STagText onClick={toggleColorPicker}>{props.tag.text}</STagText>
+        <SDelButton>X</SDelButton>
+      </STopRow>
       {state.colorPickerOpen && (
         <SPickerContainer>
-          <TwitterPicker />
+          <TwitterPicker colors={allTagColors} />
         </SPickerContainer>
       )}
     </STag>
   );
 });
 
-const STag = styled.div<{ tagCol: string }>`
-  background: ${p => p.tagCol};
-  border-radius: 0.5rem;
+const STag = styled.div`
   margin: 0.5rem 0.5rem 0 0;
+  background: transparent
 
   box-shadow: 0 0.5em 1em -0.125em rgba(98, 98, 98, 0.1),
     0 0px 0 1px rgba(189, 189, 189, 0.02);
-  display: flex;
-  flex-direction: row;
+
   cursor: pointer;
-  position: relative;
+`;
+
+const STopRow = styled.div<{ tagCol: string }>`
+  background: ${p => p.tagCol};
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: columns;
+  justify-content: space-between;
 `;
 
 const STagText = styled.div`
@@ -51,6 +59,7 @@ const STagText = styled.div`
   transition: 0.1s filter;
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
+  flex-grow: 1;
 
   &:hover {
     filter: brightness(1.1);
@@ -72,8 +81,4 @@ const SDelButton = styled.div`
   }
 `;
 
-const SPickerContainer = styled.div`
-  position: absolute;
-  top: calc(100% + 10px);
-  z-index: 100;
-`;
+const SPickerContainer = styled.div``;

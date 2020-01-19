@@ -1,3 +1,5 @@
+import { randomTagColor } from "../shared/colors";
+
 const all = `Wall clock time*COLTotal execution time*ROWCPU time*COLTime spent executing the program*ROWCompulsory misses*COLFirst time a block is used (first reference)*ROWCapacity misses*COLBlock used, later discarded, used again*ROWConflict misses*COLRepeated references to different blocks that map to same cache location*ROWWay prediction*COLExtra bits kept in cache to predict the way (or block within the set) of the next cache access
 Mux set early to select the desired block*ROWVictim cache*COLA small cache that holds items recently expelled from the cache*ROWCritical word first*COLRequest missed word from memory first, send to proc as soon as it arrives*ROWEarly restart*COLRequest words in normal order, send missed word to proc as soon as it arrives*ROWCompiler blocking*COLSubdivide matrices into blocks, more memory access but improves spatial locality*ROWHardware prefetch*COLFetch next sequential block, spatial locality*ROWCompiler prefetch*COLCompiler inserts prefetch instructions*ROWNonblocking cache*COLA cache that allows the processor to make references to the cache while the cache is handling an earlier miss*ROWCycle time*COLTime between starting memory accesses*ROWSRAM*COLStatic RAM
 Used for cache
@@ -96,16 +98,12 @@ All other cached copies are invalidated*ROWData hazard*COLOccurs when dependence
 let nextTagID = 1;
 let nextCardID = 1;
 
-const colors = ["#ffc1c1", "#ffedc1", "#c1ffdc", "#c1f9ff", "#f1c1ff"];
-export const randomColor = () =>
-  colors[Math.floor(Math.random() * colors.length)];
-
 const tagTexts: [string, string][] = [
-  ["Compiler", randomColor()],
-  ["Cache", randomColor()],
-  ["Memory", randomColor()],
-  ["GPU", randomColor()],
-  ["CPU", randomColor()]
+  ["Compiler", randomTagColor()],
+  ["Cache", randomTagColor()],
+  ["Memory", randomTagColor()],
+  ["GPU", randomTagColor()],
+  ["CPU", randomTagColor()]
 ];
 
 export const resTags = tagTexts.map(tagText => ({

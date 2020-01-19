@@ -1,4 +1,5 @@
-import { randomColor, resCards, resTags } from "./cards";
+import { randomTagColor } from "../shared/colors";
+import { resCards, resTags } from "./cards";
 import { Card, Tag, User } from "./model";
 
 type AUTH = "INVALID_SESSION_KEY";
@@ -68,7 +69,11 @@ export default {
     if (sessionKey !== "some-session-key")
       return { error: "INVALID_SESSION_KEY" };
 
-    const tag = { tagID: (nextTagID++).toString(), text, color: randomColor() };
+    const tag = {
+      tagID: (nextTagID++).toString(),
+      text,
+      color: randomTagColor()
+    };
     tags.push(tag);
     return { value: { tag } };
   },
