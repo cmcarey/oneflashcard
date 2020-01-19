@@ -72,6 +72,17 @@ class CardStore {
   }
 
   @action
+  async deleteTag(tagID: string) {
+    const sessionKey = userStore.sessionKey;
+    if (!sessionKey) return;
+
+    const res = await api.deleteTag(sessionKey, tagID);
+    if ("error" in res) return;
+
+    await this.fetchAll();
+  }
+
+  @action
   async addCard(title: string, text: string, tagIDs: string[]) {
     const sessionKey = userStore.sessionKey;
     if (!sessionKey) return;

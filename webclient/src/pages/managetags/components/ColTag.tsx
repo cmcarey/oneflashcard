@@ -6,7 +6,11 @@ import { Tag } from "../../../interface/model";
 import { allTagColors } from "../../../shared/colors";
 import useOutsideClick from "../../../shared/useOutsideClick";
 
-type Props = { tag: Tag; updateTag: (tag: Tag) => void };
+type Props = {
+  tag: Tag;
+  updateTag: (tag: Tag) => void;
+  deleteTag: (tagID: string) => void;
+};
 
 export default observer((props: Props) => {
   const ref = useRef(null);
@@ -21,11 +25,13 @@ export default observer((props: Props) => {
   const updateCol = (col: ColorResult) =>
     props.updateTag({ ...props.tag, color: col.hex });
 
+  const deleteTag = () => props.deleteTag(props.tag.tagID);
+
   return (
     <STag key={props.tag.tagID} ref={ref}>
       <STopRow tagCol={props.tag.color}>
         <STagText onClick={toggleColorPicker}>{props.tag.text}</STagText>
-        <SDelButton>X</SDelButton>
+        <SDelButton onClick={deleteTag}>X</SDelButton>
       </STopRow>
       {state.colorPickerOpen && (
         <SPickerContainer>

@@ -9,10 +9,11 @@ export default observer(() => {
   const tags = cardStore.tags;
 
   const updateTag = (tag: Tag) => cardStore.updateTag(tag);
+  const deleteTag = (tagID: string) => cardStore.deleteTag(tagID);
 
   return (
     <Body>
-      <Tagtable tags={tags} updateTag={updateTag} />
+      <Tagtable tags={tags} updateTag={updateTag} deleteTag={deleteTag} />
     </Body>
   );
 });
