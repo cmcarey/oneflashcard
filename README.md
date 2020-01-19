@@ -8,13 +8,27 @@
 
 </div>
 
-![](images/demo.png)
+![](images/promo.png)
 
 **oneflashcard** is a flashcard management system. Most flashcard applications only allow you to store a card in a set, with no nuance - so you cannot, for example, tag and later review only a _section_ of that set.
 
 Oneflashcard eschews this concept of a set in favor of a system of tags; apply as many tags as you like to a card, and then later filter, review, and learn all of the cards that have a specific tag.
 
 The application is currently in **pre-alpha** and is being developed as a personal project. I was frustrated that no flashcard application had this feature, and so I am building one 🕺.
+
+# Features
+
+## Card view
+
+![](images/ui_cards.png)
+
+The **view all cards** tab allows you to view all of the cards that exist under your user. Add new cards, modify any aspect of the existing cards, and filter by card text or tags.
+
+## Tag management
+
+![](images/ui_tags.png)
+
+The **manage tags** tab allows you to modify tags by changing their text, color, or deleting them.
 
 # Status
 
