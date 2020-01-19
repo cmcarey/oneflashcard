@@ -14,7 +14,7 @@ const mapNum = (num: number) => {
 export const allTagColors = new Array(numColors).fill(0).map((_, index) =>
   chroma("#f1c1ff")
     .set("hsl.h", mapNum(index))
-    .saturate()
+    .saturate(2)
     .hex()
 );
 

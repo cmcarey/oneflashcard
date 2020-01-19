@@ -4,13 +4,13 @@ import styled from "styled-components";
 import { Tag } from "../../../interface/model";
 import ColTag from "./ColTag";
 
-type Props = { tags: Tag[] };
+type Props = { tags: Tag[]; updateTag: (tag: Tag) => void };
 
 export default observer((props: Props) => {
   return (
     <STagContainer>
       {props.tags.map(tag => (
-        <ColTag key={tag.tagID} tag={tag} />
+        <ColTag key={tag.tagID} tag={tag} updateTag={props.updateTag} />
       ))}
     </STagContainer>
   );

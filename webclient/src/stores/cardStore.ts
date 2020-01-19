@@ -24,42 +24,62 @@ class CardStore {
 
   @action
   async fetchAll() {
-    const sessionKey = userStore.sessionKey;
-    if (!sessionKey) return;
-
-    const cards = await api.fetchCards(sessionKey);
-    if ("error" in cards) return userStore.reset();
-
-    this.cards = cards.value.cards;
-
-    const tags = await api.fetchTags(sessionKey);
-    if ("error" in tags) return userStore.reset();
-
-    this.tags = tags.value.tags;
+    await Promise.all([this.fetchCards(), this.fetchTags()]);
   }
 
   @action
-  async addTag(text: string) {
+  async fetchCards() {
     const sessionKey = userStore.sessionKey;
     if (!sessionKey) return;
 
-    const res = await api.newTag(sessionKey, text);
+    const res = await api.fetchCards(sessionKey);
+    if ("error" in res) return userStore.reset();
+    this.cards = res.value.cards;
+  }
+
+  @action
+  async fetchTags() {
+    const sessionKey = userStore.sessionKey;
+    if (!sessionKey) return;
+
+    const res = await api.fetchTags(sessionKey);
+    if ("error" in res) return userStore.reset();
+    this.tags = res.value.tags;
+  }
+
+  @action
+  async addTag(text: string, color: string) {
+    const sessionKey = userStore.sessionKey;
+    if (!sessionKey) return;
+
+    const res = await api.newTag(sessionKey, text, color);
     if ("error" in res) return;
 
-    this.tags.push(res.value.tag);
+    await this.fetchTags();
 
     return res.value.tag;
   }
 
   @action
-  async newCard(title: string, text: string, tagIDs: string[]) {
+  async updateTag(tag: Tag) {
+    const sessionKey = userStore.sessionKey;
+    if (!sessionKey) return;
+
+    const res = await api.updateTag(sessionKey, tag);
+    if ("error" in res) return;
+
+    await this.fetchTags();
+  }
+
+  @action
+  async addCard(title: string, text: string, tagIDs: string[]) {
     const sessionKey = userStore.sessionKey;
     if (!sessionKey) return;
 
     const res = await api.newCard(sessionKey, title, text, tagIDs);
     if ("error" in res) return;
 
-    await this.fetchAll();
+    await this.fetchCards();
   }
 
   @action
@@ -70,7 +90,7 @@ class CardStore {
     const res = await api.updateCard(sessionKey, card);
     if ("error" in res) return;
 
-    await this.fetchAll();
+    await this.fetchCards();
   }
 
   @action
@@ -81,7 +101,7 @@ class CardStore {
     const res = await api.deleteCard(sessionKey, cardID);
     if ("error" in res) return;
 
-    await this.fetchAll();
+    await this.fetchCards();
   }
 }
 

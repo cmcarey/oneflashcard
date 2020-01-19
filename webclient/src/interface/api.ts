@@ -1,4 +1,3 @@
-import { randomTagColor } from "../shared/colors";
 import { resCards, resTags } from "./cards";
 import { Card, Tag, User } from "./model";
 
@@ -62,7 +61,8 @@ export default {
 
   async newTag(
     sessionKey: string,
-    text: string
+    text: string,
+    color: string
   ): ApiResponse<AUTH, { tag: Tag }> {
     await sleep();
 
@@ -72,10 +72,22 @@ export default {
     const tag = {
       tagID: (nextTagID++).toString(),
       text,
-      color: randomTagColor()
+      color
     };
     tags.push(tag);
     return { value: { tag } };
+  },
+
+  async updateTag(sessionKey: string, tag: Tag): ApiResponse<AUTH, void> {
+    await sleep();
+
+    if (sessionKey !== "some-session-key")
+      return { error: "INVALID_SESSION_KEY" };
+
+    const tagIDs = tags.map(tag => tag.tagID);
+    tags.splice(tagIDs.indexOf(tag.tagID), 1, tag);
+
+    return { value: undefined };
   },
 
   async newCard(

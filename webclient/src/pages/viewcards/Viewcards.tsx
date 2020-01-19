@@ -2,6 +2,7 @@ import Fuse from "fuse.js";
 import { observer, useLocalStore } from "mobx-react";
 import React from "react";
 import { Card } from "../../interface/model";
+import { randomTagColor } from "../../shared/colors";
 import Body from "../../shared/components/Body";
 import cardStore from "../../stores/cardStore";
 import Cards from "./components/Cards";
@@ -16,13 +17,13 @@ export default observer(() => {
 
   const setFilteredTagIDs = (ids: string[]) => (state.filterTagIDs = ids);
   const setFilterString = (s: string) => (state.filterString = s);
-  const addTag = (v: string) => cardStore.addTag(v);
+  const addTag = (v: string) => cardStore.addTag(v, randomTagColor());
   const updateCard = (card: Card) => cardStore.updateCard(card);
   const openAddCardBox = () => (state.addingCard = true);
   const closeAddCardBox = () => (state.addingCard = false);
 
   const addCard = async (title: string, text: string, tagIDs: string[]) => {
-    const t = await cardStore.newCard(title, text, tagIDs);
+    const t = await cardStore.addCard(title, text, tagIDs);
     state.addingCard = false;
     return t;
   };

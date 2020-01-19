@@ -1,12 +1,12 @@
 import { observer, useLocalStore } from "mobx-react";
 import React, { useRef } from "react";
-import { TwitterPicker } from "react-color";
+import { ColorResult, TwitterPicker } from "react-color";
 import styled from "styled-components";
 import { Tag } from "../../../interface/model";
 import { allTagColors } from "../../../shared/colors";
 import useOutsideClick from "../../../shared/useOutsideClick";
 
-type Props = { tag: Tag };
+type Props = { tag: Tag; updateTag: (tag: Tag) => void };
 
 export default observer((props: Props) => {
   const ref = useRef(null);
@@ -18,6 +18,9 @@ export default observer((props: Props) => {
 
   useOutsideClick(ref, () => (state.colorPickerOpen = false));
 
+  const updateCol = (col: ColorResult) =>
+    props.updateTag({ ...props.tag, color: col.hex });
+
   return (
     <STag key={props.tag.tagID} ref={ref}>
       <STopRow tagCol={props.tag.color}>
@@ -26,7 +29,7 @@ export default observer((props: Props) => {
       </STopRow>
       {state.colorPickerOpen && (
         <SPickerContainer>
-          <TwitterPicker colors={allTagColors} />
+          <TwitterPicker onChangeComplete={updateCol} colors={allTagColors} />
         </SPickerContainer>
       )}
     </STag>
