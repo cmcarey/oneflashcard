@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import { createServer } from "../../src/server";
 import { Db } from "../db";
-import { login } from "../utils/user";
+import { getUser, login } from "../utils/user";
 
 describe("Login", () => {
   let server: any;
@@ -72,9 +72,7 @@ describe("Fetch user", () => {
   });
 
   test("Bad session key", async () => {
-    const res = await supertest(server)
-      .get("/user")
-      .set("Authorization", `Bearer yolo`);
+    const res = await getUser(server, "badkey");
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_SESSION_KEY");
@@ -82,11 +80,9 @@ describe("Fetch user", () => {
 
   test("Good session key", async () => {
     const loginRes = await login(server);
-    const key = loginRes.body.sessionKey;
+    const sessionKey = loginRes.body.sessionKey;
 
-    const res = await supertest(server)
-      .get("/user")
-      .set("Authorization", `Bearer ${key}`);
+    const res = await getUser(server, sessionKey);
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ user: loginRes.body.user });

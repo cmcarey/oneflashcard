@@ -14,8 +14,9 @@ export const createServer = (db: IDb, port: number) => {
   // Middleware
   app.use(bodyParser());
 
-  // Add routes
+  // Construct dependency injector
   const handleRoute = buildHandler({ db });
+  // Add routes
   router.post("/login", handleRoute(userLoginRoute));
   router.get("/user", handleRoute(userFetchRoute));
 
