@@ -15,7 +15,7 @@ export const createServer = (db: IDb, port: number) => {
   app.use(bodyParser());
 
   // Add routes
-  const handleRoute = buildHandler(db);
+  const handleRoute = buildHandler({ db });
   router.post("/login", handleRoute(userLoginRoute));
   router.get("/user", handleRoute(userFetchRoute));
 

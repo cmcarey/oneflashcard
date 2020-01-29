@@ -2,12 +2,12 @@ import Joi from "joi";
 import Koa from "koa";
 import { IDb } from "../interface/IDb";
 
-type Context = Koa.Context & { db: IDb };
+type Context = { db: IDb };
 
 export type RouteHandler = {
   requireAuth: boolean;
   validation: Joi.Schema | void;
-  handle: (ctx: Context) => Promise<void>;
+  handle: (ctx: Context, koaCtx: Koa.Context) => Promise<void>;
 };
 
 export class RouteError extends Error {
@@ -16,43 +16,63 @@ export class RouteError extends Error {
   }
 }
 
-export const buildHandler = (db: IDb) => (route: RouteHandler) => async (
-  ctx: Koa.Context
+export const buildHandler = (ctx: Context) => (route: RouteHandler) => async (
+  koaCtx: Koa.Context
 ) => {
   if (route.requireAuth) {
-    // TODO Perform authentication
-    // On succcess, set ctx.userID
+    // Perform authentication check
+    // On succcess, set koaCTX.userID
     // On fail, return 400 BAD_SESSION_KEY
+
+    const authErr = () => {
+      koaCtx.status = 400;
+      koaCtx.body = "BAD_SESSION_KEY";
+    };
+
+    const authHeader = koaCtx.get("Authorization");
+    const [left, right] = authHeader.split(" ");
+    if (left !== "Bearer") {
+      authErr();
+      return;
+    }
+
+    const session = await ctx.db.getSessionByKey(right);
+    if (!session) {
+      authErr();
+      return;
+    }
+
+    koaCtx.userID = session.userID;
   }
 
   if (route.validation) {
     // Perform validation
-    const res = route.validation.validate(ctx.request.body);
+    const res = route.validation.validate(koaCtx.request.body);
 
     if (!res.error) {
       // On success, override ctx.request.body to validation
       //  result (in case of conversions)
-      ctx.request.body = res.value;
+      koaCtx.request.body = res.value;
     } else {
       // On fail, return 400 BAD_REQUEST_BODY
-      ctx.status = 400;
-      ctx.body = "BAD_REQUEST_BODY";
+      koaCtx.status = 400;
+      koaCtx.body = "BAD_REQUEST_BODY";
       return;
     }
   }
 
   // By default response type is 200
-  ctx.status = 200;
+  koaCtx.status = 200;
   try {
-    await route.handle({ ...ctx, db });
+    await route.handle(ctx, koaCtx);
   } catch (e) {
     if (e instanceof RouteError) {
       // Handled error; display message
-      ctx.status = 400;
-      ctx.body = e.message;
+      koaCtx.status = 400;
+      koaCtx.body = e.message;
     } else {
       // Unhandled internal error
-      ctx.status = 500;
+      koaCtx.status = 500;
       console.error(e);
     }
   }

@@ -1,9 +1,0 @@
-name: CI
-on: [push]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Run acceptance tests
-        run: ./server/test/util.bash acceptance test
