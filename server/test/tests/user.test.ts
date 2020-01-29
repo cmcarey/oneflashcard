@@ -52,8 +52,29 @@ describe("Fetch user", () => {
   afterAll(() => server.close());
   afterEach(() => db.resetStore());
 
-  test("Bad session key", async () => {
+  test("Missing session key", async () => {
     const res = await supertest(server).get("/user");
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("BAD_SESSION_KEY");
+  });
+
+  test("Malformed auth header", async () => {
+    const loginRes = await login(server);
+    const key = loginRes.body.sessionKey;
+
+    const res = await supertest(server)
+      .get("/user")
+      .set("Authorization", `Beary ${key}`);
+
+    expect(res.status).toBe(400);
+    expect(res.text).toBe("BAD_SESSION_KEY");
+  });
+
+  test("Bad session key", async () => {
+    const res = await supertest(server)
+      .get("/user")
+      .set("Authorization", `Bearer yolo`);
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_SESSION_KEY");

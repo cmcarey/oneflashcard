@@ -32,16 +32,19 @@ export const buildHandler = (ctx: Context) => (route: RouteHandler) => async (
     const authHeader = koaCtx.get("Authorization");
     const [left, right] = authHeader.split(" ");
     if (left !== "Bearer") {
+      // Malformed header
       authErr();
       return;
     }
 
     const session = await ctx.db.getSessionByKey(right);
     if (!session) {
+      // Unable to locate session
       authErr();
       return;
     }
 
+    // Located, set userID
     koaCtx.userID = session.userID;
   }
 
@@ -73,6 +76,7 @@ export const buildHandler = (ctx: Context) => (route: RouteHandler) => async (
     } else {
       // Unhandled internal error
       koaCtx.status = 500;
+      // TODO Do something with this error (sentry?)
       console.error(e);
     }
   }
