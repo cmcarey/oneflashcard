@@ -1,22 +1,48 @@
 import knex from "knex";
 import { dbConfig } from "../config";
 import { IDb } from "./IDb";
-import { Session, User } from "./model";
+import { Card, Session, Tag, User } from "./model";
 
 export class Db implements IDb {
   conn = knex({ client: "pg", connection: dbConfig });
 
-  getUserByEmail(_: string): Promise<User | void> {
+  // User methods
+  async getUserByEmail(_email: string): Promise<User | void> {
     throw new Error("Method not implemented.");
   }
-  getUserByUserID(_: string): Promise<User | void> {
+  async getUserByUserID(_userID: string): Promise<User | void> {
     throw new Error("Method not implemented.");
   }
 
-  createSession(_: string, _2: string): Promise<Session> {
+  // Session methods
+  async createSession(_userID: string, _key: string): Promise<Session> {
     throw new Error("Method not implemented.");
   }
-  getSessionByKey(_: string): Promise<Session | void> {
+  async getSessionByKey(_key: string): Promise<Session | void> {
+    throw new Error("Method not implemented.");
+  }
+
+  // Card methods
+  async createCard(
+    _userID: string,
+    _title: string,
+    _text: string,
+    _tagIDs: string[]
+  ): Promise<Card> {
+    throw new Error("Method not implemented.");
+  }
+  async getCardsByUserID(_userID: string): Promise<Card[]> {
+    throw new Error("Method not implemented.");
+  }
+  async updateCard(_card: Card): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  async deleteCard(_cardID: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  // Tag methods
+  async getTagsByUserID(_userID: string): Promise<Tag[]> {
     throw new Error("Method not implemented.");
   }
 }

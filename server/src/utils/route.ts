@@ -66,6 +66,7 @@ export const buildHandler = (ctx: Context) => (route: RouteHandler) => async (
 
   // By default response type is 200
   koaCtx.status = 200;
+  koaCtx.body = "";
   try {
     await route.handle(ctx, koaCtx);
   } catch (e) {

@@ -71,7 +71,7 @@ describe("New card", () => {
 
     const res = await supertest(server)
       .post("/card/new")
-      .set("Authorization", `Bearer: ${sessionKey}`);
+      .set("Authorization", `Bearer ${sessionKey}`);
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_REQUEST_BODY");
@@ -90,10 +90,12 @@ describe("New card", () => {
 
     expect(card.status).toBe(200);
     expect(card.body).toEqual({
-      cardID: expect.any(String),
-      title: "some title",
-      text: "some text",
-      tagIDs: []
+      card: {
+        cardID: expect.any(String),
+        title: "some title",
+        text: "some text",
+        tagIDs: []
+      }
     });
   });
 
@@ -105,7 +107,7 @@ describe("New card", () => {
     ]);
 
     expect(card.status).toBe(400);
-    expect(card.body).toBe("BAD_TAGID");
+    expect(card.text).toBe("BAD_TAGID");
   });
 });
 
@@ -128,7 +130,7 @@ describe("Update card", () => {
 
     const res = await supertest(server)
       .post("/card/update")
-      .set("Authorization", `Bearer: ${sessionKey}`);
+      .set("Authorization", `Bearer ${sessionKey}`);
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_REQUEST_BODY");
@@ -224,7 +226,7 @@ describe("Delete card", () => {
 
     const res = await supertest(server)
       .post("/card/delete")
-      .set("Authorization", `Bearer: ${sessionKey}`);
+      .set("Authorization", `Bearer ${sessionKey}`);
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_REQUEST_BODY");

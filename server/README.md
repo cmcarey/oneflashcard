@@ -22,8 +22,8 @@ They can be run in interactive mode (re-running on file change) using:
 
 <!-- -->
 
-- [ ] Implement card tests
-- [ ] Implement card routes
+- [x] Implement card tests
+- [x] Implement card routes
 - [ ] Implement card DB backend
 
 <!-- -->
