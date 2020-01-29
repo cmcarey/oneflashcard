@@ -1,0 +1,33 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start.dev": "ts-node-dev --clear src/server.ts",
+    "test": "jest",
+    "test.dev": "jest --watchAll"
+  },
+  "dependencies": {
+    "joi": "^14.3.1",
+    "knex": "^0.20.8",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^8.0.6",
+    "pg": "^7.17.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.0",
+    "@types/joi": "^14.3.4",
+    "@types/koa": "^2.11.0",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-router": "^7.4.0",
+    "@types/supertest": "^2.0.8",
+    "jest": "^25.1.0",
+    "supertest": "^4.0.2",
+    "ts-jest": "^25.0.0",
+    "ts-node": "^8.6.2",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.7.5"
+  }
+}
