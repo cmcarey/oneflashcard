@@ -1,6 +1,7 @@
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
+import { config } from "./config";
 import { Db } from "./interface/db";
 import { IDb } from "./interface/IDb";
 import {
@@ -51,5 +52,7 @@ export const createServer = (db: IDb, port: number) => {
 };
 
 if (process.env.NODE_ENV !== "test") {
-  createServer(new Db(), 8000);
+  const port = config.port;
+  createServer(new Db(), port);
+  console.log(`Server running on :${port}`);
 }

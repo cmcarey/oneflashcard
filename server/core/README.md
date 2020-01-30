@@ -1,3 +1,15 @@
+# Server configuration
+
+The server expects the following environment variables to be set:
+
+| Var           | Explanation                       |
+| ------------- | --------------------------------- |
+| `PORT`        | Port to run the server on         |
+| `DB_HOST`     | Hostname of the Postgres database |
+| `DB_USER`     | DB username                       |
+| `DB_PASS`     | DB password                       |
+| `DB_DATABASE` | DB name                           |
+
 # Testing
 
 Testing is done using Jest. A mocked database interface is created and used in place of real DB interactions.

@@ -1,10 +1,18 @@
 import knex from "knex";
-import { dbConfig } from "../config";
+import { config } from "../config";
 import { IDb } from "./IDb";
 import { Card, Session, Tag, User } from "./model";
 
 export class Db implements IDb {
-  conn = knex({ client: "pg", connection: dbConfig });
+  conn = knex({
+    client: "pg",
+    connection: {
+      host: config.db_host,
+      user: config.db_user,
+      password: config.db_pass,
+      database: config.db_database
+    }
+  });
 
   // User methods
   async getUserByEmail(_email: string): Promise<User | void> {
