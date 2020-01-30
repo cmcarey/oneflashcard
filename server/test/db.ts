@@ -16,6 +16,10 @@ class Store {
   cards: Card[] = [];
   nextCardID = 0;
   getNextCardID = () => (this.nextCardID++).toString();
+
+  tags: Tag[] = [];
+  nextTagID = 0;
+  getNextTagID = () => (this.nextTagID++).toString();
 }
 
 export class Db implements IDb {
@@ -94,8 +98,32 @@ export class Db implements IDb {
   }
 
   // Tag methods
-  getTagsByUserID(_userID: string): Promise<Tag[]> {
-    // TODO implement
-    return Promise.resolve([]);
+  getTagsByUserID(userID: string): Promise<Tag[]> {
+    const tags = this.store.tags.filter(tag => tag.userID === userID);
+
+    return Promise.resolve(tags);
+  }
+  createTag(userID: string, text: string, color: string): Promise<Tag> {
+    const tag = { tagID: this.store.getNextTagID(), userID, text, color };
+
+    this.store.tags.push(tag);
+
+    return Promise.resolve(tag);
+  }
+  updateTag(tag: Tag): Promise<void> {
+    const tagIDs = this.store.tags.map(tag => tag.tagID);
+    const tagIndex = tagIDs.indexOf(tag.tagID);
+
+    this.store.tags.splice(tagIndex, 1, tag);
+
+    return Promise.resolve();
+  }
+  deleteTag(tagID: string): Promise<void> {
+    const tagIDs = this.store.tags.map(tag => tag.tagID);
+    const tagIndex = tagIDs.indexOf(tagID);
+
+    this.store.tags.splice(tagIndex, 1);
+
+    return Promise.resolve();
   }
 }

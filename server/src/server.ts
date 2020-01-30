@@ -9,6 +9,12 @@ import {
   cardFetchFoute,
   cardUpdateRoute
 } from "./routes/card";
+import {
+  tagCreateRoute,
+  tagDeleteRoute,
+  tagFetchRoute,
+  tagUpdateRoute
+} from "./routes/tag";
 import { userFetchRoute, userLoginRoute } from "./routes/user";
 import { buildHandler } from "./utils/route";
 
@@ -33,6 +39,10 @@ export const createServer = (db: IDb, port: number) => {
   router.post("/card/update", handleRoute(cardUpdateRoute));
   router.post("/card/delete", handleRoute(cardDeleteRoute));
   // Tag routes
+  router.get("/tag", handleRoute(tagFetchRoute));
+  router.post("/tag/new", handleRoute(tagCreateRoute));
+  router.post("/tag/update", handleRoute(tagUpdateRoute));
+  router.post("/tag/delete", handleRoute(tagDeleteRoute));
 
   // Add route handler
   app.use(router.routes()).use(router.allowedMethods());

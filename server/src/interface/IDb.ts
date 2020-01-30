@@ -22,4 +22,7 @@ export interface IDb {
 
   // Tag methods
   getTagsByUserID(userID: string): Promise<Tag[]>;
+  createTag(userID: string, text: string, color: string): Promise<Tag>;
+  updateTag(tag: Tag): Promise<void>;
+  deleteTag(tagID: string): Promise<void>;
 }

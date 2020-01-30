@@ -29,7 +29,7 @@ They can be run in interactive mode (re-running on file change) using:
 <!-- -->
 
 - [x] Implement tag tests
-- [ ] Implement tag routes
+- [x] Implement tag routes
 - [ ] Implement tag DB backend
 
 # Other TODOs

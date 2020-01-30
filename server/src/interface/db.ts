@@ -45,4 +45,17 @@ export class Db implements IDb {
   async getTagsByUserID(_userID: string): Promise<Tag[]> {
     throw new Error("Method not implemented.");
   }
+  async createTag(
+    _userID: string,
+    _text: string,
+    _color: string
+  ): Promise<Tag> {
+    throw new Error("Method not implemented.");
+  }
+  async updateTag(_tag: Tag): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  async deleteTag(_tagID: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 }
