@@ -28,6 +28,11 @@ They can be run in interactive mode (re-running on file change) using:
 
 <!-- -->
 
-- [ ] Implement tag tests
+- [x] Implement tag tests
 - [ ] Implement tag routes
 - [ ] Implement tag DB backend
+
+# Other TODOs
+
+- [ ] Update card tests to use tags (`new`/`update` tests)
+- [ ] Test across account boundaries (attempting to modify something belonging to another user)
