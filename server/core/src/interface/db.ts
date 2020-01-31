@@ -20,20 +20,36 @@ export class Db implements IDb {
   }
 
   // User methods
-  async getUserByEmail(_email: string): Promise<User | void> {
-    // this.conn("users").where({email: _email.toLowerCase()}).
-    throw new Error("Method not implemented.");
+  async getUserByEmail(email: string): Promise<User | void> {
+    const user = await this.conn<User>("users")
+      .where({ email: email.toLowerCase() })
+      .first();
+
+    return user;
   }
-  async getUserByUserID(_user_id: string): Promise<User | void> {
-    throw new Error("Method not implemented.");
+  async getUserByUserID(user_id: string): Promise<User | void> {
+    const user = await this.conn<User>("users")
+      .where({ _user_id: user_id })
+      .first();
+
+    return user;
   }
 
   // Session methods
-  async createSession(_user_id: string, _key: string): Promise<Session> {
-    throw new Error("Method not implemented.");
+  async createSession(user_id: string, key: string): Promise<Session> {
+    const session = await this.conn<Session>("sessions")
+      .insert({ user_id, key })
+      .returning("*")
+      .first();
+
+    return session!;
   }
-  async getSessionByKey(_key: string): Promise<Session | void> {
-    throw new Error("Method not implemented.");
+  async getSessionByKey(key: string): Promise<Session | void> {
+    const session = await this.conn<Session>("sessions")
+      .where({ key })
+      .first();
+
+    return session;
   }
 
   // Card methods
