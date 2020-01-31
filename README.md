@@ -41,6 +41,12 @@ The UI is fully responsive and adapts to tablet and mobile form factors.
 CI/CD is performed using Github Actions.
 When any branch is pushed to, workflows run which execute the integration and E2E tests for the server automatically.
 
+# Mocking
+
+A mock API is provided for the client for running in demo mode or developing without a server. All functionality is present.
+
+A mock database is also provided for the server in order to develop and test without needing to run a full Postgres database.
+
 # Server
 
 The server is written in strict `Typescript` and uses `Koa` as a web backend.
