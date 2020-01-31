@@ -13,14 +13,14 @@ CREATE UNIQUE INDEX users_email ON users(lower(email));
 -- Sessions
 CREATE TABLE sessions (
   session_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES users NOT NULL,
+  user_id UUID REFERENCES users ON DELETE CASCADE NOT NULL,
   key TEXT UNIQUE NOT NULL
 );
 
 -- Cards
 CREATE TABLE cards (
   card_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES users NOT NULL,
+  user_id UUID REFERENCES users ON DELETE CASCADE NOT NULL,
   title TEXT NOT NULL,
   "text" TEXT NOT NULL
 );
@@ -28,7 +28,7 @@ CREATE TABLE cards (
 -- Tags
 CREATE TABLE tags (
   tag_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES users NOT NULL,
+  user_id UUID REFERENCES users ON DELETE CASCADE NOT NULL,
   "text" TEXT NOT NULL,
   color TEXT NOT NULL
 );
@@ -36,7 +36,7 @@ CREATE TABLE tags (
 -- Card tag relations
 CREATE TABLE card_tags (
   card_tag_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES users NOT NULL,
-  card_id UUID REFERENCES cards NOT NULL,
-  tag_id UUID REFERENCES tags NOT NULL
+  user_id UUID REFERENCES users ON DELETE CASCADE NOT NULL,
+  card_id UUID REFERENCES cards ON DELETE CASCADE NOT NULL,
+  tag_id UUID REFERENCES tags ON DELETE CASCADE NOT NULL
 );

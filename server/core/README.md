@@ -22,23 +22,23 @@ Running against real db: `docker-compose -f dockerfiles/test.docker-compose.yml 
 
 - [x] Implement user tests
 - [x] Implement user routes
-- [ ] Implement user DB backend
+- [x] Implement user DB backend
 
 <!-- -->
 
 - [x] Implement card tests
 - [x] Implement card routes
-- [ ] Implement card DB backend
+- [x] Implement card DB backend
 
 <!-- -->
 
 - [x] Implement tag tests
 - [x] Implement tag routes
-- [ ] Implement tag DB backend
+- [x] Implement tag DB backend
 
-# Other TODOs
+<!-- -->
 
+- [x] E2E testing
 - [ ] Update card tests to use tags (`new`/`update` tests)
 - [ ] Test across account boundaries (attempting to modify something belonging to another user)
 - [ ] Status checks
-- [ ] E2E testing

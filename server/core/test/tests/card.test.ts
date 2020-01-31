@@ -48,7 +48,12 @@ describe("Fetch cards", () => {
     const res = await getCards(server, sessionKey);
 
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ cards: [card1.body.card, card2.body.card] });
+    expect(res.body).toEqual({
+      cards: [
+        { card_id: expect.any(String), ...card1.body.card },
+        { card_id: expect.any(String), ...card2.body.card }
+      ]
+    });
   });
 });
 
