@@ -2,9 +2,9 @@ version: "3.7"
 
 services:
   core:
-    build:
-      context: ../core/
-      dockerfile: ../dockerfiles/core.dev.dockerfile
+    image: node:13.7.0
+
+    working_dir: /app/
 
     volumes:
       - ../core/:/app/

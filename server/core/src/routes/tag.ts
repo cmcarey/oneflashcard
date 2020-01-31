@@ -10,7 +10,7 @@ export const tagFetchRoute: RouteHandler = {
 
     koaCtx.body = {
       tags: tags.map(tag => ({
-        tagID: tag.tagID,
+        tagID: tag.tag_id,
         text: tag.text,
         color: tag.color
       }))
@@ -33,7 +33,7 @@ export const tagCreateRoute: RouteHandler = {
 
     koaCtx.body = {
       tag: {
-        tagID: tag.tagID,
+        tagID: tag.tag_id,
         text: tag.text,
         color: tag.color
       }
@@ -56,14 +56,14 @@ export const tagUpdateRoute: RouteHandler = {
 
     // Check that user owns this tag
     const alluserTags = await ctx.db.getTagsByUserID(koaCtx.userID);
-    const allUserTagIDs = alluserTags.map(tag => tag.tagID);
+    const allUserTagIDs = alluserTags.map(tag => tag.tag_id);
     if (!allUserTagIDs.includes(body.tag.tagID))
       throw new RouteError("BAD_TAGID");
 
     // Update
     await ctx.db.updateTag({
-      tagID: body.tag.tagID,
-      userID: koaCtx.userID,
+      tag_id: body.tag.tagID,
+      user_id: koaCtx.userID,
       text: body.tag.text,
       color: body.tag.color
     });
@@ -81,7 +81,7 @@ export const tagDeleteRoute: RouteHandler = {
 
     // Check that user owns this tag
     const alluserTags = await ctx.db.getTagsByUserID(koaCtx.userID);
-    const allUserTagIDs = alluserTags.map(tag => tag.tagID);
+    const allUserTagIDs = alluserTags.map(tag => tag.tag_id);
     if (!allUserTagIDs.includes(body.tagID)) throw new RouteError("BAD_TAGID");
 
     await ctx.db.deleteTag(body.tagID);

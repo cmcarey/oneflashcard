@@ -10,10 +10,10 @@ export const cardFetchFoute: RouteHandler = {
 
     koaCtx.body = {
       cards: cards.map(card => ({
-        cardID: card.cardID,
+        cardID: card.card_id,
         title: card.title,
         text: card.text,
-        tagIDs: card.tagIDs
+        tagIDs: card.tag_ids
       }))
     };
   }
@@ -34,7 +34,7 @@ export const cardCreateRoute: RouteHandler = {
 
     // Validate that all tagIDs match
     const allUserTags = await ctx.db.getTagsByUserID(koaCtx.userID);
-    const allUserTagIDs = allUserTags.map(tag => tag.tagID);
+    const allUserTagIDs = allUserTags.map(tag => tag.tag_id);
     for (const tagID of body.tagIDs) {
       if (!allUserTagIDs.includes(tagID)) throw new RouteError("BAD_TAGID");
     }
@@ -49,10 +49,10 @@ export const cardCreateRoute: RouteHandler = {
 
     koaCtx.body = {
       card: {
-        cardID: card.cardID,
+        cardID: card.card_id,
         title: card.title,
         text: card.text,
-        tagIDs: card.tagIDs
+        tagIDs: card.tag_ids
       }
     };
   }
@@ -76,24 +76,24 @@ export const cardUpdateRoute: RouteHandler = {
 
     // Check that user owns this card
     const allUserCards = await ctx.db.getCardsByUserID(koaCtx.userID);
-    const allUserCardIDs = allUserCards.map(card => card.cardID);
+    const allUserCardIDs = allUserCards.map(card => card.card_id);
     if (!allUserCardIDs.includes(body.card.cardID))
       throw new RouteError("BAD_CARDID");
 
     // Validate that all tagIDs match
     const allUserTags = await ctx.db.getTagsByUserID(koaCtx.userID);
-    const allUserTagIDs = allUserTags.map(tag => tag.tagID);
+    const allUserTagIDs = allUserTags.map(tag => tag.tag_id);
     for (const tagID of body.card.tagIDs) {
       if (!allUserTagIDs.includes(tagID)) throw new RouteError("BAD_TAGID");
     }
 
     // Update
     await ctx.db.updateCard({
-      cardID: body.card.cardID,
-      userID: koaCtx.userID,
+      card_id: body.card.cardID,
+      user_id: koaCtx.userID,
       title: body.card.title,
       text: body.card.text,
-      tagIDs: body.card.tagIDs
+      tag_ids: body.card.tagIDs
     });
   }
 };
@@ -109,7 +109,7 @@ export const cardDeleteRoute: RouteHandler = {
 
     // Check that user owns this card
     const allUserCards = await ctx.db.getCardsByUserID(koaCtx.userID);
-    const allUserCardIDs = allUserCards.map(card => card.cardID);
+    const allUserCardIDs = allUserCards.map(card => card.card_id);
     if (!allUserCardIDs.includes(body.cardID))
       throw new RouteError("BAD_CARDID");
 

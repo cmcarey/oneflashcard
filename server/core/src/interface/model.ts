@@ -1,26 +1,26 @@
 export type User = {
-  userID: string;
+  user_id: string;
   email: string;
   password: string;
 };
 
 export type Session = {
-  sessionID: string;
-  userID: string;
+  session_id: string;
+  user_id: string;
   key: string;
 };
 
 export type Card = {
-  cardID: string;
-  userID: string;
+  card_id: string;
+  user_id: string;
   title: string;
   text: string;
-  tagIDs: string[];
+  tag_ids: string[];
 };
 
 export type Tag = {
-  tagID: string;
-  userID: string;
+  tag_id: string;
+  user_id: string;
   text: string;
   color: string;
 };

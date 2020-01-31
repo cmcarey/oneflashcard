@@ -45,7 +45,7 @@ export const buildHandler = (ctx: Context) => (route: RouteHandler) => async (
     }
 
     // Located, set userID
-    koaCtx.userID = session.userID;
+    koaCtx.userID = session.user_id;
   }
 
   if (route.validation) {

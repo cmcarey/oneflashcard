@@ -31,9 +31,9 @@ export const userLoginRoute: RouteHandler = {
     }
 
     // Generate session
-    const session = await ctx.db.createSession(user.userID, uuidv4());
+    const session = await ctx.db.createSession(user.user_id, uuidv4());
     koaCtx.body = {
-      user: { userID: user.userID, email: user.email },
+      user: { userID: user.user_id, email: user.email },
       sessionKey: session.key
     };
   }
@@ -50,6 +50,6 @@ export const userFetchRoute: RouteHandler = {
       throw new Error(`Unable to locate user with ID ${koaCtx.userID}`);
 
     // Return user
-    koaCtx.body = { user: { userID: user.userID, email: user.email } };
+    koaCtx.body = { user: { userID: user.user_id, email: user.email } };
   }
 };

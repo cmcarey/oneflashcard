@@ -6,7 +6,7 @@ const somepassHashed = bcrypt.hashSync("somepass", bcrypt.genSaltSync(10));
 
 class Store {
   users: User[] = [
-    { userID: "0", email: "chance@carey.sh", password: somepassHashed }
+    { user_id: "0", email: "chance@carey.sh", password: somepassHashed }
   ];
 
   sessions: Session[] = [];
@@ -34,17 +34,17 @@ export class Db implements IDb {
 
     return Promise.resolve();
   }
-  getUserByUserID(userID: string): Promise<User | void> {
+  getUserByUserID(user_id: string): Promise<User | void> {
     for (const user of this.store.users) {
-      if (user.userID === userID) return Promise.resolve(user);
+      if (user.user_id === user_id) return Promise.resolve(user);
     }
 
     return Promise.resolve();
   }
 
   // Session methods
-  createSession(userID: string, key: string): Promise<Session> {
-    const session = { sessionID: this.store.getNextSessionID(), userID, key };
+  createSession(user_id: string, key: string): Promise<Session> {
+    const session = { session_id: this.store.getNextSessionID(), user_id, key };
     this.store.sessions.push(session);
 
     return Promise.resolve(session);
@@ -59,38 +59,38 @@ export class Db implements IDb {
 
   // Card methods
   createCard(
-    userID: string,
+    user_id: string,
     title: string,
     text: string,
-    tagIDs: string[]
+    tag_ids: string[]
   ): Promise<Card> {
     const card = {
-      cardID: this.store.getNextCardID(),
-      userID,
+      card_id: this.store.getNextCardID(),
+      user_id,
       title,
       text,
-      tagIDs
+      tag_ids
     };
     this.store.cards.push(card);
 
     return Promise.resolve(card);
   }
-  getCardsByUserID(userID: string): Promise<Card[]> {
-    const cards = this.store.cards.filter(card => card.userID === userID);
+  getCardsByUserID(user_id: string): Promise<Card[]> {
+    const cards = this.store.cards.filter(card => card.user_id === user_id);
 
     return Promise.resolve(cards);
   }
   updateCard(card: Card): Promise<void> {
-    const cardIDs = this.store.cards.map(card => card.cardID);
-    const index = cardIDs.indexOf(card.cardID);
+    const card_ids = this.store.cards.map(card => card.card_id);
+    const index = card_ids.indexOf(card.card_id);
 
     this.store.cards.splice(index, 1, card);
 
     return Promise.resolve();
   }
-  deleteCard(cardID: string): Promise<void> {
-    const cardIDs = this.store.cards.map(card => card.cardID);
-    const index = cardIDs.indexOf(cardID);
+  deleteCard(card_id: string): Promise<void> {
+    const card_ids = this.store.cards.map(card => card.card_id);
+    const index = card_ids.indexOf(card_id);
 
     this.store.cards.splice(index, 1);
 
@@ -98,29 +98,29 @@ export class Db implements IDb {
   }
 
   // Tag methods
-  getTagsByUserID(userID: string): Promise<Tag[]> {
-    const tags = this.store.tags.filter(tag => tag.userID === userID);
+  getTagsByUserID(user_id: string): Promise<Tag[]> {
+    const tags = this.store.tags.filter(tag => tag.user_id === user_id);
 
     return Promise.resolve(tags);
   }
-  createTag(userID: string, text: string, color: string): Promise<Tag> {
-    const tag = { tagID: this.store.getNextTagID(), userID, text, color };
+  createTag(user_id: string, text: string, color: string): Promise<Tag> {
+    const tag = { tag_id: this.store.getNextTagID(), user_id, text, color };
 
     this.store.tags.push(tag);
 
     return Promise.resolve(tag);
   }
   updateTag(tag: Tag): Promise<void> {
-    const tagIDs = this.store.tags.map(tag => tag.tagID);
-    const tagIndex = tagIDs.indexOf(tag.tagID);
+    const tag_ids = this.store.tags.map(tag => tag.tag_id);
+    const tagIndex = tag_ids.indexOf(tag.tag_id);
 
     this.store.tags.splice(tagIndex, 1, tag);
 
     return Promise.resolve();
   }
-  deleteTag(tagID: string): Promise<void> {
-    const tagIDs = this.store.tags.map(tag => tag.tagID);
-    const tagIndex = tagIDs.indexOf(tagID);
+  deleteTag(tag_id: string): Promise<void> {
+    const tag_ids = this.store.tags.map(tag => tag.tag_id);
+    const tagIndex = tag_ids.indexOf(tag_id);
 
     this.store.tags.splice(tagIndex, 1);
 

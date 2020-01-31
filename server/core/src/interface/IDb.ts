@@ -3,26 +3,26 @@ import { Card, Session, Tag, User } from "./model";
 export interface IDb {
   // User methods
   getUserByEmail(email: string): Promise<User | void>;
-  getUserByUserID(userID: string): Promise<User | void>;
+  getUserByUserID(user_id: string): Promise<User | void>;
 
   // Session methods
-  createSession(userID: string, key: string): Promise<Session>;
+  createSession(user_id: string, key: string): Promise<Session>;
   getSessionByKey(key: string): Promise<Session | void>;
 
   // Card methods
   createCard(
-    userID: string,
+    user_id: string,
     title: string,
     text: string,
-    tagIDs: string[]
+    tag_ids: string[]
   ): Promise<Card>;
-  getCardsByUserID(userID: string): Promise<Card[]>;
+  getCardsByUserID(user_id: string): Promise<Card[]>;
   updateCard(card: Card): Promise<void>;
-  deleteCard(cardID: string): Promise<void>;
+  deleteCard(card_id: string): Promise<void>;
 
   // Tag methods
-  getTagsByUserID(userID: string): Promise<Tag[]>;
-  createTag(userID: string, text: string, color: string): Promise<Tag>;
+  getTagsByUserID(user_id: string): Promise<Tag[]>;
+  createTag(user_id: string, text: string, color: string): Promise<Tag>;
   updateTag(tag: Tag): Promise<void>;
-  deleteTag(tagID: string): Promise<void>;
+  deleteTag(tag_id: string): Promise<void>;
 }

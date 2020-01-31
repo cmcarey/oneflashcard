@@ -1,29 +1,35 @@
 import knex from "knex";
-import { config } from "../config";
+import { Config } from "../config";
 import { IDb } from "./IDb";
 import { Card, Session, Tag, User } from "./model";
 
 export class Db implements IDb {
-  conn = knex({
-    client: "pg",
-    connection: {
-      host: config.db_host,
-      user: config.db_user,
-      password: config.db_pass,
-      database: config.db_database
-    }
-  });
+  private conn: knex;
+
+  constructor(config: Config) {
+    this.conn = knex({
+      client: "pg",
+      connection: {
+        host: config.db_host,
+        user: config.db_user,
+        password: config.db_pass,
+        database: config.db_database
+      }
+    });
+    this.conn;
+  }
 
   // User methods
   async getUserByEmail(_email: string): Promise<User | void> {
+    // this.conn("users").where({email: _email.toLowerCase()}).
     throw new Error("Method not implemented.");
   }
-  async getUserByUserID(_userID: string): Promise<User | void> {
+  async getUserByUserID(_user_id: string): Promise<User | void> {
     throw new Error("Method not implemented.");
   }
 
   // Session methods
-  async createSession(_userID: string, _key: string): Promise<Session> {
+  async createSession(_user_id: string, _key: string): Promise<Session> {
     throw new Error("Method not implemented.");
   }
   async getSessionByKey(_key: string): Promise<Session | void> {
@@ -32,29 +38,29 @@ export class Db implements IDb {
 
   // Card methods
   async createCard(
-    _userID: string,
+    _user_id: string,
     _title: string,
     _text: string,
-    _tagIDs: string[]
+    _tag_ids: string[]
   ): Promise<Card> {
     throw new Error("Method not implemented.");
   }
-  async getCardsByUserID(_userID: string): Promise<Card[]> {
+  async getCardsByUserID(_user_id: string): Promise<Card[]> {
     throw new Error("Method not implemented.");
   }
   async updateCard(_card: Card): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  async deleteCard(_cardID: string): Promise<void> {
+  async deleteCard(_card_id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
 
   // Tag methods
-  async getTagsByUserID(_userID: string): Promise<Tag[]> {
+  async getTagsByUserID(_user_id: string): Promise<Tag[]> {
     throw new Error("Method not implemented.");
   }
   async createTag(
-    _userID: string,
+    _user_id: string,
     _text: string,
     _color: string
   ): Promise<Tag> {
@@ -63,7 +69,7 @@ export class Db implements IDb {
   async updateTag(_tag: Tag): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  async deleteTag(_tagID: string): Promise<void> {
+  async deleteTag(_tag_id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
 }

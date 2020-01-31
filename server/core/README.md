@@ -48,3 +48,5 @@ They can be run in interactive mode (re-running on file change) using:
 
 - [ ] Update card tests to use tags (`new`/`update` tests)
 - [ ] Test across account boundaries (attempting to modify something belonging to another user)
+- [ ] Status checks 
+- [ ] E2E testing
