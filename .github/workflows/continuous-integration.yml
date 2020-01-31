@@ -1,0 +1,25 @@
+name: Continuous Integration
+
+on: [push]
+
+jobs:
+  integration_test:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 13.7
+      - name: Install dependencies
+        run: cd server/core && yarn install
+      - name: Run mock tests
+        run: cd server/core && yarn test.mock
+
+  e2e_test:
+    name: E2E tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run E2E tests
+        run: cd server/dockerfiles && docker-compose -f test.docker-compose.yml up -V --abort-on-container-exit

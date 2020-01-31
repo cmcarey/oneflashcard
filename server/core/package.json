@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "start.dev": "ts-node-dev src/server.ts",
-    "test.mock": "TEST_DB=MOCK jest",
+    "test.mock": "TEST_DB=MOCK jest --forceExit",
     "test.mock.dev": "TEST_DB=MOCK jest --watchAll",
-    "test.real": "TEST_DB=REAL jest -i",
+    "test.real": "TEST_DB=REAL jest -i --forceExit",
     "test.real.dev": "TEST_DB=REAL jest --watchAll -i"
   },
   "dependencies": {

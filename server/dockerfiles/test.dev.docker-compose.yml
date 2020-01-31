@@ -22,7 +22,7 @@ services:
       DB_PASS: unsecurepass
       DB_DATABASE: oneflashcard
 
-    command: bash -c "yarn install && sleep 3 && yarn test.real"
+    command: bash -c "yarn install && sleep 3 && yarn test.real.dev"
 
   db:
     image: postgres

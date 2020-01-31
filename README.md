@@ -36,6 +36,11 @@ The **manage tags** tab allows you to modify tags by changing their text, color,
 
 The UI is fully responsive and adapts to tablet and mobile form factors.
 
+# CI/CD
+
+CI/CD is performed using Github Actions.
+When any branch is pushed to, workflows run which execute the integration and E2E tests for the server automatically.
+
 # Server
 
 The server is written in strict `Typescript` and uses `Koa` as a web backend.
@@ -72,14 +77,17 @@ Using the mock database allows the tests to be run without actually needing a ru
 > cd server/core
 > yarn install
 > yarn test.mock
-# or yarn test.mock.dev for reloading
+# or, for reloading:
+> yarn test.mock.dev
 ```
 
 ### Testing against real db
 
 ```
 > cd server/dockerfiles
-> docker-compose -f test.docker-compose.yml up -V
+> docker-compose -f test.docker-compose.yml up -V --abort-on-container-exit
+# or, for reloading:
+> docker-compose -f test.dev.docker-compose.yml up -V
 ```
 
 This compose brings up an auto reloading test against the current database, running all migrations in [server/database/migrations](./server/database/migrations). For each test run, all tables in the database are truncated and then data is seeded for testing.
