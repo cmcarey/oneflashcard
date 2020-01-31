@@ -1,6 +1,12 @@
 -- Used for UUID types
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- Migrations table
+CREATE TABLE migrations (
+  migration INTEGER PRIMARY KEY
+);
+INSERT INTO migrations VALUES (1);
+
 -- Users
 CREATE TABLE users (
   user_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
