@@ -22,8 +22,8 @@ export default observer((rawProps: Props) => {
     loading: false,
     title: props.card?.title || "",
     text: props.card?.text || "",
-    tagIDs: props.card?.tags.map(tag => tag.tagID) || [],
-    lastPropTagIDs: props.card?.tags.map(tag => tag.tagID) || []
+    tagIDs: props.card?.tags.map(tag => tag.tag_id) || [],
+    lastPropTagIDs: props.card?.tags.map(tag => tag.tag_id) || []
   }));
 
   if (props.card) {
@@ -31,11 +31,11 @@ export default observer((rawProps: Props) => {
     // If not and not in tagIDs, add there, then add to tagIDs
     props.card.tags.forEach(tag => {
       if (
-        state.lastPropTagIDs.indexOf(tag.tagID) === -1 &&
-        state.tagIDs.indexOf(tag.tagID) === -1
+        state.lastPropTagIDs.indexOf(tag.tag_id) === -1 &&
+        state.tagIDs.indexOf(tag.tag_id) === -1
       ) {
-        state.lastPropTagIDs.push(tag.tagID);
-        state.tagIDs.push(tag.tagID);
+        state.lastPropTagIDs.push(tag.tag_id);
+        state.tagIDs.push(tag.tag_id);
       }
     });
   }
@@ -46,7 +46,7 @@ export default observer((rawProps: Props) => {
 
   const addTag = async (text: string): Promise<Tag | undefined> => {
     const t = await props.addTag(text);
-    if (t) state.tagIDs.push(t.tagID);
+    if (t) state.tagIDs.push(t.tag_id);
     return t;
   };
 

@@ -22,7 +22,7 @@ export default {
     if (email === "chance@carey.sh" && password === "somepass")
       return {
         value: {
-          user: { userID: "some-user-id", email: "chance@carey.sh" },
+          user: { user_id: "some-user-id", email: "chance@carey.sh" },
           sessionKey: "some-session-key"
         }
       };
@@ -35,7 +35,7 @@ export default {
 
     if (sessionKey === "some-session-key")
       return {
-        value: { user: { userID: "some-user-id", email: "chance@carey.sh" } }
+        value: { user: { user_id: "some-user-id", email: "chance@carey.sh" } }
       };
 
     return { error: "INVALID_SESSION_KEY" };
@@ -70,7 +70,7 @@ export default {
       return { error: "INVALID_SESSION_KEY" };
 
     const tag = {
-      tagID: (nextTagID++).toString(),
+      tag_id: (nextTagID++).toString(),
       text,
       color
     };
@@ -84,8 +84,8 @@ export default {
     if (sessionKey !== "some-session-key")
       return { error: "INVALID_SESSION_KEY" };
 
-    const tagIDs = tags.map(tag => tag.tagID);
-    tags.splice(tagIDs.indexOf(tag.tagID), 1, tag);
+    const tagIDs = tags.map(tag => tag.tag_id);
+    tags.splice(tagIDs.indexOf(tag.tag_id), 1, tag);
 
     return { value: undefined };
   },
@@ -96,13 +96,13 @@ export default {
     if (sessionKey !== "some-session-key")
       return { error: "INVALID_SESSION_KEY" };
 
-    const tagIDs = tags.map(tag => tag.tagID);
+    const tagIDs = tags.map(tag => tag.tag_id);
     tags.splice(tagIDs.indexOf(tagID), 1);
 
     // Also iterate through cards and remove cards that have this tag
     cards.forEach(card => {
-      const index = card.tagIDs.indexOf(tagID);
-      if (index !== -1) card.tagIDs.splice(index, 1);
+      const index = card.tag_ids.indexOf(tagID);
+      if (index !== -1) card.tag_ids.splice(index, 1);
     });
 
     return { value: undefined };
@@ -112,14 +112,14 @@ export default {
     sessionKey: string,
     title: string,
     text: string,
-    tagIDs: string[]
+    tag_ids: string[]
   ): ApiResponse<AUTH, { card: Card }> {
     await sleep();
 
     if (sessionKey !== "some-session-key")
       return { error: "INVALID_SESSION_KEY" };
 
-    const card = { cardID: (nextCardID++).toString(), title, text, tagIDs };
+    const card = { card_id: (nextCardID++).toString(), title, text, tag_ids };
     cards.splice(0, 0, card);
 
     return { value: { card } };
@@ -131,8 +131,8 @@ export default {
     if (sessionKey !== "some-session-key")
       return { error: "INVALID_SESSION_KEY" };
 
-    const cardIDs = cards.map(card => card.cardID);
-    cards.splice(cardIDs.indexOf(card.cardID), 1, card);
+    const cardIDs = cards.map(card => card.card_id);
+    cards.splice(cardIDs.indexOf(card.card_id), 1, card);
 
     return { value: undefined };
   },
@@ -146,7 +146,7 @@ export default {
     if (sessionKey !== "some-session-key")
       return { error: "INVALID_SESSION_KEY" };
 
-    const cardIDs = cards.map(card => card.cardID);
+    const cardIDs = cards.map(card => card.card_id);
     cards.splice(cardIDs.indexOf(cardID), 1);
 
     return { value: undefined };

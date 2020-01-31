@@ -1,5 +1,5 @@
 import { action, computed, observable } from "mobx";
-import api from "../interface/api";
+import api, { isNever } from "../interface/api";
 import { Card, LinkedCard, Tag } from "../interface/model";
 import userStore from "./userStore";
 
@@ -11,12 +11,12 @@ class CardStore {
 
   @computed
   get linkedCards(): LinkedCard[] {
-    const tagIDs = this.tags.map(tag => tag.tagID);
+    const tagIDs = this.tags.map(tag => tag.tag_id);
     return this.cards.map(card => ({
-      cardID: card.cardID,
+      cardID: card.card_id,
       title: card.title,
       text: card.text,
-      tags: card.tagIDs
+      tags: card.tag_ids
         .map(tagID => this.tags[tagIDs.indexOf(tagID)])
         .filter(tag => tag)
     }));
@@ -33,8 +33,14 @@ class CardStore {
     if (!sessionKey) return;
 
     const res = await api.fetchCards(sessionKey);
-    if ("error" in res) return userStore.reset();
-    this.cards = res.value.cards;
+    if (res.tag === "error") {
+      if (res.error === "INVALID_SESSION_KEY") {
+        // TODO handle session exit gracefully
+      } else isNever(res.error);
+      return;
+    }
+
+    this.cards = res.payload.cards;
   }
 
   @action
@@ -43,8 +49,14 @@ class CardStore {
     if (!sessionKey) return;
 
     const res = await api.fetchTags(sessionKey);
-    if ("error" in res) return userStore.reset();
-    this.tags = res.value.tags;
+    if (res.tag === "error") {
+      if (res.error === "INVALID_SESSION_KEY") {
+        // TODO handle session exit gracefully
+      } else isNever(res.error);
+      return;
+    }
+
+    this.tags = res.payload.tags;
   }
 
   @action
@@ -53,11 +65,16 @@ class CardStore {
     if (!sessionKey) return;
 
     const res = await api.newTag(sessionKey, text, color);
-    if ("error" in res) return;
+    if (res.tag === "error") {
+      if (res.error === "INVALID_SESSION_KEY") {
+        // TODO handle session exit gracefully
+      } else isNever(res.error);
+      return;
+    }
 
     await this.fetchTags();
 
-    return res.value.tag;
+    return res.payload.tag;
   }
 
   @action
@@ -66,7 +83,14 @@ class CardStore {
     if (!sessionKey) return;
 
     const res = await api.updateTag(sessionKey, tag);
-    if ("error" in res) return;
+    if (res.tag === "error") {
+      if (res.error === "BAD_TAGID") {
+        // TODO Handle bad tag ID
+      } else if (res.error === "INVALID_SESSION_KEY") {
+        // TODO Handle session exit gracefully
+      } else isNever(res.error);
+      return;
+    }
 
     await this.fetchTags();
   }
@@ -77,7 +101,14 @@ class CardStore {
     if (!sessionKey) return;
 
     const res = await api.deleteTag(sessionKey, tagID);
-    if ("error" in res) return;
+    if (res.tag === "error") {
+      if (res.error === "BAD_TAGID") {
+        // TODO Handle bad tag ID
+      } else if (res.error === "INVALID_SESSION_KEY") {
+        // TODO Handle session exit gracefully
+      } else isNever(res.error);
+      return;
+    }
 
     await this.fetchAll();
   }
@@ -88,7 +119,14 @@ class CardStore {
     if (!sessionKey) return;
 
     const res = await api.newCard(sessionKey, title, text, tagIDs);
-    if ("error" in res) return;
+    if (res.tag === "error") {
+      if (res.error === "BAD_TAGID") {
+        // TODO Handle bad tag ID
+      } else if (res.error === "INVALID_SESSION_KEY") {
+        // TODO Handle session exit gracefully
+      } else isNever(res.error);
+      return;
+    }
 
     await this.fetchCards();
   }
@@ -99,7 +137,16 @@ class CardStore {
     if (!sessionKey) return;
 
     const res = await api.updateCard(sessionKey, card);
-    if ("error" in res) return;
+    if (res.tag === "error") {
+      if (res.error === "BAD_TAGID") {
+        // TODO Handle bad tag ID
+      } else if (res.error === "BAD_CARDID") {
+        // TODO Handle bad card ID
+      } else if (res.error === "INVALID_SESSION_KEY") {
+        // TODO Handle session exit gracefully
+      } else isNever(res.error);
+      return;
+    }
 
     await this.fetchCards();
   }
@@ -110,7 +157,14 @@ class CardStore {
     if (!sessionKey) return;
 
     const res = await api.deleteCard(sessionKey, cardID);
-    if ("error" in res) return;
+    if (res.tag === "error") {
+      if (res.error === "BAD_CARDID") {
+        // TODO Handle bad card ID
+      } else if (res.error === "INVALID_SESSION_KEY") {
+        // TODO Handle session exit gracefully
+      } else isNever(res.error);
+      return;
+    }
 
     await this.fetchCards();
   }

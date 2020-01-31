@@ -17,7 +17,12 @@ export default observer((props: Props) => {
   const state = useLocalStore(() => ({ editing: false }));
 
   const submitCard = async (title: string, text: string, tagIDs: string[]) => {
-    await props.updateCard({ cardID: props.card.cardID, title, text, tagIDs });
+    await props.updateCard({
+      card_id: props.card.cardID,
+      title,
+      text,
+      tag_ids: tagIDs
+    });
     state.editing = false;
   };
 
@@ -40,7 +45,7 @@ export default observer((props: Props) => {
       {props.card.tags.length > 0 && (
         <SCardTags>
           {props.card.tags.map(tag => (
-            <SCardTag key={tag.tagID} tagColor={tag.color}>
+            <SCardTag key={tag.tag_id} tagColor={tag.color}>
               {tag.text}
             </SCardTag>
           ))}

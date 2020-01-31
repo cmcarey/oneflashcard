@@ -17,7 +17,7 @@ export default observer(() => {
 
   const attemptLogin = async (email: string, password: string) => {
     const err = await userStore.login(email, password);
-    if (err) return err;
+    if (err) return "INVALID_DETAILS";
     state.loginFormOpen = false;
   };
 

@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  core:
+    image: node:13.7.0
+
+    working_dir: /app/
+
+    volumes:
+      - ../core/:/app/
+
+    depends_on:
+      - db
+
+    ports:
+      - 8000:8000
+
+    environment:
+      PORT: 8000
+      DB_HOST: db
+      DB_USER: oneflashcard
+      DB_PASS: unsecurepass
+      DB_DATABASE: oneflashcard
+
+    command: bash -c "yarn install && sleep 3 && yarn start.dev"
+
+  db:
+    image: postgres
+
+    volumes:
+      - ../database/migrations/:/docker-entrypoint-initdb.d/
+
+    environment:
+      POSTGRES_USER: oneflashcard
+      POSTGRES_PASSWORD: unsecurepass

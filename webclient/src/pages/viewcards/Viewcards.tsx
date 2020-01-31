@@ -37,7 +37,7 @@ export default observer(() => {
   if (state.filterTagIDs.length > 0)
     cards = cards.filter(card => {
       // Check that has a tagID for every filterTagID
-      const cardTagIDs = card.tags.map(tag => tag.tagID);
+      const cardTagIDs = card.tags.map(tag => tag.tag_id);
       const matchingTags = state.filterTagIDs.filter(
         id => cardTagIDs.indexOf(id) !== -1
       );

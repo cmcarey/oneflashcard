@@ -16,7 +16,7 @@ type Props = {
 export default observer((props: Props) => {
   const allTags = props.allTags.map(tag => ({
     label: tag.text,
-    value: tag.tagID
+    value: tag.tag_id
   }));
 
   const selectedTags = allTags.filter(

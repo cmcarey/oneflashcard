@@ -1,5 +1,5 @@
 import { action, computed, observable } from "mobx";
-import api from "../interface/api";
+import api, { isNever } from "../interface/api";
 import { User } from "../interface/model";
 import cardStore from "./cardStore";
 
@@ -22,11 +22,17 @@ class UserStore {
   @action
   async login(email: string, password: string) {
     const res = await api.login(email, password);
+    if (res.tag === "error") {
+      if (res.error === "BAD_EMAIL") {
+        return "BAD_EMAIL";
+      } else if (res.error === "BAD_PASSWORD") {
+        return "BAD_PASSWORD";
+      } else isNever(res.error);
+      return;
+    }
 
-    if ("error" in res) return res.error;
-
-    this.sessionKey = res.value.sessionKey;
-    this.user = res.value.user;
+    this.sessionKey = res.payload.sessionKey;
+    this.user = res.payload.user;
 
     localStorage.setItem("sessionKey", this.sessionKey!);
 
@@ -36,14 +42,16 @@ class UserStore {
   @action
   async restore(sessionKey: string) {
     this.sessionKey = sessionKey;
-    const res = await api.restore(sessionKey);
 
-    if ("error" in res) {
-      this.reset();
-      return res.error;
+    const res = await api.fetchUser(sessionKey);
+    if (res.tag === "error") {
+      if (res.error === "INVALID_SESSION_KEY") {
+        // TODO Handle bad session key
+      } else isNever(res.error);
+      return;
     }
 
-    this.user = res.value.user;
+    this.user = res.payload.user;
 
     cardStore.fetchAll();
   }

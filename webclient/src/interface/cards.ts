@@ -107,7 +107,7 @@ const tagTexts: [string, string][] = [
 ];
 
 export const resTags = tagTexts.map(tagText => ({
-  tagID: (nextTagID++).toString(),
+  tag_id: (nextTagID++).toString(),
   text: tagText[0],
   color: tagText[1]
 }));
@@ -118,7 +118,7 @@ const randomTags = () => {
 
   while (tagIDs.length < tagCount) {
     const tagNum = Math.floor(Math.random() * resTags.length);
-    const tagID = resTags[tagNum].tagID;
+    const tagID = resTags[tagNum].tag_id;
     if (tagIDs.indexOf(tagID) === -1) tagIDs.push(tagID);
   }
 
@@ -130,8 +130,8 @@ export const resCards = all
   .map(row => row.split("*COL").map(col => col.trim()))
   .filter(row => row.length > 1)
   .map(row => ({
-    cardID: (nextCardID++).toString(),
+    card_id: (nextCardID++).toString(),
     title: row[0],
     text: row[1],
-    tagIDs: randomTags().sort()
+    tag_ids: randomTags().sort()
   }));

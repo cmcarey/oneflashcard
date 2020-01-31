@@ -13,7 +13,7 @@ type Props = {
 export default observer((rawProps: Props) => {
   const props = useAsObservableSource(rawProps);
 
-  const allTagIDs = props.allTags.map(tag => tag.tagID);
+  const allTagIDs = props.allTags.map(tag => tag.tag_id);
 
   const selected = props.selectedTagIDs.map(tagID => ({
     label: props.allTags[allTagIDs.indexOf(tagID)].text,
@@ -24,7 +24,7 @@ export default observer((rawProps: Props) => {
 
   const options = props.allTags.map(tag => ({
     label: tag.text,
-    value: tag.tagID
+    value: tag.tag_id
   }));
 
   const create = async (text: string) => {

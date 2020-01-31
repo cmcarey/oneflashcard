@@ -25,10 +25,10 @@ export default observer((props: Props) => {
   const updateCol = (col: ColorResult) =>
     props.updateTag({ ...props.tag, color: col.hex });
 
-  const deleteTag = () => props.deleteTag(props.tag.tagID);
+  const deleteTag = () => props.deleteTag(props.tag.tag_id);
 
   return (
-    <STag key={props.tag.tagID} ref={ref}>
+    <STag key={props.tag.tag_id} ref={ref}>
       <STopRow tagCol={props.tag.color}>
         <STagText onClick={toggleColorPicker}>{props.tag.text}</STagText>
         <SDelButton onClick={deleteTag}>

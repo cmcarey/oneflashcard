@@ -2,6 +2,7 @@
   "name": "oneflashcard-webclient",
   "version": "1.0.0",
   "private": true,
+  "proxy": "http://localhost:8000",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -36,10 +37,9 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start.dev": "react-scripts start",
+    "start.dev.mockdb": "REACT_APP_DB=mock react-scripts start",
+    "build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"

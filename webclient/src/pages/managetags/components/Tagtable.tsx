@@ -15,7 +15,7 @@ export default observer((props: Props) => {
     <STagContainer>
       {props.tags.map(tag => (
         <ColTag
-          key={tag.tagID}
+          key={tag.tag_id}
           tag={tag}
           updateTag={props.updateTag}
           deleteTag={props.deleteTag}
