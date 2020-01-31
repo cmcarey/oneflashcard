@@ -36,64 +36,75 @@ The **manage tags** tab allows you to modify tags by changing their text, color,
 
 The UI is fully responsive and adapts to tablet and mobile form factors.
 
-# Status
-
-This project is still in early stage development. Some (quite important) missing features are:
-
-🔑 SAML / OAuth authentication support  
-🔥 Web client unit testing  
-🗺 API annotation using OpenAPI  
-💡 Basically the entire client  
-📝 Documentation
-
 # Server
 
-## Structure
+The server is written in strict `Typescript` and uses `Koa` as a web backend.
+Schema validation is handled automatically using `Joi`.
+Password hashing and validation is performed using `bcrypt` and `10` salt rounds.
+The database backend is `Postgres` and is interacted with using `knex`.
 
-The server is written in strict **Typescript** and uses [`Koa`](https://koajs.com/) (with [`koa-router`](https://github.com/ZijianHe/koa-router) and [`koa-bodyparser`](https://github.com/koajs/bodyparser) helpers) to provide a REST api. **Schema validation** is handled using [`Joi`](https://github.com/hapijs/joi). **Password encryption** and **validation** is performed using [`bcrypt`](https://www.npmjs.com/package/bcrypt) and `10` salt rounds. The database backend is **Postgres**, and is interacted with using [`knex`](https://knexjs.org).
+Testing is done via `Jest` and both integration and E2E tests are written.
+The server is packaged for deployment using `Docker`.
 
-The server is packaged for deployment using **Docker**. The build process is multi-stage and compiles the Typescript source into pure Javascript for later execution.
+The API is documented in [`API.md`](./API.md).
 
-The Postgres database similarly has a Dockerfile for initial deployment - all migrations are packaged as part of the image.
+## Configuration
+
+The server expects the following environment variables to be set:
+
+| Var           | Explanation                       |
+| ------------- | --------------------------------- |
+| `PORT`        | Port to run the server on         |
+| `DB_HOST`     | Hostname of the Postgres database |
+| `DB_USER`     | DB username                       |
+| `DB_PASS`     | DB password                       |
+| `DB_DATABASE` | DB name                           |
 
 ## Testing
 
-![](images/testing.png)
+Testing is done using Jest. There are two ways to run the tests: using either the real database (E2E testing), or a mocked one (integration testing).
 
-Full **acceptance testing testing** is used for the server. A Postgres database is brought up and seeded for each test. The tests cover every API endpoint and all errors.
+Using the mock database allows the tests to be run without actually needing a running database, however E2E testing is also necessary to ensure the full application functions as expected.
 
-The tests are run using **Jest**. Each test truncates every table in the database to ensure no cross-test contamination.
-
-The tests can be run locally on a system that has `docker` and `docker-compose` installed via running:
+### Testing against mock db
 
 ```
-$ ./server/test/utils.bash acceptance test
+> cd server/core
+> yarn install
+> yarn test.mock
+# or yarn test.mock.dev for reloading
 ```
 
-This will build each element and run the acceptance tests.
-
-Alternatively, the acceptance tests can be run in dev mode where the server automatically reloads and the tests automatically re-run when changes are made. This requires **tmux** be installed, and can be run via:
+### Testing against real db
 
 ```
-$ ./server/test/utils.bash acceptance dev
+> cd server/dockerfiles
+> docker-compose -f test.docker-compose.yml up -V
 ```
 
-Running tests in this way will split the terminal into three panes (hence the tmux requirement), showing the database log, core server log, and test log -
+This compose brings up an auto reloading test against the current database, running all migrations in [server/database/migrations](./server/database/migrations). For each test run, all tables in the database are truncated and then data is seeded for testing.
 
-![](images/acceptance_test_dev.png)
+## Status
 
-The test log is interactive and the tests can be run at any time by pressing `enter`. The tests also automatically re-run when any test files are changed. Quitting the test process (via either typing `q` or `ctrl-c`) will close both the DB and core processes as well.
+- [x] User tests
+- [x] User routes
+- [x] User DB backend
 
-## Deployment
+<!-- -->
 
-![](images/ci.png)
+- [x] Card tests
+- [x] Card routes
+- [x] Card DB backend
 
-**Github Actions** are used to run the CICD workflow. Currently, each change / PR triggers a full run of all tests. The tests are run in the same manner as they would be run locally.
+<!-- -->
 
-# Documentation
+- [x] Tag tests
+- [x] Tag routes
+- [x] Tag DB backend
 
-The API endpoints are documented [here](./API.md). The format is currently adhoc, and will later be converted to OpenAPI.
+<!-- -->
 
-# Contributing
-
-This is a personal project, made public for demonstrative reasons.
+- [x] E2E testing
+- [ ] Update card tests to use tags (`new`/`update` tests)
+- [ ] Test across account boundaries (attempting to modify something belonging to another user)
+- [ ] Status checks
