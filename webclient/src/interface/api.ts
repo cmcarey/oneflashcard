@@ -33,13 +33,13 @@ export type Api = {
     key: string,
     card: Card
   ): AQRes<{ card: Card }, "BAD_CARDID" | "BAD_TAGID">;
-  deleteCard(key: string, card_id: string): AQRes<never, "BAD_CARDID">;
+  deleteCard(key: string, card_id: string): AQRes<void, "BAD_CARDID">;
 
   // Tag routes
   fetchTags(key: string): AQRes<{ tags: Tag[] }, never>;
   newTag(key: string, text: string, color: string): AQRes<{ tag: Tag }, never>;
-  updateTag(key: string, tag: Tag): AQRes<never, "BAD_TAGID">;
-  deleteTag(key: string, tag_id: string): AQRes<never, "BAD_TAGID">;
+  updateTag(key: string, tag: Tag): AQRes<void, "BAD_TAGID">;
+  deleteTag(key: string, tag_id: string): AQRes<void, "BAD_TAGID">;
 };
 
 let api: Api;

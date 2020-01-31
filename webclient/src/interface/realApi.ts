@@ -1,3 +1,4 @@
+import superagent from "superagent";
 import { Api, AQRes, QRes } from "./api";
 import { Card, Tag, User } from "./model";
 
@@ -7,15 +8,37 @@ const api: Api = {
     email: string,
     password: string
   ): QRes<{ user: User; sessionKey: string }, "BAD_EMAIL" | "BAD_PASSWORD"> {
-    throw new Error("Not yet implemented.");
+    try {
+      const req = await superagent.post("/login").send({ email, password });
+      return { tag: "ok", payload: req.body };
+    } catch (e) {
+      const e_msg = (e as any).response.text;
+      return { tag: "error", error: e_msg };
+    }
   },
   async fetchUser(key: string): AQRes<{ user: User }, never> {
-    throw new Error("Not yet implemented.");
+    try {
+      const req = await superagent
+        .get("/user")
+        .set("Authorization", `Bearer ${key}`);
+      return { tag: "ok", payload: req.body };
+    } catch (e) {
+      const e_msg = (e as any).response.text;
+      return { tag: "error", error: e_msg };
+    }
   },
 
   // Card routes
   async fetchCards(key: string): AQRes<{ cards: Card[] }, never> {
-    throw new Error("Not yet implemented.");
+    try {
+      const req = await superagent
+        .get("/card")
+        .set("Authorization", `Bearer ${key}`);
+      return { tag: "ok", payload: req.body };
+    } catch (e) {
+      const e_msg = (e as any).response.text;
+      return { tag: "error", error: e_msg };
+    }
   },
   async newCard(
     key: string,
@@ -23,34 +46,96 @@ const api: Api = {
     text: string,
     tag_ids: string[]
   ): AQRes<{ card: Card }, "BAD_TAGID"> {
-    throw new Error("Not yet implemented.");
+    try {
+      const req = await superagent
+        .post("/card/new")
+        .send({ title, text, tag_ids })
+        .set("Authorization", `Bearer ${key}`);
+      return { tag: "ok", payload: req.body };
+    } catch (e) {
+      const e_msg = (e as any).response.text;
+      return { tag: "error", error: e_msg };
+    }
   },
   async updateCard(
     key: string,
     card: Card
   ): AQRes<{ card: Card }, "BAD_CARDID" | "BAD_TAGID"> {
-    throw new Error("Not yet implemented.");
+    try {
+      const req = await superagent
+        .post("/card/update")
+        .send({ card })
+        .set("Authorization", `Bearer ${key}`);
+      return { tag: "ok", payload: req.body };
+    } catch (e) {
+      const e_msg = (e as any).response.text;
+      return { tag: "error", error: e_msg };
+    }
   },
-  async deleteCard(key: string, card_id: string): AQRes<never, "BAD_CARDID"> {
-    throw new Error("Not yet implemented.");
+  async deleteCard(key: string, card_id: string): AQRes<void, "BAD_CARDID"> {
+    try {
+      const req = await superagent
+        .post("/card/delete")
+        .send({ card_id })
+        .set("Authorization", `Bearer ${key}`);
+      return { tag: "ok", payload: req.body };
+    } catch (e) {
+      const e_msg = (e as any).response.text;
+      return { tag: "error", error: e_msg };
+    }
   },
 
   // Tag routes
   async fetchTags(key: string): AQRes<{ tags: Tag[] }, never> {
-    throw new Error("Not yet implemented.");
+    try {
+      const req = await superagent
+        .get("/tag")
+        .set("Authorization", `Bearer ${key}`);
+      return { tag: "ok", payload: req.body };
+    } catch (e) {
+      const e_msg = (e as any).response.text;
+      return { tag: "error", error: e_msg };
+    }
   },
   async newTag(
     key: string,
     text: string,
     color: string
   ): AQRes<{ tag: Tag }, never> {
-    throw new Error("Not yet implemented.");
+    try {
+      const req = await superagent
+        .post("/tag/new")
+        .send({ text, color })
+        .set("Authorization", `Bearer ${key}`);
+      return { tag: "ok", payload: req.body };
+    } catch (e) {
+      const e_msg = (e as any).response.text;
+      return { tag: "error", error: e_msg };
+    }
   },
-  async updateTag(key: string, tag: Tag): AQRes<never, "BAD_TAGID"> {
-    throw new Error("Not yet implemented.");
+  async updateTag(key: string, tag: Tag): AQRes<void, "BAD_TAGID"> {
+    try {
+      const req = await superagent
+        .post("/tag/update")
+        .send({ tag })
+        .set("Authorization", `Bearer ${key}`);
+      return { tag: "ok", payload: req.body };
+    } catch (e) {
+      const e_msg = (e as any).response.text;
+      return { tag: "error", error: e_msg };
+    }
   },
-  async deleteTag(key: string, tag_id: string): AQRes<never, "BAD_TAGID"> {
-    throw new Error("Not yet implemented.");
+  async deleteTag(key: string, tag_id: string): AQRes<void, "BAD_TAGID"> {
+    try {
+      const req = await superagent
+        .post("/tag/delete")
+        .send({ tag_id })
+        .set("Authorization", `Bearer ${key}`);
+      return { tag: "ok", payload: req.body };
+    } catch (e) {
+      const e_msg = (e as any).response.text;
+      return { tag: "error", error: e_msg };
+    }
   }
 };
 
