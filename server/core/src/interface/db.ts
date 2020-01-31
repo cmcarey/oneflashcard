@@ -52,15 +52,43 @@ export class Db implements IDb {
 
   // Card methods
   async createCard(
-    _user_id: string,
-    _title: string,
-    _text: string,
-    _tag_ids: string[]
+    user_id: string,
+    title: string,
+    text: string,
+    tag_ids: string[]
   ): Promise<Card> {
-    throw new Error("Method not implemented.");
+    // Insert card
+    const card = await this.conn("cards")
+      .insert({ user_id, title, text })
+      .returning("card_id");
+    const card_id = card[0].card_id;
+
+    // Then insert all card_tags relations
+    await this.conn("card_tags").insert(
+      tag_ids.map(tag_id => ({ user_id, card_id, tag_id }))
+    );
+
+    return { card_id, user_id, title, text, tag_ids };
   }
-  async getCardsByUserID(_user_id: string): Promise<Card[]> {
-    throw new Error("Method not implemented.");
+  async getCardsByUserID(user_id: string): Promise<Card[]> {
+    // Must fetch card_tags.tag_id for each card by card_tags.card_id
+    const cards = await this.conn("cards")
+      .where({ user_id })
+      .select();
+
+    const card_tags = await this.conn("card_tags")
+      .whereIn(
+        "card_id",
+        cards.map(card => card.card_id)
+      )
+      .select("card_id", "tag_id");
+
+    return cards.map(card => ({
+      ...card,
+      tag_ids: card_tags
+        .filter(ct => ct.card_id === card.card_id)
+        .map(ct => ct.tag_id)
+    }));
   }
   async updateCard(_card: Card): Promise<void> {
     throw new Error("Method not implemented.");
