@@ -15,7 +15,7 @@ export const updateTag = (
   server: any,
   key: string,
   tag: {
-    tagID: string;
+    tag_id: string;
     text: string;
     color: string;
   }
@@ -25,8 +25,8 @@ export const updateTag = (
     .send({ tag })
     .set("Authorization", `Bearer ${key}`);
 
-export const deleteTag = (server: any, key: string, tagID: string) =>
+export const deleteTag = (server: any, key: string, tag_id: string) =>
   supertest(server)
     .post("/tag/delete")
-    .send({ tagID })
+    .send({ tag_id })
     .set("Authorization", `Bearer ${key}`);

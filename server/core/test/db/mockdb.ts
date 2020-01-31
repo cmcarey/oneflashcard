@@ -1,12 +1,17 @@
 import bcrypt from "bcryptjs";
-import { IDb } from "../src/interface/IDb";
-import { Card, Session, Tag, User } from "../src/interface/model";
+import { IDb } from "../../src/interface/IDb";
+import { Card, Session, Tag, User } from "../../src/interface/model";
+import { ITestDB } from "./db";
 
 const somepassHashed = bcrypt.hashSync("somepass", bcrypt.genSaltSync(10));
 
 class Store {
   users: User[] = [
-    { user_id: "0", email: "chance@carey.sh", password: somepassHashed }
+    {
+      user_id: "0000-0000-0000-0000",
+      email: "chance@carey.sh",
+      password: somepassHashed
+    }
   ];
 
   sessions: Session[] = [];
@@ -22,9 +27,8 @@ class Store {
   getNextTagID = () => (this.nextTagID++).toString();
 }
 
-export class Db implements IDb {
+class Db implements IDb {
   store = new Store();
-  resetStore = () => (this.store = new Store());
 
   // User methods
   getUserByEmail(email: string): Promise<User | void> {
@@ -126,4 +130,11 @@ export class Db implements IDb {
 
     return Promise.resolve();
   }
+}
+
+export class MockDB implements ITestDB {
+  db = new Db();
+  reset = async () => {
+    this.db.store = new Store();
+  };
 }

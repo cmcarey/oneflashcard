@@ -1,9 +1,9 @@
 # Types
 
 ```
-User {userID: string, email: string}
-Card {cardID: string, title: string, text: string, tagIDs: string[]}
-Tag: {tagID: string, text: string, color: string}
+User {user_id: string, email: string}
+Card {card_id: string, title: string, text: string, tag_ids: string[]}
+Tag: {tag_id: string, text: string, color: string}
 ```
 
 # Authentication
@@ -30,7 +30,7 @@ If the request body does not match the schema, the request will return 400 with 
 User login
 POST /login
   REQ {email: string, password: string}
-  200 {user: User, sessionKey: string}
+  200 {user: User, session_key: string}
   400 "BAD_EMAIL" | "BAD_PASSWORD"
 ```
 
@@ -51,7 +51,7 @@ GET /card
 ```
 New card +AUTH
 POST /card/new
-  REQ {title: string, text: string, tagIDs: string[]}
+  REQ {title: string, text: string, tag_ids: string[]}
   200 {card: Card}
   400 "BAD_TAGID"
 ```
@@ -67,7 +67,7 @@ POST /card/update
 ```
 Delete card +AUTH
 POST /card/delete
-  REQ {cardID: string}
+  REQ {card_id: string}
   200
   400 "BAD_CARDID"
 ```
@@ -98,7 +98,7 @@ POST /tag/update
 ```
 Delete tag +AUTH
 POST /tag/delete
-  REQ {tagID: string}
+  REQ {tag_id: string}
   200
   400 "BAD_TAGID"
 ```

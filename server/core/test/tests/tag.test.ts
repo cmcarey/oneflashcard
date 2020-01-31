@@ -1,15 +1,15 @@
 import supertest from "supertest";
 import { createServer } from "../../src/server";
-import { Db } from "../db";
+import { getDB } from "../db/db";
 import { deleteTag, getTags, newTag, updateTag } from "../utils/tag";
 import { login } from "../utils/user";
 
 describe("Fetch tags", () => {
   let server: any;
-  const db = new Db();
-  beforeAll(() => (server = createServer(db, undefined as any)));
+  const db = getDB();
+  beforeAll(() => (server = createServer(db.db, undefined as any)));
   afterAll(() => server.close());
-  afterEach(() => db.resetStore());
+  beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
     const res = await supertest(server).get("/tag");
@@ -40,7 +40,7 @@ describe("Fetch tags", () => {
       tags: [
         {
           // Manually specifying one of the tags to ensure all fields are there
-          tagID: expect.any(String),
+          tag_id: expect.any(String),
           text: "Some tag",
           color: "red"
         },
@@ -52,10 +52,10 @@ describe("Fetch tags", () => {
 
 describe("Insert tag", () => {
   let server: any;
-  const db = new Db();
-  beforeAll(() => (server = createServer(db, undefined as any)));
+  const db = getDB();
+  beforeAll(() => (server = createServer(db.db, undefined as any)));
   afterAll(() => server.close());
-  afterEach(() => db.resetStore());
+  beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
     const res = await newTag(server, "badkey", "Some tag", "red");
@@ -83,7 +83,7 @@ describe("Insert tag", () => {
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       tag: {
-        tagID: expect.any(String),
+        tag_id: expect.any(String),
         text: "Some tag",
         color: "red"
       }
@@ -93,10 +93,10 @@ describe("Insert tag", () => {
 
 describe("Update tag", () => {
   let server: any;
-  const db = new Db();
-  beforeAll(() => (server = createServer(db, undefined as any)));
+  const db = getDB();
+  beforeAll(() => (server = createServer(db.db, undefined as any)));
   afterAll(() => server.close());
-  afterEach(() => db.resetStore());
+  beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
     const res = await supertest(server).post("/tag/update");
@@ -120,7 +120,7 @@ describe("Update tag", () => {
     const sessionKey = (await login(server)).body.sessionKey;
 
     const nextTag = {
-      tagID: "someid",
+      tag_id: "someid",
       text: "New tag",
       color: "blue"
     };
@@ -136,7 +136,7 @@ describe("Update tag", () => {
     const tag = await newTag(server, sessionKey, "tag", "red");
 
     const nextTag = {
-      tagID: tag.body.tag.tagID,
+      tag_id: tag.body.tag.tag_id,
       text: "New tag",
       color: "blue"
     };
@@ -152,10 +152,10 @@ describe("Update tag", () => {
 
 describe("Delete tag", () => {
   let server: any;
-  const db = new Db();
-  beforeAll(() => (server = createServer(db, undefined as any)));
+  const db = getDB();
+  beforeAll(() => (server = createServer(db.db, undefined as any)));
   afterAll(() => server.close());
-  afterEach(() => db.resetStore());
+  beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
     const res = await supertest(server).post("/tag/delete");
@@ -180,7 +180,7 @@ describe("Delete tag", () => {
 
     const card = await newTag(server, sessionKey, "some text", "red");
 
-    const res = await deleteTag(server, sessionKey, card.body.tag.tagID);
+    const res = await deleteTag(server, sessionKey, card.body.tag.tag_id);
     expect(res.status).toBe(200);
     expect(res.text).toBe("");
 

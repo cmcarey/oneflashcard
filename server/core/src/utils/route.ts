@@ -21,7 +21,7 @@ export const buildHandler = (ctx: Context) => (route: RouteHandler) => async (
 ) => {
   if (route.requireAuth) {
     // Perform authentication check
-    // On succcess, set koaCTX.userID
+    // On succcess, set koaCTX.user_id
     // On fail, return 400 BAD_SESSION_KEY
 
     const authErr = () => {
@@ -45,7 +45,7 @@ export const buildHandler = (ctx: Context) => (route: RouteHandler) => async (
     }
 
     // Located, set userID
-    koaCtx.userID = session.user_id;
+    koaCtx.user_id = session.user_id;
   }
 
   if (route.validation) {

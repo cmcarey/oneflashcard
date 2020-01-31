@@ -5,8 +5,10 @@
   "license": "MIT",
   "scripts": {
     "start.dev": "ts-node-dev src/server.ts",
-    "test": "jest",
-    "test.dev": "jest --watchAll"
+    "test.mock": "TEST_DB=MOCK jest",
+    "test.mock.dev": "TEST_DB=MOCK jest --watchAll",
+    "test.real": "TEST_DB=REAL jest -i",
+    "test.real.dev": "TEST_DB=REAL jest --watchAll -i"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

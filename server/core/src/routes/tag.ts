@@ -6,11 +6,11 @@ export const tagFetchRoute: RouteHandler = {
   validation: undefined,
 
   handle: async (ctx, koaCtx) => {
-    const tags = await ctx.db.getTagsByUserID(koaCtx.userID);
+    const tags = await ctx.db.getTagsByUserID(koaCtx.user_id);
 
     koaCtx.body = {
       tags: tags.map(tag => ({
-        tagID: tag.tag_id,
+        tag_id: tag.tag_id,
         text: tag.text,
         color: tag.color
       }))
@@ -29,11 +29,11 @@ export const tagCreateRoute: RouteHandler = {
     const body = koaCtx.request.body;
 
     // Create tag
-    const tag = await ctx.db.createTag(koaCtx.userID, body.text, body.color);
+    const tag = await ctx.db.createTag(koaCtx.user_id, body.text, body.color);
 
     koaCtx.body = {
       tag: {
-        tagID: tag.tag_id,
+        tag_id: tag.tag_id,
         text: tag.text,
         color: tag.color
       }
@@ -45,7 +45,7 @@ export const tagUpdateRoute: RouteHandler = {
   requireAuth: true,
   validation: Joi.object({
     tag: Joi.object({
-      tagID: Joi.string().required(),
+      tag_id: Joi.string().required(),
       text: Joi.string().required(),
       color: Joi.string().required()
     }).required()
@@ -55,15 +55,15 @@ export const tagUpdateRoute: RouteHandler = {
     const body = koaCtx.request.body;
 
     // Check that user owns this tag
-    const alluserTags = await ctx.db.getTagsByUserID(koaCtx.userID);
+    const alluserTags = await ctx.db.getTagsByUserID(koaCtx.user_id);
     const allUserTagIDs = alluserTags.map(tag => tag.tag_id);
-    if (!allUserTagIDs.includes(body.tag.tagID))
+    if (!allUserTagIDs.includes(body.tag.tag_id))
       throw new RouteError("BAD_TAGID");
 
     // Update
     await ctx.db.updateTag({
-      tag_id: body.tag.tagID,
-      user_id: koaCtx.userID,
+      tag_id: body.tag.tag_id,
+      user_id: koaCtx.user_id,
       text: body.tag.text,
       color: body.tag.color
     });
@@ -73,17 +73,17 @@ export const tagUpdateRoute: RouteHandler = {
 export const tagDeleteRoute: RouteHandler = {
   requireAuth: true,
   validation: Joi.object({
-    tagID: Joi.string().required()
+    tag_id: Joi.string().required()
   }),
 
   handle: async (ctx, koaCtx) => {
     const body = koaCtx.request.body;
 
     // Check that user owns this tag
-    const alluserTags = await ctx.db.getTagsByUserID(koaCtx.userID);
+    const alluserTags = await ctx.db.getTagsByUserID(koaCtx.user_id);
     const allUserTagIDs = alluserTags.map(tag => tag.tag_id);
-    if (!allUserTagIDs.includes(body.tagID)) throw new RouteError("BAD_TAGID");
+    if (!allUserTagIDs.includes(body.tag_id)) throw new RouteError("BAD_TAGID");
 
-    await ctx.db.deleteTag(body.tagID);
+    await ctx.db.deleteTag(body.tag_id);
   }
 };

@@ -16,7 +16,6 @@ export class Db implements IDb {
         database: config.db_database
       }
     });
-    this.conn;
   }
 
   // User methods
@@ -29,7 +28,7 @@ export class Db implements IDb {
   }
   async getUserByUserID(user_id: string): Promise<User | void> {
     const user = await this.conn<User>("users")
-      .where({ _user_id: user_id })
+      .where({ user_id })
       .first();
 
     return user;
@@ -39,10 +38,9 @@ export class Db implements IDb {
   async createSession(user_id: string, key: string): Promise<Session> {
     const session = await this.conn<Session>("sessions")
       .insert({ user_id, key })
-      .returning("*")
-      .first();
+      .returning("*");
 
-    return session!;
+    return session[0];
   }
   async getSessionByKey(key: string): Promise<Session | void> {
     const session = await this.conn<Session>("sessions")

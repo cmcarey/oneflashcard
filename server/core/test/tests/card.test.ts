@@ -1,15 +1,15 @@
 import supertest from "supertest";
 import { createServer } from "../../src/server";
-import { Db } from "../db";
+import { getDB } from "../db/db";
 import { deleteCard, getCards, newCard, updateCard } from "../utils/card";
 import { login } from "../utils/user";
 
 describe("Fetch cards", () => {
   let server: any;
-  const db = new Db();
-  beforeAll(() => (server = createServer(db, undefined as any)));
+  const db = getDB();
+  beforeAll(() => (server = createServer(db.db, undefined as any)));
   afterAll(() => server.close());
-  afterEach(() => db.resetStore());
+  beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
     const res = await supertest(server).get("/card");
@@ -54,10 +54,10 @@ describe("Fetch cards", () => {
 
 describe("New card", () => {
   let server: any;
-  const db = new Db();
-  beforeAll(() => (server = createServer(db, undefined as any)));
+  const db = getDB();
+  beforeAll(() => (server = createServer(db.db, undefined as any)));
   afterAll(() => server.close());
-  afterEach(() => db.resetStore());
+  beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
     const res = await supertest(server).post("/card/new");
@@ -91,10 +91,10 @@ describe("New card", () => {
     expect(card.status).toBe(200);
     expect(card.body).toEqual({
       card: {
-        cardID: expect.any(String),
+        card_id: expect.any(String),
         title: "some title",
         text: "some text",
-        tagIDs: []
+        tag_ids: []
       }
     });
   });
@@ -113,10 +113,10 @@ describe("New card", () => {
 
 describe("Update card", () => {
   let server: any;
-  const db = new Db();
-  beforeAll(() => (server = createServer(db, undefined as any)));
+  const db = getDB();
+  beforeAll(() => (server = createServer(db.db, undefined as any)));
   afterAll(() => server.close());
-  afterEach(() => db.resetStore());
+  beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
     const res = await supertest(server).post("/card/update");
@@ -148,10 +148,10 @@ describe("Update card", () => {
     );
 
     const nextCard = {
-      cardID: card.body.card.cardID,
+      card_id: card.body.card.card_id,
       title: "New title",
       text: "New text",
-      tagIDs: []
+      tag_ids: []
     };
 
     const res = await updateCard(server, sessionKey, nextCard);
@@ -166,10 +166,10 @@ describe("Update card", () => {
     const sessionKey = (await login(server)).body.sessionKey;
 
     const card = {
-      cardID: "badcardid",
+      card_id: "badcardid",
       title: "New title",
       text: "New text",
-      tagIDs: []
+      tag_ids: []
     };
 
     const res = await updateCard(server, sessionKey, card);
@@ -192,10 +192,10 @@ describe("Update card", () => {
     );
 
     const nextCard = {
-      cardID: card.body.card.cardID,
+      card_id: card.body.card.card_id,
       title: "New title",
       text: "New text",
-      tagIDs: ["badid"]
+      tag_ids: ["badid"]
     };
 
     const res = await updateCard(server, sessionKey, nextCard);
@@ -209,10 +209,10 @@ describe("Update card", () => {
 
 describe("Delete card", () => {
   let server: any;
-  const db = new Db();
-  beforeAll(() => (server = createServer(db, undefined as any)));
+  const db = getDB();
+  beforeAll(() => (server = createServer(db.db, undefined as any)));
   afterAll(() => server.close());
-  afterEach(() => db.resetStore());
+  beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
     const res = await supertest(server).post("/card/delete");
@@ -243,7 +243,7 @@ describe("Delete card", () => {
       []
     );
 
-    const res = await deleteCard(server, sessionKey, card.body.card.cardID);
+    const res = await deleteCard(server, sessionKey, card.body.card.card_id);
     expect(res.status).toBe(200);
     expect(res.text).toBe("");
 

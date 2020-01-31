@@ -1,14 +1,14 @@
 import supertest from "supertest";
 import { createServer } from "../../src/server";
-import { Db } from "../db";
+import { getDB } from "../db/db";
 import { getUser, login } from "../utils/user";
 
 describe("Login", () => {
   let server: any;
-  const db = new Db();
-  beforeAll(() => (server = createServer(db, undefined as any)));
+  const db = getDB();
+  beforeAll(() => (server = createServer(db.db, undefined as any)));
   afterAll(() => server.close());
-  afterEach(() => db.resetStore());
+  beforeEach(async () => await db.reset());
 
   test("Bad request body", async () => {
     const res = await supertest(server).post("/login");
@@ -23,7 +23,7 @@ describe("Login", () => {
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       user: {
-        userID: "0",
+        user_id: expect.any(String),
         email: "chance@carey.sh"
       },
       sessionKey: expect.any(String)
@@ -47,10 +47,10 @@ describe("Login", () => {
 
 describe("Fetch user", () => {
   let server: any;
-  const db = new Db();
-  beforeAll(() => (server = createServer(db, undefined as any)));
+  const db = getDB();
+  beforeAll(() => (server = createServer(db.db, undefined as any)));
   afterAll(() => server.close());
-  afterEach(() => db.resetStore());
+  beforeEach(async () => await db.reset());
 
   test("Missing session key", async () => {
     const res = await supertest(server).get("/user");

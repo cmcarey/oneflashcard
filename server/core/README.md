@@ -12,19 +12,11 @@ The server expects the following environment variables to be set:
 
 # Testing
 
-Testing is done using Jest. A mocked database interface is created and used in place of real DB interactions.
+Testing is done using Jest. There are two ways to run the tests: using either the real database, or a mocked one.
 
-Tests can be run a single time using the command:
+Running against mock db: `yarn test.mock` or `yarn test.mock.dev` (for reloading).
 
-```
-> yarn test
-```
-
-They can be run in interactive mode (re-running on file change) using:
-
-```
-> yarn test.dev
-```
+Running against real db: `docker-compose -f dockerfiles/test.docker-compose.yml up -V`.
 
 # Status
 
@@ -48,5 +40,5 @@ They can be run in interactive mode (re-running on file change) using:
 
 - [ ] Update card tests to use tags (`new`/`update` tests)
 - [ ] Test across account boundaries (attempting to modify something belonging to another user)
-- [ ] Status checks 
+- [ ] Status checks
 - [ ] E2E testing
