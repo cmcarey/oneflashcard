@@ -1,9 +1,6 @@
+import { Api, AQRes, QRes } from "./api";
 import { resCards, resTags } from "./cards";
 import { Card, Tag, User } from "./model";
-
-type AUTH = "INVALID_SESSION_KEY";
-
-type ApiResponse<E, V> = Promise<{ error: E } | { value: V }>;
 
 const sleep = (ms: number = 500) => new Promise(r => setTimeout(r, ms));
 
@@ -12,62 +9,64 @@ let nextCardID = cards.length + 1;
 const tags = resTags;
 let nextTagID = tags.length + 1;
 
-export default {
+const api: Api = {
   async login(
     email: string,
     password: string
-  ): ApiResponse<"INVALID_DETAILS", { user: User; sessionKey: string }> {
+  ): QRes<{ user: User; sessionKey: string }, "BAD_EMAIL" | "BAD_PASSWORD"> {
     await sleep();
 
     if (email === "chance@carey.sh" && password === "somepass")
       return {
-        value: {
+        tag: "ok",
+        payload: {
           user: { user_id: "some-user-id", email: "chance@carey.sh" },
           sessionKey: "some-session-key"
         }
       };
 
-    return { error: "INVALID_DETAILS" };
+    return { tag: "error", error: "BAD_EMAIL" };
   },
 
-  async restore(sessionKey: string): ApiResponse<AUTH, { user: User }> {
+  async fetchUser(sessionKey: string): AQRes<{ user: User }, never> {
     await sleep();
 
     if (sessionKey === "some-session-key")
       return {
-        value: { user: { user_id: "some-user-id", email: "chance@carey.sh" } }
+        tag: "ok",
+        payload: { user: { user_id: "some-user-id", email: "chance@carey.sh" } }
       };
 
-    return { error: "INVALID_SESSION_KEY" };
+    return { tag: "error", error: "INVALID_SESSION_KEY" };
   },
 
-  async fetchCards(sessionKey: string): ApiResponse<AUTH, { cards: Card[] }> {
+  async fetchCards(sessionKey: string): AQRes<{ cards: Card[] }, never> {
     await sleep();
 
     if (sessionKey !== "some-session-key")
-      return { error: "INVALID_SESSION_KEY" };
+      return { tag: "error", error: "INVALID_SESSION_KEY" };
 
-    return { value: { cards } };
+    return { tag: "ok", payload: { cards } };
   },
 
-  async fetchTags(sessionKey: string): ApiResponse<AUTH, { tags: Tag[] }> {
+  async fetchTags(sessionKey: string): AQRes<{ tags: Tag[] }, never> {
     await sleep();
 
     if (sessionKey !== "some-session-key")
-      return { error: "INVALID_SESSION_KEY" };
+      return { tag: "error", error: "INVALID_SESSION_KEY" };
 
-    return { value: { tags } };
+    return { tag: "ok", payload: { tags } };
   },
 
   async newTag(
     sessionKey: string,
     text: string,
     color: string
-  ): ApiResponse<AUTH, { tag: Tag }> {
+  ): AQRes<{ tag: Tag }, never> {
     await sleep();
 
     if (sessionKey !== "some-session-key")
-      return { error: "INVALID_SESSION_KEY" };
+      return { tag: "error", error: "INVALID_SESSION_KEY" };
 
     const tag = {
       tag_id: (nextTagID++).toString(),
@@ -75,26 +74,26 @@ export default {
       color
     };
     tags.push(tag);
-    return { value: { tag } };
+    return { tag: "ok", payload: { tag } };
   },
 
-  async updateTag(sessionKey: string, tag: Tag): ApiResponse<AUTH, void> {
+  async updateTag(sessionKey: string, tag: Tag): AQRes<void, "BAD_TAGID"> {
     await sleep();
 
     if (sessionKey !== "some-session-key")
-      return { error: "INVALID_SESSION_KEY" };
+      return { tag: "error", error: "INVALID_SESSION_KEY" };
 
     const tagIDs = tags.map(tag => tag.tag_id);
     tags.splice(tagIDs.indexOf(tag.tag_id), 1, tag);
 
-    return { value: undefined };
+    return { tag: "ok", payload: undefined };
   },
 
-  async deleteTag(sessionKey: string, tagID: string): ApiResponse<AUTH, void> {
+  async deleteTag(sessionKey: string, tagID: string): AQRes<void, "BAD_TAGID"> {
     await sleep();
 
     if (sessionKey !== "some-session-key")
-      return { error: "INVALID_SESSION_KEY" };
+      return { tag: "error", error: "INVALID_SESSION_KEY" };
 
     const tagIDs = tags.map(tag => tag.tag_id);
     tags.splice(tagIDs.indexOf(tagID), 1);
@@ -105,7 +104,7 @@ export default {
       if (index !== -1) card.tag_ids.splice(index, 1);
     });
 
-    return { value: undefined };
+    return { tag: "ok", payload: undefined };
   },
 
   async newCard(
@@ -113,42 +112,47 @@ export default {
     title: string,
     text: string,
     tag_ids: string[]
-  ): ApiResponse<AUTH, { card: Card }> {
+  ): AQRes<{ card: Card }, "BAD_TAGID"> {
     await sleep();
 
     if (sessionKey !== "some-session-key")
-      return { error: "INVALID_SESSION_KEY" };
+      return { tag: "error", error: "INVALID_SESSION_KEY" };
 
     const card = { card_id: (nextCardID++).toString(), title, text, tag_ids };
     cards.splice(0, 0, card);
 
-    return { value: { card } };
+    return { tag: "ok", payload: { card } };
   },
 
-  async updateCard(sessionKey: string, card: Card): ApiResponse<AUTH, void> {
+  async updateCard(
+    sessionKey: string,
+    card: Card
+  ): AQRes<{ card: Card }, "BAD_CARDID" | "BAD_TAGID"> {
     await sleep();
 
     if (sessionKey !== "some-session-key")
-      return { error: "INVALID_SESSION_KEY" };
+      return { tag: "error", error: "INVALID_SESSION_KEY" };
 
     const cardIDs = cards.map(card => card.card_id);
     cards.splice(cardIDs.indexOf(card.card_id), 1, card);
 
-    return { value: undefined };
+    return { tag: "ok", payload: { card } };
   },
 
   async deleteCard(
     sessionKey: string,
     cardID: string
-  ): ApiResponse<AUTH, void> {
+  ): AQRes<void, "BAD_CARDID"> {
     await sleep();
 
     if (sessionKey !== "some-session-key")
-      return { error: "INVALID_SESSION_KEY" };
+      return { tag: "error", error: "INVALID_SESSION_KEY" };
 
     const cardIDs = cards.map(card => card.card_id);
     cards.splice(cardIDs.indexOf(cardID), 1);
 
-    return { value: undefined };
+    return { tag: "ok", payload: undefined };
   }
 };
+
+export default api;

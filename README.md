@@ -113,6 +113,7 @@ This compose brings up an auto reloading test against the current database, runn
 <!-- -->
 
 - [x] E2E testing
+- [ ] Improve client error handling
 - [ ] Update card tests to use tags (`new`/`update` tests)
 - [ ] Test across account boundaries (attempting to modify something belonging to another user)
 - [ ] Status checks

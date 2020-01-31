@@ -43,8 +43,7 @@ export type Api = {
 };
 
 let api: Api;
-console.log(process.env);
-if (process.env.REACT_APP_DB === "mock") api = localApi as any;
+if (process.env.REACT_APP_DB === "mock") api = localApi;
 else api = realApi;
 
 export default api;
