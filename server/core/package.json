@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start": "node build/server.js",
+    "build": "tsc",
+    "clean": "rm -rf build",
     "start.dev": "ts-node-dev src/server.ts",
     "test.mock": "TEST_DB=MOCK jest --forceExit",
     "test.mock.dev": "TEST_DB=MOCK jest --watchAll",

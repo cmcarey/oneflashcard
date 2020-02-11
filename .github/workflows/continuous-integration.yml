@@ -22,4 +22,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run E2E tests
-        run: cd server/dockerfiles && docker-compose -f test.docker-compose.yml up -V --abort-on-container-exit
+        run: cd server/docker-compose && docker-compose -f test.docker-compose.yml up -V --abort-on-container-exit

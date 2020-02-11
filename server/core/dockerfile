@@ -1,0 +1,23 @@
+# Compile typescript
+
+FROM node:13.7.0 AS builder
+WORKDIR /app/
+
+COPY package.json yarn.lock tsconfig.json ./
+RUN yarn install
+
+COPY src/ src/
+RUN yarn build
+
+# Prepare to run app
+
+FROM node:13.7.0
+WORKDIR /app/
+
+COPY package.json yarn.lock ./
+RUN yarn install --prod
+
+COPY build/ build/
+
+EXPOSE 8000
+ENTRYPOINT [ "yarn", "start" ]
