@@ -32,18 +32,18 @@ export const createServer = (db: IDb, port: number) => {
 
   // Add routes
   // User routes
-  router.post("/login", handleRoute(userLoginRoute));
-  router.get("/user", handleRoute(userFetchRoute));
+  router.post("/api/login", handleRoute(userLoginRoute));
+  router.get("/api/user", handleRoute(userFetchRoute));
   // Card routes
-  router.get("/card", handleRoute(cardFetchFoute));
-  router.post("/card/new", handleRoute(cardCreateRoute));
-  router.post("/card/update", handleRoute(cardUpdateRoute));
-  router.post("/card/delete", handleRoute(cardDeleteRoute));
+  router.get("/api/card", handleRoute(cardFetchFoute));
+  router.post("/api/card/new", handleRoute(cardCreateRoute));
+  router.post("/api/card/update", handleRoute(cardUpdateRoute));
+  router.post("/api/card/delete", handleRoute(cardDeleteRoute));
   // Tag routes
-  router.get("/tag", handleRoute(tagFetchRoute));
-  router.post("/tag/new", handleRoute(tagCreateRoute));
-  router.post("/tag/update", handleRoute(tagUpdateRoute));
-  router.post("/tag/delete", handleRoute(tagDeleteRoute));
+  router.get("/api/tag", handleRoute(tagFetchRoute));
+  router.post("/api/tag/new", handleRoute(tagCreateRoute));
+  router.post("/api/tag/update", handleRoute(tagUpdateRoute));
+  router.post("/api/tag/delete", handleRoute(tagDeleteRoute));
 
   // Add route handler
   app.use(router.routes()).use(router.allowedMethods());

@@ -9,7 +9,7 @@ const api: Api = {
     password: string
   ): QRes<{ user: User; sessionKey: string }, "BAD_EMAIL" | "BAD_PASSWORD"> {
     try {
-      const req = await superagent.post("/login").send({ email, password });
+      const req = await superagent.post("/api/login").send({ email, password });
       return { tag: "ok", payload: req.body };
     } catch (e) {
       const e_msg = (e as any).response.text;
@@ -19,7 +19,7 @@ const api: Api = {
   async fetchUser(key: string): AQRes<{ user: User }, never> {
     try {
       const req = await superagent
-        .get("/user")
+        .get("/api/user")
         .set("Authorization", `Bearer ${key}`);
       return { tag: "ok", payload: req.body };
     } catch (e) {
@@ -32,7 +32,7 @@ const api: Api = {
   async fetchCards(key: string): AQRes<{ cards: Card[] }, never> {
     try {
       const req = await superagent
-        .get("/card")
+        .get("/api/card")
         .set("Authorization", `Bearer ${key}`);
       return { tag: "ok", payload: req.body };
     } catch (e) {
@@ -48,7 +48,7 @@ const api: Api = {
   ): AQRes<{ card: Card }, "BAD_TAGID"> {
     try {
       const req = await superagent
-        .post("/card/new")
+        .post("/api/card/new")
         .send({ title, text, tag_ids })
         .set("Authorization", `Bearer ${key}`);
       return { tag: "ok", payload: req.body };
@@ -63,7 +63,7 @@ const api: Api = {
   ): AQRes<{ card: Card }, "BAD_CARDID" | "BAD_TAGID"> {
     try {
       const req = await superagent
-        .post("/card/update")
+        .post("/api/card/update")
         .send({ card })
         .set("Authorization", `Bearer ${key}`);
       return { tag: "ok", payload: req.body };
@@ -75,7 +75,7 @@ const api: Api = {
   async deleteCard(key: string, card_id: string): AQRes<void, "BAD_CARDID"> {
     try {
       const req = await superagent
-        .post("/card/delete")
+        .post("/api/card/delete")
         .send({ card_id })
         .set("Authorization", `Bearer ${key}`);
       return { tag: "ok", payload: req.body };
@@ -89,7 +89,7 @@ const api: Api = {
   async fetchTags(key: string): AQRes<{ tags: Tag[] }, never> {
     try {
       const req = await superagent
-        .get("/tag")
+        .get("/api/tag")
         .set("Authorization", `Bearer ${key}`);
       return { tag: "ok", payload: req.body };
     } catch (e) {
@@ -104,7 +104,7 @@ const api: Api = {
   ): AQRes<{ tag: Tag }, never> {
     try {
       const req = await superagent
-        .post("/tag/new")
+        .post("/api/tag/new")
         .send({ text, color })
         .set("Authorization", `Bearer ${key}`);
       return { tag: "ok", payload: req.body };
@@ -116,7 +116,7 @@ const api: Api = {
   async updateTag(key: string, tag: Tag): AQRes<void, "BAD_TAGID"> {
     try {
       const req = await superagent
-        .post("/tag/update")
+        .post("/api/tag/update")
         .send({ tag })
         .set("Authorization", `Bearer ${key}`);
       return { tag: "ok", payload: req.body };
@@ -128,7 +128,7 @@ const api: Api = {
   async deleteTag(key: string, tag_id: string): AQRes<void, "BAD_TAGID"> {
     try {
       const req = await superagent
-        .post("/tag/delete")
+        .post("/api/tag/delete")
         .send({ tag_id })
         .set("Authorization", `Bearer ${key}`);
       return { tag: "ok", payload: req.body };

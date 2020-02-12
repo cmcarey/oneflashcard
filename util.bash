@@ -3,7 +3,7 @@
 set -e
 
 function server.dev {
-  cd server/dockerfiles
+  cd server/docker-compose
   docker-compose -f dev.docker-compose.yml up -V
 }
 
