@@ -17,7 +17,9 @@ WORKDIR /app/
 COPY package.json yarn.lock ./
 RUN yarn install --prod
 
-COPY build/ build/
+RUN ls
+
+COPY --from=builder /app/build/ build/
 
 EXPOSE 8000
 ENTRYPOINT [ "yarn", "start" ]
