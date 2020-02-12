@@ -12,7 +12,7 @@ describe("Fetch tags", () => {
   beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
-    const res = await supertest(server).get("/tag");
+    const res = await supertest(server).get("/api/tag");
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_SESSION_KEY");
@@ -68,7 +68,7 @@ describe("Insert tag", () => {
     const sessionKey = (await login(server)).body.sessionKey;
 
     const res = await supertest(server)
-      .post("/tag/new")
+      .post("/api/tag/new")
       .set("Authorization", `Bearer ${sessionKey}`);
 
     expect(res.status).toBe(400);
@@ -99,7 +99,7 @@ describe("Update tag", () => {
   beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
-    const res = await supertest(server).post("/tag/update");
+    const res = await supertest(server).post("/api/tag/update");
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_SESSION_KEY");
@@ -109,7 +109,7 @@ describe("Update tag", () => {
     const sessionKey = (await login(server)).body.sessionKey;
 
     const res = await supertest(server)
-      .post("/tag/update")
+      .post("/api/tag/update")
       .set("Authorization", `Bearer ${sessionKey}`);
 
     expect(res.status).toBe(400);
@@ -158,7 +158,7 @@ describe("Delete tag", () => {
   beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
-    const res = await supertest(server).post("/tag/delete");
+    const res = await supertest(server).post("/api/tag/delete");
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_SESSION_KEY");
@@ -168,7 +168,7 @@ describe("Delete tag", () => {
     const sessionKey = (await login(server)).body.sessionKey;
 
     const res = await supertest(server)
-      .post("/tag/delete")
+      .post("/api/tag/delete")
       .set("Authorization", `Bearer ${sessionKey}`);
 
     expect(res.status).toBe(400);

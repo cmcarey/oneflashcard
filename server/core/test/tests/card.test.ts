@@ -12,7 +12,7 @@ describe("Fetch cards", () => {
   beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
-    const res = await supertest(server).get("/card");
+    const res = await supertest(server).get("/api/card");
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_SESSION_KEY");
@@ -65,7 +65,7 @@ describe("New card", () => {
   beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
-    const res = await supertest(server).post("/card/new");
+    const res = await supertest(server).post("/api/card/new");
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_SESSION_KEY");
@@ -75,7 +75,7 @@ describe("New card", () => {
     const sessionKey = (await login(server)).body.sessionKey;
 
     const res = await supertest(server)
-      .post("/card/new")
+      .post("/api/card/new")
       .set("Authorization", `Bearer ${sessionKey}`);
 
     expect(res.status).toBe(400);
@@ -124,7 +124,7 @@ describe("Update card", () => {
   beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
-    const res = await supertest(server).post("/card/update");
+    const res = await supertest(server).post("/api/card/update");
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_SESSION_KEY");
@@ -134,7 +134,7 @@ describe("Update card", () => {
     const sessionKey = (await login(server)).body.sessionKey;
 
     const res = await supertest(server)
-      .post("/card/update")
+      .post("/api/card/update")
       .set("Authorization", `Bearer ${sessionKey}`);
 
     expect(res.status).toBe(400);
@@ -220,7 +220,7 @@ describe("Delete card", () => {
   beforeEach(async () => await db.reset());
 
   test("Bad authentication", async () => {
-    const res = await supertest(server).post("/card/delete");
+    const res = await supertest(server).post("/api/card/delete");
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_SESSION_KEY");
@@ -230,7 +230,7 @@ describe("Delete card", () => {
     const sessionKey = (await login(server)).body.sessionKey;
 
     const res = await supertest(server)
-      .post("/card/delete")
+      .post("/api/card/delete")
       .set("Authorization", `Bearer ${sessionKey}`);
 
     expect(res.status).toBe(400);

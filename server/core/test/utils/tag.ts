@@ -2,12 +2,12 @@ import supertest from "supertest";
 
 export const getTags = (server: any, key: string) =>
   supertest(server)
-    .get("/tag")
+    .get("/api/tag")
     .set("Authorization", `Bearer ${key}`);
 
 export const newTag = (server: any, key: string, text: string, color: string) =>
   supertest(server)
-    .post("/tag/new")
+    .post("/api/tag/new")
     .send({ text, color })
     .set("Authorization", `Bearer ${key}`);
 
@@ -21,12 +21,12 @@ export const updateTag = (
   }
 ) =>
   supertest(server)
-    .post("/tag/update")
+    .post("/api/tag/update")
     .send({ tag })
     .set("Authorization", `Bearer ${key}`);
 
 export const deleteTag = (server: any, key: string, tag_id: string) =>
   supertest(server)
-    .post("/tag/delete")
+    .post("/api/tag/delete")
     .send({ tag_id })
     .set("Authorization", `Bearer ${key}`);

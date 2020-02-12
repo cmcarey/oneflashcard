@@ -11,7 +11,7 @@ describe("Login", () => {
   beforeEach(async () => await db.reset());
 
   test("Bad request body", async () => {
-    const res = await supertest(server).post("/login");
+    const res = await supertest(server).post("/api/login");
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_REQUEST_BODY");
@@ -53,7 +53,7 @@ describe("Fetch user", () => {
   beforeEach(async () => await db.reset());
 
   test("Missing session key", async () => {
-    const res = await supertest(server).get("/user");
+    const res = await supertest(server).get("/api/user");
 
     expect(res.status).toBe(400);
     expect(res.text).toBe("BAD_SESSION_KEY");
@@ -64,7 +64,7 @@ describe("Fetch user", () => {
     const key = loginRes.body.sessionKey;
 
     const res = await supertest(server)
-      .get("/user")
+      .get("/api/user")
       .set("Authorization", `Beary ${key}`);
 
     expect(res.status).toBe(400);

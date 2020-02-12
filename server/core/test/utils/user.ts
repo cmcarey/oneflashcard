@@ -6,10 +6,10 @@ export const login = (
   password = "somepass"
 ) =>
   supertest(server)
-    .post("/login")
+    .post("/api/login")
     .send({ email, password });
 
 export const getUser = (server: any, key: string) =>
   supertest(server)
-    .get("/user")
+    .get("/api/user")
     .set("Authorization", `Bearer ${key}`);
