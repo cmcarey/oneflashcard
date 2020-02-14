@@ -19,6 +19,8 @@ import {
 import { userFetchRoute, userLoginRoute } from "./routes/user";
 import { buildHandler } from "./utils/route";
 
+// console.log(bcrypt.hashSync("somedemopass", bcrypt.genSaltSync(10)));
+
 export const createServer = (db: IDb, port: number) => {
   // Initial setup
   const app = new Koa();
